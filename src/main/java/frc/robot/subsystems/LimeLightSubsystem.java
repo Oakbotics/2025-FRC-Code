@@ -9,8 +9,10 @@ import java.lang.reflect.Field;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;  
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,10 +24,18 @@ public class LimeLightSubsystem extends SubsystemBase {
   /** Creates a new LimeLightSubsystem. */
   public LimeLightSubsystem() {
     m_limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
-    m_limeLightTable.getEntry("pipeline").setNumber(1);
+    m_limeLightTable.getEntry("pipeline").setNumber(0);
   }
   public Pose2d getBotPose(){
-    double[] botPoseArray = m_limeLightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]);
+    double tx = m_limeLightTable.getEntry("tx").getDouble(0);
+    double ty = m_limeLightTable.getEntry("ty").getDouble(0);
+    double ta = m_limeLightTable.getEntry("ta").getDouble(0);
+    
+    SmartDashboard.putNumber("LimelightX", tx);
+    SmartDashboard.putNumber("LimelightY", ty);
+    SmartDashboard.putNumber("LimelightArea", ta);
+
+    return new Pose2d(tx, ty, Rotation2d.fromDegrees(ta));   
   }
   
   public Command exampleMethodCommand() {
@@ -50,6 +60,9 @@ public class LimeLightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    getBotPose();
+
   }
 
   @Override
