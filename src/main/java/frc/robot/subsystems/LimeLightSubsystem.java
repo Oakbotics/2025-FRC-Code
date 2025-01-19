@@ -24,9 +24,9 @@ public class LimeLightSubsystem extends SubsystemBase {
     m_limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
     m_limeLightTable.getEntry("pipeline").setNumber(1);
   }
-  public Pose2d getBotPose(){
-    double[] botPoseArray = m_limeLightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]);
-  }
+  // public Pose2d getBotPose(){
+  //   double[] botPoseArray = m_limeLightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]);
+  // }
   
   public Command exampleMethodCommand() {
     // Inline construction of command goes here.

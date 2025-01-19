@@ -1,6 +1,9 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.util.Units;
+
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -58,12 +61,18 @@ public final class Configs {
     public static final class ElevatorConfigs{
         public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
         static{
+                double encoderMultiplier = Units.radiansToDegrees(Math.PI * 2);
                 elevatorConfig.closedLoop
                         .p(ElevatorConstants.elevatorKp)
                         .i(ElevatorConstants.elevatorKi)
                         .d(ElevatorConstants.elevatorKd)
                         .outputRange(ElevatorConstants.elevatorKMinOutput, ElevatorConstants.elevatorKMaxOutput)
                         .velocityFF(1/ElevatorConstants.elevatorKf);
+                elevatorConfig.absoluteEncoder
+                        //Converts from Radians to degrees.
+                        .inverted(true)
+                        .positionConversionFactor(encoderMultiplier) // radians
+                        .velocityConversionFactor(encoderMultiplier / 60.0); // radians per second
         }               
     }
 }

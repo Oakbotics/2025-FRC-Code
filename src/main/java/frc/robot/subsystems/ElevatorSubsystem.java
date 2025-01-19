@@ -39,11 +39,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotor1 = new SparkMax(ElevatorConstants.elevatorMotor1CanId, MotorType.kBrushless);
     elevatorMotor2 = new SparkMax(ElevatorConstants.elevatorMotor2CanId, MotorType.kBrushless);
     
+    elevatorMotor1.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+    
     m_relativeEncoder = elevatorMotor1.getEncoder();
     m_PidController = elevatorMotor1.getClosedLoopController();
 
     m_relativeEncoder.setPosition(0);
-    elevatorMotor1.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
   }
     //probably should make this work based of a height variable in the future
   public void ElevatorRotatePID(double rotations){
