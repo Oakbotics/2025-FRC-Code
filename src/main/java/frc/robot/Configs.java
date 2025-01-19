@@ -68,10 +68,10 @@ public final class Configs {
                         .d(ElevatorConstants.elevatorKd)
                         .outputRange(ElevatorConstants.elevatorKMinOutput, ElevatorConstants.elevatorKMaxOutput)
                         .velocityFF(1/ElevatorConstants.elevatorKf);
-                elevatorConfig.encoder
-                        //Converts from Radians to degrees.
-                        .positionConversionFactor(encoderMultiplier) // radians
-                        .velocityConversionFactor(encoderMultiplier / 60.0); // radians per second
+                // elevatorConfig.encoder
+                //         //Converts from Radians to degrees.
+                //         .positionConversionFactor(encoderMultiplier) // radians
+                //         .velocityConversionFactor(encoderMultiplier / 60.0); // radians per second
         }               
     }
 }
