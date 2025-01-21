@@ -61,7 +61,8 @@ public final class Configs {
     public static final class ElevatorConfigs{
         public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
         static{
-                double encoderMultiplier = ElevatorConstants.discCircumferenceMeter / ElevatorConstants.discGearRatio;
+                // double encoderMultiplier = ElevatorConstants.discCircumferenceMeter / ElevatorConstants.discGearRatio;
+                double encoderMultiplier = 1 / 360;
                 elevatorConfig.closedLoop
                         .p(ElevatorConstants.elevatorKp)
                         .i(ElevatorConstants.elevatorKi)
@@ -70,8 +71,13 @@ public final class Configs {
                         .velocityFF(1/ElevatorConstants.elevatorKf);
                 elevatorConfig.encoder
                         //Converts from Radians to degrees.
-                        .positionConversionFactor(encoderMultiplier) // radians
-                        .velocityConversionFactor(encoderMultiplier / 60.0); // radians per second
+                        .positionConversionFactor(encoderMultiplier);
+                        //.velocityConversionFactor(encoderMultiplier / 60.0);
+                // Set MAXMotion parameters
+                elevatorConfig.closedLoop.maxMotion
+                        .maxVelocity(ElevatorConstants.maxVel)
+                        .maxAcceleration(ElevatorConstants.maxAccel)
+                        .allowedClosedLoopError(ElevatorConstants.allowedErr);
         }               
     }
 }

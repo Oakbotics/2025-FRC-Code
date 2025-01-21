@@ -31,7 +31,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax elevatorMotor2;
   private final RelativeEncoder m_relativeEncoder;
   // Creates a PIDController with gains kP, kI, and kD
-  private SparkClosedLoopController m_PidController;
+  private SparkClosedLoopController m_pidController;
   
   /** Creates a new ExampleSubsystem. */
   public ElevatorSubsystem() {
@@ -42,14 +42,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotor1.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
     
     m_relativeEncoder = elevatorMotor1.getEncoder();
-    m_PidController = elevatorMotor1.getClosedLoopController();
+    m_pidController = elevatorMotor1.getClosedLoopController();
 
     m_relativeEncoder.setPosition(0);
   }
     //probably should make this work based of a height variable in the future
-  public void ElevatorRotatePID(double rotations){
+  public void ElevatorRotatePID(double position){
     
-    m_PidController.setReference(rotations, ControlType.kPosition);
+    m_pidController.setReference(position, ControlType.kPosition);
 
   }
 

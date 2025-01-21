@@ -65,6 +65,9 @@ public final class Constants {
     public static final double elevatorKMinOutput = -1;
     public static final double elevatorKMaxOutput = 1;
     public static final double elevatorKf = 0.5;
+    public static final double maxVel = 0;
+    public static final double maxAccel = 0;
+    public static final double allowedErr = 0;
   }
 
   public static final class DriveConstants {
