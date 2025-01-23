@@ -52,7 +52,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                false),
+                true),
             m_robotDrive));
   }
 
@@ -72,7 +72,7 @@ public class RobotContainer {
     //new JoystickButton(m_driverController,Button.kL1.value).whileTrue(new ShootCommand(m_ShooterSubsystem));
     //new JoystickButton(m_driverController, Button..value).whileTrue(new ElevatorUpCommand(m_ElevatorSubsystem));
     // m_driverController.a().whileTrue(new ElevatorUpCommand(m_ElevatorSubsystem));
-    // m_driverController.x().onTrue(new ElevatorPositionCommand(m_ElevatorSubsystem));
+    m_driverController.x().onTrue(new RunCommand(() -> m_robotDrive.setX(),m_robotDrive));
     // m_driverController.b().whileTrue(new ElevatorDownCommand(m_ElevatorSubsystem));
     // m_driverController.y().onTrue(new ElevatorEncoderResetCommand(m_ElevatorSubsystem));
 
@@ -84,6 +84,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto(" ");
+    return new PathPlannerAuto("2P Middle"); 
   }
 }
