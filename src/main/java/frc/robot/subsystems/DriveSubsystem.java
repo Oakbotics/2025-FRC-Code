@@ -130,7 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
     //         m_rearLeft.getPosition(),
     //         m_rearRight.getPosition()
     //     });
-    // limeLightPoseUpdate();
+    limeLightPoseUpdate();
     
   }
 
@@ -290,12 +290,16 @@ public class DriveSubsystem extends SubsystemBase {
     LimelightHelpers.SetRobotOrientation("limelight",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
 
     boolean reject = false;
-    if(Math.abs(m_gyro.getRate()) > 720)
+    if(Math.abs(getTurnRate()) > 720)
       reject = true;
     if(m_limeLightSubsystem.getID() == 0)
       reject = true;
-    if(!reject)
-      resetOdometry(m_limeLightSubsystem.getBotPoseTest());
+    if(!reject){
+      Pose2d botPose = new Pose2d(m_limeLightSubsystem.getBotPoseTest().getX(), m_limeLightSubsystem.getBotPoseTest().getY(), Rotation2d.fromDegrees(getHeading()));
+      resetOdometry(botPose);
+
+    }
+
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
