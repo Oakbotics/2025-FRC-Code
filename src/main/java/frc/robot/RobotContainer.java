@@ -79,9 +79,13 @@ public class RobotContainer {
   private void configureButtonBindings() {
  new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> m_robotDrive.setX(),m_robotDrive));
   
-    new JoystickButton(m_driverController, Button.kR1.value).whileTrue(new IntakeCommand(m_ConveyorSubsystem));
-    new JoystickButton(m_driverController,Button.kL1.value).whileTrue(new ShootCommand(m_ShooterSubsystem));
-
+    //new JoystickButton(m_driverController, Button.kR1.value).whileTrue(new IntakeCommand(m_ConveyorSubsystem));
+    //new JoystickButton(m_driverController,Button.kL1.value).whileTrue(new ShootCommand(m_ShooterSubsystem));
+    //new JoystickButton(m_driverController, Button..value).whileTrue(new ElevatorUpCommand(m_ElevatorSubsystem));
+    // m_driverController.a().whileTrue(new ElevatorUpCommand(m_ElevatorSubsystem));
+    // m_driverController.x().onTrue(new RunCommand(() -> m_robotDrive.setX(),m_robotDrive));
+    // m_driverController.b().whileTrue(new ElevatorDownCommand(m_ElevatorSubsystem));
+    // m_driverController.y().onTrue(new ElevatorEncoderResetCommand(m_ElevatorSubsystem));
 
 }
 
@@ -91,6 +95,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto(" ");
+    return new PathPlannerAuto("2P Middle"); 
   }
 }
