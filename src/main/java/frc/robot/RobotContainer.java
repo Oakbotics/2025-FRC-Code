@@ -40,10 +40,10 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_LimeLightSubsystem);
   private final ConveyorSubsystem m_ConveyorSubsystem = new ConveyorSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-  private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
