@@ -1,9 +1,13 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.util.Units;
+
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 
 public final class Configs {
@@ -52,5 +56,30 @@ public final class Configs {
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, turningFactor);
         }
+    }
+
+    public static final class ElevatorConfigs{
+        public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+        static{
+                // double encoderMultiplier = ElevatorConstants.discCircumferenceMeter / ElevatorConstants.discGearRatio;
+                double encoderMultiplier = Math.PI * 2;
+                elevatorConfig
+                        .smartCurrentLimit(40);
+                elevatorConfig.encoder
+                        //Converts from Radians to degrees.
+                        .positionConversionFactor(encoderMultiplier)
+                        .velocityConversionFactor(encoderMultiplier / 60.0);
+                elevatorConfig.closedLoop
+                        .p(ElevatorConstants.elevatorKp)
+                        .i(ElevatorConstants.elevatorKi)
+                        .d(ElevatorConstants.elevatorKd)
+                        .outputRange(ElevatorConstants.elevatorKMinOutput, ElevatorConstants.elevatorKMaxOutput)
+                        .velocityFF(1/ElevatorConstants.elevatorKf);
+                // Set MAXMotion parameters
+                elevatorConfig.closedLoop.maxMotion
+                        .maxVelocity(ElevatorConstants.maxVel)
+                        .maxAcceleration(ElevatorConstants.maxAccel)
+                        .allowedClosedLoopError(ElevatorConstants.allowedErr);
+        }               
     }
 }

@@ -25,32 +25,49 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class ConveyorConstants {
-    public static final int kTopConveyorMotorCANID = 14;
-    public static final int kBottomConveyorMotorCANID = 15;
+    // public static final int kTopConveyorMotorCANID = 14;
+    // public static final int kBottomConveyorMotorCANID = 15;
 
-    public static final int kRightShooterMotorCANID = 20;
-    public static final int kLeftShooterMotorCANID = 21;
+    // public statics final int kRightShooterMotorCANID = 20;
+    // public static final int kLeftShooterMotorCANID = 21;
 
-    public static final double revvedShooterRPM = 800;
+    // public static final double revvedShooterRPM = 800;
 
-    public static final int kTopIntakeSensorCANID = 5;
-    public static final int kBottomIntakeSensorCANID = 25;
+    // public static final int kTopIntakeSensorCANID = 5;
+    // public static final int kBottomIntakeSensorCANID = 25;
   }
 
-  // Coordintes for the branches on the reef
   public static final class FieldConstants {
       public static final Pose2d reefBranchA = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(0));
       public static final Pose2d reefBranchB = new Pose2d(3.246, 3.875,Rotation2d.fromDegrees(0));
-      public static final Pose2d reefBranchC = new Pose2d(3.734, 3.040,Rotation2d.fromDegrees(60));
-      public static final Pose2d reefBranchD = new Pose2d(4.021, 2.869,Rotation2d.fromDegrees(60));
-      public static final Pose2d reefBranchE = new Pose2d(4.000, 2.867,Rotation2d.fromDegrees(60));
-      public static final Pose2d reefBranchF = new Pose2d(4.961, 4.961,Rotation2d.fromDegrees(120.000));
-      public static final Pose2d reefBranchG = new Pose2d(5.258, 3.843,Rotation2d.fromDegrees(180.000));
-      public static final Pose2d reefBranchH = new Pose2d(5.737, 4.167,Rotation2d.fromDegrees(180.000));
-      public static final Pose2d reefBranchI = new Pose2d(5.273, 5.054,Rotation2d.fromDegrees(-120.000));
-      public static final Pose2d reefBranchJ = new Pose2d(4.980, 5.189,Rotation2d.fromDegrees(-120.000));
-      public static final Pose2d reefBranchK = new Pose2d(4.012, 5.191,Rotation2d.fromDegrees(-60.000));
-      public static final Pose2d reefBranchL = new Pose2d(3.729, 5.033,Rotation2d.fromDegrees(-60.000));//stopped here
+      public static final Pose2d reefBranchC = new Pose2d(3.834, 3.032,Rotation2d.fromDegrees(60));
+      public static final Pose2d reefBranchD = new Pose2d(3.246, 2.862,Rotation2d.fromDegrees(60));//stopped here
+      public static final Pose2d reefBranchE = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+      public static final Pose2d reefBranchF = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+      public static final Pose2d reefBranchG = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+      public static final Pose2d reefBranchH = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+      public static final Pose2d reefBranchI = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+      public static final Pose2d reefBranchJ = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+      public static final Pose2d reefBranchK = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+      public static final Pose2d reefBranchL = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+  }
+
+  public static final class ElevatorConstants {
+    public static final double discDiameterMeter = Units.inchesToMeters(2);
+    public static final double discCircumferenceMeter = discDiameterMeter * Math.PI;
+    public static final double discGearRatio = 1 / (5 * 4);
+    public static final int elevatorMotor1CanId = 25;
+    public static final int elevatorMotor2CanId = 10;
+    
+    public static final double elevatorKp = 0.01;
+    public static final double elevatorKi = 0;
+    public static final double elevatorKd = 0;
+    public static final double elevatorKMinOutput = -1.0;
+    public static final double elevatorKMaxOutput = 1.0;
+    public static final double elevatorKf = 0.5;
+    public static final double maxVel = 0;
+    public static final double maxAccel = 0;
+    public static final double allowedErr = 1;
   }
 
   public static final class DriveConstants {
