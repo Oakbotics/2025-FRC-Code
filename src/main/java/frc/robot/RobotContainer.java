@@ -17,20 +17,32 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import java.io.IOException;
 import java.util.List;
 
+import org.json.simple.parser.ParseException;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FileVersionException;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -45,7 +57,7 @@ public class RobotContainer {
   private final ConveyorSubsystem m_ConveyorSubsystem = new ConveyorSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -77,16 +89,16 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
- new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> m_robotDrive.setX(),m_robotDrive));
+//  new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> m_robotDrive.setX(),m_robotDrive));
   
     //new JoystickButton(m_driverController, Button.kR1.value).whileTrue(new IntakeCommand(m_ConveyorSubsystem));
     //new JoystickButton(m_driverController,Button.kL1.value).whileTrue(new ShootCommand(m_ShooterSubsystem));
     //new JoystickButton(m_driverController, Button..value).whileTrue(new ElevatorUpCommand(m_ElevatorSubsystem));
-    // m_driverController.a().whileTrue(new ElevatorUpCommand(m_ElevatorSubsystem));
-    // m_driverController.x().onTrue(new RunCommand(() -> m_robotDrive.setX(),m_robotDrive));
+    m_driverController.a().whileTrue(m_robotDrive.findPathToPose(14.35, 4.170, 0, false));
+    m_driverController.x().onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(m_LimeLightSubsystem.getBotPoseTest())));
     // m_driverController.b().whileTrue(new ElevatorDownCommand(m_ElevatorSubsystem));
     // m_driverController.y().onTrue(new ElevatorEncoderResetCommand(m_ElevatorSubsystem));
-
+    m_driverController.povUp().onTrue(new InstantCommand(()-> m_robotDrive.zeroHeading()));
 }
 
   /**
@@ -95,6 +107,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("2P Middle"); 
+    // return new PathPlannerAuto("3P Middle Top Bottom");
+      return new TestAuto(m_robotDrive, m_LimeLightSubsystem);
   }
 }

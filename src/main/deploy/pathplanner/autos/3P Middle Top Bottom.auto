@@ -15,6 +15,18 @@
           "data": {
             "pathName": "mid path 2"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mid path 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mid path 4"
+          }
         }
       ]
     }

@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.AutoBuilderException;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -28,7 +33,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -54,29 +61,33 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
 
+      LimeLightSubsystem m_limeLightSubsystem;
+      LimelightHelpers limelightHelpers;
   // The gyro sensor
   private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.GyroCanId);
   // Odometry class for tracking robot pose
-  SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
-      DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      },
-      
-      new Pose2d(0,0,Rotation2d.fromDegrees(0)) // FIX TEMPORARY
+  SwerveDrivePoseEstimator m_odometry;
+  PathConstraints pathConstraints = new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared, AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared);
 
-      );
-
-  LimeLightSubsystem m_limeLightSubsystem;
-  LimelightHelpers limelightHelpers;
+  
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(LimeLightSubsystem limeLightSubsystem) {
 
    m_limeLightSubsystem = limeLightSubsystem;
+   m_odometry = new SwerveDrivePoseEstimator(
+    DriveConstants.kDriveKinematics,
+    Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
+    new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_rearLeft.getPosition(),
+        m_rearRight.getPosition()
+    },
+    
+    new Pose2d(m_limeLightSubsystem.getBotPoseTest().getX(),m_limeLightSubsystem.getBotPoseTest().getY(),Rotation2d.fromDegrees(0))
+
+    );
+    m_gyro.setYaw(0);
     // All other subsystem initialization
     // ...
 
@@ -119,18 +130,36 @@ public class DriveSubsystem extends SubsystemBase {
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
 
+  public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
+    limeLightPoseUpdate();
+    
+    if(isRedAlliance)
+      return AutoBuilder.pathfindToPoseFlipped(new Pose2d(x,y,Rotation2d.fromDegrees(rotation)), pathConstraints);
+    else 
+      return AutoBuilder.pathfindToPose(new Pose2d(x,y,Rotation2d.fromDegrees(rotation)), pathConstraints);
+  }
+
+  public Command findPath(PathPlannerPath path) {
+    return AutoBuilder.pathfindThenFollowPath(path, pathConstraints);
+  }
+
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    // m_odometry.update(
-    //     Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
-    //     new SwerveModulePosition[] {
-    //         m_frontLeft.getPosition(),
-    //         m_frontRight.getPosition(),
-    //         m_rearLeft.getPosition(),
-    //         m_rearRight.getPosition()
-    //     });
-    limeLightPoseUpdate();
+    m_odometry.update(
+        Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+        });
+    
+    SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
+
+    // limeLightPoseUpdate();
     
   }
 
@@ -254,7 +283,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
-    m_gyro.reset();
+    m_gyro.setYaw(0);
   }
 
   /**
@@ -263,7 +292,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()).getDegrees();
+    return m_gyro.getYaw().getValueAsDouble();
   }
 
   /**
@@ -290,19 +319,14 @@ public class DriveSubsystem extends SubsystemBase {
     LimelightHelpers.SetRobotOrientation("limelight",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
 
     boolean reject = false;
-    if(Math.abs(getTurnRate()) > 720)
-      reject = true;
+    // if(Math.abs(getTurnRate()) > 720)
+      // reject = true;
     if(m_limeLightSubsystem.getID() == 0)
       reject = true;
     if(!reject){
-      Pose2d botPose = new Pose2d(m_limeLightSubsystem.getBotPoseTest().getX(), m_limeLightSubsystem.getBotPoseTest().getY(), Rotation2d.fromDegrees(getHeading()));
-      resetOdometry(botPose);
-
+      // Pose2d botPose = new Pose2d(m_limeLightSubsystem.getBotPoseTest().getX(), m_limeLightSubsystem.getBotPoseTest().getY(), Rotation2d.fromDegrees(getHeading()));
+      // resetOdometry(botPose);
+      m_odometry.addVisionMeasurement(m_limeLightSubsystem.getBotPoseTest(),Timer.getFPGATimestamp());
     }
-
-    SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
-    SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
-    SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
-
   }
 }

@@ -7,6 +7,7 @@ import edu.wpi.first.math.util.Units;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 
@@ -81,5 +82,34 @@ public final class Configs {
                         .maxAcceleration(ElevatorConstants.maxAccel)
                         .allowedClosedLoopError(ElevatorConstants.allowedErr);
         }               
+    }
+
+    public static final class ArmConfigs {
+        public static final SparkMaxConfig armConfig = new SparkMaxConfig();
+        static {
+
+                double armEncoderMultiplier = 0; //TEMPORARY
+
+                armConfig
+                        .smartCurrentLimit(40);
+
+                armConfig.encoder
+                        .positionConversionFactor(armEncoderMultiplier)
+                        .velocityConversionFactor(armEncoderMultiplier / 60.0);
+                armConfig.closedLoop
+                        .p(ArmConstants.kP)
+                        .i(ArmConstants.kI)
+                        .d(ArmConstants.kD)
+                        .outputRange(ArmConstants.minOutput, ArmConstants.maxOutput)
+                        .velocityFF(ArmConstants.velocityFF);
+        }
+    }
+
+    public static final class  GenericNEOConfigs {
+        public static final SparkMaxConfig genericNEOConfigs = new SparkMaxConfig();
+        static{
+                genericNEOConfigs.smartCurrentLimit(40);
+        }
+        
     }
 }
