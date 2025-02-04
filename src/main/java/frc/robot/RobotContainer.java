@@ -5,44 +5,18 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-import java.io.IOException;
-import java.util.List;
-
-import org.json.simple.parser.ParseException;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.FileVersionException;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -54,8 +28,6 @@ public class RobotContainer {
   // The robot's subsystems
   private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_LimeLightSubsystem);
-  private final ConveyorSubsystem m_ConveyorSubsystem = new ConveyorSubsystem();
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
@@ -89,15 +61,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-//  new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> m_robotDrive.setX(),m_robotDrive));
-  
-    //new JoystickButton(m_driverController, Button.kR1.value).whileTrue(new IntakeCommand(m_ConveyorSubsystem));
-    //new JoystickButton(m_driverController,Button.kL1.value).whileTrue(new ShootCommand(m_ShooterSubsystem));
-    //new JoystickButton(m_driverController, Button..value).whileTrue(new ElevatorUpCommand(m_ElevatorSubsystem));
-    m_driverController.a().whileTrue(m_robotDrive.findPathToPose(14.35, 4.170, 0, false));
-    m_driverController.x().onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(m_LimeLightSubsystem.getBotPoseTest())));
-    // m_driverController.b().whileTrue(new ElevatorDownCommand(m_ElevatorSubsystem));
-    // m_driverController.y().onTrue(new ElevatorEncoderResetCommand(m_ElevatorSubsystem));
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(m_LimeLightSubsystem.getBotPoseTest())));
     m_driverController.povUp().onTrue(new InstantCommand(()-> m_robotDrive.zeroHeading()));
 }
 

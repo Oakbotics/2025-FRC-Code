@@ -131,12 +131,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
+    return findPathToPose(new Pose2d(x, y, Rotation2d.fromDegrees(rotation)), isRedAlliance);
+  }
+
+  public Command findPathToPose(Pose2d pose, boolean isRedAlliance) {
     limeLightPoseUpdate();
     
     if(isRedAlliance)
-      return AutoBuilder.pathfindToPoseFlipped(new Pose2d(x,y,Rotation2d.fromDegrees(rotation)), pathConstraints);
+      return AutoBuilder.pathfindToPoseFlipped(pose, pathConstraints);
     else 
-      return AutoBuilder.pathfindToPose(new Pose2d(x,y,Rotation2d.fromDegrees(rotation)), pathConstraints);
+      return AutoBuilder.pathfindToPose(pose, pathConstraints);
   }
 
   public Command findPath(PathPlannerPath path) {
