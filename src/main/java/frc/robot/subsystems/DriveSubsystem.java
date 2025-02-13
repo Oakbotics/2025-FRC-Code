@@ -190,7 +190,7 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         },
-        pose);
+        new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble())));
   }
 
   public ChassisSpeeds getChassisSpeeds(){
