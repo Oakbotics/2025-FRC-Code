@@ -46,12 +46,11 @@ public class LimeLightSubsystem extends SubsystemBase {
   }
   
   public Pose2d getBotPoseTest(){
-    double[] botPoseArray = m_limeLightTable.getEntry("botpose_orb_wpiblue").getDoubleArray(new double[10]); 
+    double[] botPoseArray = m_limeLightTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
 
-    Pose2d botPose = new Pose2d(botPoseArray[0], botPoseArray[1], Rotation2d.fromDegrees(botPoseArray[5]));
-    SmartDashboard.putNumber("botPoseX", botPoseArray[0]);
-    SmartDashboard.putNumber("botPoseY", botPoseArray[1]);
-    SmartDashboard.putNumber("botPoseAngle", (botPoseArray[5]));
+    Pose2d botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botPoseArray[5]));
+    SmartDashboard.putNumber("botPoseX", botPose.getX());
+    SmartDashboard.putNumber("botPoseY", botPose.getY());
     m_field.setRobotPose(botPose);  
     return botPose;
   }

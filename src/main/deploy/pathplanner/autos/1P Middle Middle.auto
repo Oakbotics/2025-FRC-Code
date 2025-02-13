@@ -7,7 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Auto Start"
+            "pathName": "mid path 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mid path 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mid path 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mid path 4"
           }
         }
       ]
