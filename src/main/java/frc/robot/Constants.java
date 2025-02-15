@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -50,6 +53,24 @@ public final class Constants {
       public static final Pose2d reefBranchJ = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
       public static final Pose2d reefBranchK = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
       public static final Pose2d reefBranchL = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
+
+      public static final double poleToTag = (0.1651);
+      public static final HashMap<Integer, Pose2d[]> reefPolePositions = new HashMap();
+
+      static {
+        reefPolePositions.put(6, new Pose2d[]{new Pose2d(3.7, 5.8,Rotation2d.fromDegrees(180)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(7, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(8, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(9, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(10, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(11, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(17, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(18, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(19, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(20, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+        reefPolePositions.put(21, new Pose2d[]{new Pose2d(3.7, 5.8,Rotation2d.fromDegrees(0)), new Pose2d(5.7, 4.2,Rotation2d.fromDegrees(0))});
+        reefPolePositions.put(22, new Pose2d[]{new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935)), new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935))});
+      }
   }
 
   public static final class ElevatorConstants {
@@ -163,4 +184,8 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+ 
+
+
 }

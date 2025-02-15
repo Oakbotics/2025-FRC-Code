@@ -65,6 +65,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(m_LimeLightSubsystem.getBotPoseTest())));
     m_driverController.povUp().onTrue(new InstantCommand(()-> m_robotDrive.zeroHeading()));
+
+   // m_driverController.leftBumper().onTrue(m_robotDrive.findPathToPole(true));
+    m_driverController.leftBumper().onTrue(new InstantCommand(()-> m_robotDrive.findPathToPole(true)));
+    m_driverController.rightBumper().onTrue(m_robotDrive.findPathToPole(false));
+
 }
 
   /**

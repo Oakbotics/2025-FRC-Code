@@ -49,12 +49,22 @@ public class LimeLightSubsystem extends SubsystemBase {
     double[] botPoseArray = m_limeLightTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
 
     Pose2d botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botPoseArray[5]));
+    SmartDashboard.putNumber("botPoseID", (int) m_limeLightTable.getEntry("tid").getDouble(-1));
     SmartDashboard.putNumber("botPoseX", botPose.getX());
     SmartDashboard.putNumber("botPoseY", botPose.getY());
     m_field.setRobotPose(botPose);  
     return botPose;
   }
+
+  public Pose2d getRobotRelativeTargetPose(){
+    double[] targetPoseArray = m_limeLightTable.getEntry("targetpose_robotspace").getDoubleArray(new double[10]);
+    Pose2d targetPose = new Pose2d(targetPoseArray[2], targetPoseArray[0], Rotation2d.fromDegrees(targetPoseArray[4])); 
+
+    return targetPose;
+  }
+
   public int getID(){
+    SmartDashboard.putNumber("networkTableID", m_limeLightTable.getEntry("tid").getValue().getDouble());
     return (int) m_limeLightTable.getEntry("tid").getDouble(-1);
   }
 

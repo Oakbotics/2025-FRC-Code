@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -145,6 +146,39 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Command findPath(PathPlannerPath path) {
     return AutoBuilder.pathfindThenFollowPath(path, pathConstraints);
+  }
+
+  public Command findPathToPole(boolean isLeft){
+    limeLightPoseUpdate();
+    int aprilTagID = -1;
+    aprilTagID = m_limeLightSubsystem.getID();
+    Pose2d polePose = getPose();
+    if (aprilTagID != -1) polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
+
+    SmartDashboard.putNumber("polePathX", polePose.getX());
+    SmartDashboard.putNumber("polePathY", polePose.getY());
+    SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
+    SmartDashboard.putNumber("polePathID", aprilTagID);
+
+
+    return AutoBuilder.pathfindToPose(polePose, pathConstraints);
+  }
+
+
+  public void findPathToPolePrint(boolean isLeft){
+    limeLightPoseUpdate();
+    int aprilTagID = -1;
+    aprilTagID = m_limeLightSubsystem.getID();
+    Pose2d polePose = getPose();
+   // if (aprilTagID != -1) polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
+
+    SmartDashboard.putNumber("polePathX", polePose.getX());
+    SmartDashboard.putNumber("polePathY", polePose.getY());
+    SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
+
+
+
+   
   }
 
   @Override
