@@ -29,6 +29,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -37,6 +38,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -147,38 +149,58 @@ public class DriveSubsystem extends SubsystemBase {
   public Command findPath(PathPlannerPath path) {
     return AutoBuilder.pathfindThenFollowPath(path, pathConstraints);
   }
+    // OLD SOLUTION
+  // public Command findPathToPole(boolean isLeft){
+  //   limeLightPoseUpdate();
+  //   int aprilTagID = -1;
+  //   aprilTagID = m_limeLightSubsystem.getID();
+  //   Pose2d polePose = getPose();
+  //   if (aprilTagID != -1){ 
+  //     polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
 
-  public Command findPathToPole(boolean isLeft){
-    limeLightPoseUpdate();
-    int aprilTagID = -1;
-    aprilTagID = m_limeLightSubsystem.getID();
-    Pose2d polePose = getPose();
-    if (aprilTagID != -1) polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
+  //     SmartDashboard.putNumber("polePathX", polePose.getX());
+  //     SmartDashboard.putNumber("polePathY", polePose.getY());
+  //     SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
+  //     SmartDashboard.putNumber("polePathID", aprilTagID);
 
-    SmartDashboard.putNumber("polePathX", polePose.getX());
-    SmartDashboard.putNumber("polePathY", polePose.getY());
-    SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
-    SmartDashboard.putNumber("polePathID", aprilTagID);
+  //     return AutoBuilder.pathfindToPose(polePose, pathConstraints);
+  //   }
+  //   return Commands.none();
+  // }
 
+  public Pose2d findPathToPole(boolean isLeft){
+    Pose2d nearestPolePose = getPose();
+    double nearestPolePoseDistance = 100000;
+    Pose2d botpose = getPose();
+    double[] distances = new double[15];
+    if(DriverStation.getAlliance().get() == Alliance.Blue){
+      for(int i = 1; i < 7; i++){
+        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
+        double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+          nearestPolePose = polePose;
+        }
+      }
+    }
+    else if(DriverStation.getAlliance().get() == Alliance.Red){
+      for(int i = 7; i < 13; i++){
+        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
+        double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
+        distances[i - 6] = distance;
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+          nearestPolePose = polePose;
+        }
+      }
+    }
+    SmartDashboard.putNumber("polePathX", nearestPolePose.getX());
+    SmartDashboard.putNumber("polePathY", nearestPolePose.getY());
+    SmartDashboard.putNumber("polePathRotation", nearestPolePose.getRotation().getDegrees());
+    SmartDashboard.putNumberArray("distances", distances);
+    SmartDashboard.putBoolean("Red Allience?", DriverStation.getAlliance().get() == Alliance.Red);
 
-    return AutoBuilder.pathfindToPose(polePose, pathConstraints);
-  }
-
-
-  public void findPathToPolePrint(boolean isLeft){
-    limeLightPoseUpdate();
-    int aprilTagID = -1;
-    aprilTagID = m_limeLightSubsystem.getID();
-    Pose2d polePose = getPose();
-   // if (aprilTagID != -1) polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
-
-    SmartDashboard.putNumber("polePathX", polePose.getX());
-    SmartDashboard.putNumber("polePathY", polePose.getY());
-    SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
-
-
-
-   
+    return nearestPolePose;
   }
 
   @Override
