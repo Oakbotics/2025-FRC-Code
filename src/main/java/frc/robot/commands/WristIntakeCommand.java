@@ -27,7 +27,8 @@ public class WristIntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_wristSubsystem.wristRotateToPosition(80);
+    m_wristSubsystem.wristRotateToPosition(10);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

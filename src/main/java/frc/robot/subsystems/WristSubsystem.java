@@ -33,7 +33,7 @@ public class WristSubsystem extends SubsystemBase {
   
   public void wristRotateToPosition(double position) {
     Rotation2d desiredAngle = Rotation2d.fromDegrees(position);
-    wristPidController.setReference(desiredAngle.getRadians(), ControlType.kPosition);
+    wristPidController.setReference(position, ControlType.kPosition);
   }
 
   public void printWristPosition() {
