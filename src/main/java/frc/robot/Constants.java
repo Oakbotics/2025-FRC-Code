@@ -97,8 +97,8 @@ public final class Constants {
     public static final double discDiameterMeter = Units.inchesToMeters(2);
     public static final double discCircumferenceMeter = discDiameterMeter * Math.PI;
     public static final double discGearRatio = 1 / (5 * 4);
-    public static final int elevatorMotor1CanId = 25;
-    public static final int elevatorMotor2CanId = 10;
+    public static final int elevatorMotorLeftCanId = 10;
+    public static final int elevatorMotorRightCanId = 21;
     
     public static final double elevatorKp = 0.01;
     public static final double elevatorKi = 0;
@@ -110,15 +110,15 @@ public final class Constants {
     public static final double maxAccel = 0;
     public static final double allowedErr = 1;
   }
-  public static final class ArmConstants{
-    public static final int armMotorCANId = 999999999;//Temp
+  public static final class WristConstants{
+    public static final int wristMotorCANId = 11;//Temp
     
-    public static final double kP = 999999999;
-    public static final double kI = 999999999;
-    public static final double kD = 999999999;
-    public static final double minOutput = 999999999;
-    public static final double maxOutput = 999999999;
-    public static final double velocityFF = 999999999;
+    public static final double kP = 0.1;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double minOutput = -1;
+    public static final double maxOutput = 1;
+    public static final double velocityFF = 0.5;
   }
 
   public static final class EndEffecterConstants {

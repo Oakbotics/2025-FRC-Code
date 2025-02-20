@@ -4,12 +4,13 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.util.Units;
 
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.WristConstants;
 
 public final class Configs {
     public static final class MAXSwerveModule {
@@ -60,56 +61,81 @@ public final class Configs {
     }
 
     public static final class ElevatorConfigs{
+        public static final SparkMaxConfig absoluteConfig = new SparkMaxConfig();
         public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+        
+        
         static{
-                // double encoderMultiplier = ElevatorConstants.discCircumferenceMeter / ElevatorConstants.discGearRatio;
-                double encoderMultiplier = Math.PI * 2;
-                elevatorConfig
-                        .smartCurrentLimit(40);
+                double absoluteEncoderFactor = 2 * Math.PI;
+
+                absoluteConfig
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(80);
+                absoluteConfig.absoluteEncoder
+                    // Invert the turning encoder, since the output shaft rotates in the opposite
+                    // direction of the steering motor in the MAXSwerve Module.
+                    .inverted(false)
+                    .positionConversionFactor(absoluteEncoderFactor) // radians
+                    .velocityConversionFactor(absoluteEncoderFactor / 60.0); // radians per second
+                absoluteConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                    // These are example gains you may need to them for your own robot!
+                    .pid(1, 0, 0)
+                    .outputRange(-1, 1)
+                    // Enable PID wrap around for the turning motor. This will allow the PID
+                    // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                    // to 10 degrees will go through 0 rather than the other direction which is a
+                    // longer route.
+                    .positionWrappingEnabled(true)
+                    .positionWrappingInputRange(0, absoluteEncoderFactor);
+                
                 elevatorConfig.encoder
-                        //Converts from Radians to degrees.
-                        .positionConversionFactor(encoderMultiplier)
-                        .velocityConversionFactor(encoderMultiplier / 60.0);
+                    .positionConversionFactor(1)
+                    .velocityConversionFactor(1);
+            
+                /*
+                 * Configure the closed loop controller. We want to make sure we set the
+                 * feedback sensor as the primary encoder.
+                 */
                 elevatorConfig.closedLoop
-                        .p(ElevatorConstants.elevatorKp)
-                        .i(ElevatorConstants.elevatorKi)
-                        .d(ElevatorConstants.elevatorKd)
-                        .outputRange(ElevatorConstants.elevatorKMinOutput, ElevatorConstants.elevatorKMaxOutput)
-                        .velocityFF(1/ElevatorConstants.elevatorKf);
-                // Set MAXMotion parameters
-                elevatorConfig.closedLoop.maxMotion
-                        .maxVelocity(ElevatorConstants.maxVel)
-                        .maxAcceleration(ElevatorConstants.maxAccel)
-                        .allowedClosedLoopError(ElevatorConstants.allowedErr);
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    // Set PID values for position control. We don't need to pass a closed loop
+                    // slot, as it will default to slot 0.
+                    .p(0.1)
+                    .i(0)
+                    .d(0)
+                    .outputRange(-0.1, 0.1)
+                    // Set PID values for velocity control in slot 1
+                    .p(0.000001, ClosedLoopSlot.kSlot1)
+                    .i(0, ClosedLoopSlot.kSlot1)
+                    .d(0, ClosedLoopSlot.kSlot1)
+                    .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
+                    .outputRange(-0.1, 0.1, ClosedLoopSlot.kSlot1);
         }               
     }
-
-    public static final class ArmConfigs {
-        public static final SparkMaxConfig armConfig = new SparkMaxConfig();
+    public static final class WristConfigs {
+        public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
         static {
 
-                double armEncoderMultiplier = 0; //TEMPORARY
+                double wristEncoderMultiplier = 2 * Math.PI; //TEMPORARY
 
-                armConfig
-                        .smartCurrentLimit(40);
-
-                armConfig.encoder
-                        .positionConversionFactor(armEncoderMultiplier)
-                        .velocityConversionFactor(armEncoderMultiplier / 60.0);
-                armConfig.closedLoop
-                        .p(ArmConstants.kP)
-                        .i(ArmConstants.kI)
-                        .d(ArmConstants.kD)
-                        .outputRange(ArmConstants.minOutput, ArmConstants.maxOutput)
-                        .velocityFF(ArmConstants.velocityFF);
+                wristConfig
+                        .idleMode(IdleMode.kBrake)
+                        .smartCurrentLimit(80);
+                wristConfig.absoluteEncoder
+                        // Invert the turning encoder, since the output shaft rotates in the opposite
+                        // direction of the steering motor in the MAXSwerve Module.
+                        .inverted(false)
+                        .positionConversionFactor(wristEncoderMultiplier) // radians
+                        .velocityConversionFactor(wristEncoderMultiplier / 60.0); // radians per second
+    
+                wristConfig.closedLoop
+                        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                        .p(WristConstants.kP)
+                        .i(WristConstants.kI)
+                        .d(WristConstants.kD)
+                        .outputRange(WristConstants.minOutput, WristConstants.maxOutput)
+                        .velocityFF(WristConstants.velocityFF);
         }
-    }
-
-    public static final class  GenericNEOConfigs {
-        public static final SparkMaxConfig genericNEOConfigs = new SparkMaxConfig();
-        static{
-                genericNEOConfigs.smartCurrentLimit(40);
-        }
-        
     }
 }
