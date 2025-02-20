@@ -64,7 +64,8 @@ public class RobotContainer {
     // m_driverController.povUp().onTrue(new InstantCommand(()-> m_robotDrive.zeroHeading()));
     // m_driverController.povLeft().onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(new Pose2d(0 , 0, Rotation2d.fromDegrees(0)))));
 
-    m_driverController.a().whileTrue(new ElevatorUpCommand(m_elevatorSubsystem));
+    m_driverController.a().whileTrue(new WristUpCommand(m_wristSubsystem));
+    m_driverController.x().whileTrue(new WristIntakeCommand(m_wristSubsystem));
     // m_driverController.x().onTrue(new ElevatorPositionCommand(m_elevatorSubsystem));
     // m_driverController.y().onTrue(new WristIntakeCommand(m_wristSubsystem));
     m_driverController.b().whileTrue(new ElevatorDownCommand(m_elevatorSubsystem));

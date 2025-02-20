@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
@@ -33,13 +34,17 @@ public class WristSubsystem extends SubsystemBase {
   
   public void wristRotateToPosition(double position) {
     Rotation2d desiredAngle = Rotation2d.fromDegrees(position);
-    wristPidController.setReference(position, ControlType.kPosition);
+    //wristPidController.setReference(position, ControlType.kPosition);
+
+    wristPidController.setReference(Units.degreesToRadians(position), ControlType.kPosition);
   }
 
   public void printWristPosition() {
-    double encoderValue = wristEncoder.getPosition();
+    Rotation2d wristEncoderPosition = Rotation2d.fromRadians(wristEncoder.getPosition());
+    SmartDashboard.putNumber("Wrist Position", (wristEncoderPosition.getDegrees()));
 
-    SmartDashboard.putNumber("Wrist Position", encoderValue);
+    // double encoderValue = wristEncoder.getPosition();
+    // SmartDashboard.putNumber("Wrist Position", encoderValue);
   }
   public void setWristSpeed(double speed){
     wristMotor.set(speed);
@@ -47,7 +52,8 @@ public class WristSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    printWristPosition();
+
   }
 
   @Override

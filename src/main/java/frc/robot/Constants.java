@@ -121,9 +121,9 @@ public final class Constants {
     public static final double velocityFF = 0.5;
   }
 
-  public static final class EndEffecterConstants {
-    public static final int coralMotorCANID = 9999999;
-    public static final int algeaMotorCANID = 9999999;
+  public static final class IntakeConstants {
+    public static final int coralMotorCANID = 14;
+    public static final int algeaMotorCANID = 13;
   }
 
   public static final class DriveConstants {

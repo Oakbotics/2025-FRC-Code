@@ -121,7 +121,7 @@ public final class Configs {
 
                 wristConfig
                         .idleMode(IdleMode.kBrake)
-                        .smartCurrentLimit(80);
+                        .smartCurrentLimit(30);
                 wristConfig.absoluteEncoder
                         // Invert the turning encoder, since the output shaft rotates in the opposite
                         // direction of the steering motor in the MAXSwerve Module.
@@ -136,6 +136,24 @@ public final class Configs {
                         .d(WristConstants.kD)
                         .outputRange(WristConstants.minOutput, WristConstants.maxOutput)
                         .velocityFF(WristConstants.velocityFF);
+        }
+    }
+    public static final class CoralConfigs {
+        public static final SparkMaxConfig coralConfig = new SparkMaxConfig();
+        static {
+
+                coralConfig
+                        .idleMode(IdleMode.kBrake)
+                        .smartCurrentLimit(40);
+        }
+    }
+    public static final class AlgaeConfigs {
+        public static final SparkMaxConfig algaeConfig = new SparkMaxConfig();
+        static {
+
+                algaeConfig
+                        .idleMode(IdleMode.kBrake)
+                        .smartCurrentLimit(40);
         }
     }
 }
