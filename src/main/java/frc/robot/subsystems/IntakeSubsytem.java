@@ -23,7 +23,7 @@ public class IntakeSubsytem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsytem() {
     coralMotor = new SparkMax(IntakeConstants.coralMotorCANID, MotorType.kBrushless);
-    algaeMotor = new SparkMax(IntakeConstants.algeaMotorCANID, MotorType.kBrushless);
+    algaeMotor = new SparkMax(IntakeConstants.algaeMotorCANID, MotorType.kBrushless);
 
     coralMotor.configure(CoralConfigs.coralConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     algaeMotor.configure(AlgaeConfigs.algaeConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

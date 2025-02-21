@@ -123,7 +123,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int coralMotorCANID = 14;
-    public static final int algeaMotorCANID = 13;
+    public static final int algaeMotorCANID = 13;
   }
 
   public static final class DriveConstants {
@@ -204,7 +204,6 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
-
  
 
 
