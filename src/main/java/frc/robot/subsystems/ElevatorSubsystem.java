@@ -44,6 +44,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotorRight = new SparkMax(ElevatorConstants.elevatorMotorRightCanId, MotorType.kBrushless);
     
     elevatorMotorLeft.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+    elevatorMotorRight.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
     
     m_elevatorEncoderLeft = elevatorMotorLeft.getEncoder();
     m_elevatorEncoderRight = elevatorMotorRight.getEncoder();
@@ -55,14 +56,14 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
     //probably should make this work based of a height variable in the future
   public void elevatorRotatePID(double position){
-    double metersToAngle = position/(ElevatorConstants.discCircumferenceMeter*360);
-    m_elevatorControllerLeft.setReference(metersToAngle, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-    m_elevatorControllerRight.setReference(-metersToAngle, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    double metersToAngle = (position * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;// 360/2 becasue 2:1 carrige ratio
+    m_elevatorControllerLeft.setReference(-metersToAngle, ControlType.kPosition);
+    m_elevatorControllerRight.setReference(metersToAngle, ControlType.kPosition);
   }
 
   public void restartEncoder(){
-    // m_absoluteEncoder.setPosition(0);
-    printMotorPosition();
+    m_elevatorEncoderLeft.setPosition(0);
+    // printMotorPosition();
   }
 
   public void printMotorPosition(){

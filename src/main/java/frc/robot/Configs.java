@@ -90,7 +90,7 @@ public final class Configs {
                     .positionWrappingInputRange(0, absoluteEncoderFactor);
                 
                 elevatorConfig.encoder
-                    .positionConversionFactor(1)
+                    .positionConversionFactor(360)
                     .velocityConversionFactor(1);
             
                 /*
@@ -104,13 +104,7 @@ public final class Configs {
                     .p(0.1)
                     .i(0)
                     .d(0)
-                    .outputRange(-0.1, 0.1)
-                    // Set PID values for velocity control in slot 1
-                    .p(0.000001, ClosedLoopSlot.kSlot1)
-                    .i(0, ClosedLoopSlot.kSlot1)
-                    .d(0, ClosedLoopSlot.kSlot1)
-                    .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
-                    .outputRange(-0.1, 0.1, ClosedLoopSlot.kSlot1);
+                    .outputRange(-0.1, 0.1);
         }               
     }
     public static final class WristConfigs {

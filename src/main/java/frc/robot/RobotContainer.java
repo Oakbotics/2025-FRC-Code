@@ -13,14 +13,18 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.CoralIntakeCommand;
+import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.ElevatorDownCommand;
 import frc.robot.commands.ElevatorPositionCommand;
 import frc.robot.commands.ElevatorUpCommand;
 import frc.robot.commands.TestAuto;
 import frc.robot.commands.WristIntakeCommand;
+import frc.robot.commands.WristL4Command;
 import frc.robot.commands.WristUpCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,9 +38,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems
   private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem(m_LimeLightSubsystem);
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_LimeLightSubsystem);
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final WristSubsystem m_wristSubsystem = new WristSubsystem();
+  private final IntakeSubsytem m_intakeSubsytem = new IntakeSubsytem();
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
@@ -48,31 +53,32 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
+    m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
-            () -> m_robotDrive.drive(
+            () -> m_driveSubsystem.drive(
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
-            m_robotDrive));
+            m_driveSubsystem));
   }
   private void configureButtonBindings() {
-    // m_driverController.povDown().onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(m_LimeLightSubsystem.getBotPoseTest())));
-    // m_driverController.povUp().onTrue(new InstantCommand(()-> m_robotDrive.zeroHeading()));
-    // m_driverController.povLeft().onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(new Pose2d(0 , 0, Rotation2d.fromDegrees(0)))));
+    // m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(m_LimeLightSubsystem.getBotPoseTest())));
+    // m_driverController.povUp().onTrue(new InstantCommand(()-> m_driveSubsystem.zeroHeading()));
+    // m_driverController.povLeft().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d(0 , 0, Rotation2d.fromDegrees(0)))));
 
-    m_driverController.a().whileTrue(new WristUpCommand(m_wristSubsystem));
-    m_driverController.x().whileTrue(new WristIntakeCommand(m_wristSubsystem));
-    // m_driverController.x().onTrue(new ElevatorPositionCommand(m_elevatorSubsystem));
-    // m_driverController.y().onTrue(new WristIntakeCommand(m_wristSubsystem));
+    m_driverController.a().whileTrue(new WristL4Command(m_wristSubsystem));
+    // m_driverController.x().whileTrue(new WristIntakeCommand(m_wristSubsystem));
+    m_driverController.x().onTrue(new InstantCommand(() -> m_elevatorSubsystem.restartEncoder()));
+    m_driverController.y().onTrue(new ElevatorPositionCommand(m_elevatorSubsystem));
     m_driverController.b().whileTrue(new ElevatorDownCommand(m_elevatorSubsystem));
-    // m_driverController.y().onTrue(new ElevatorEncoderResetCommand(m_ElevatorSubsystem));   
+    m_driverController.rightTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));   
+    m_driverController.leftTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));   
 }
   public Command getAutonomousCommand() {
       // return new PathPlannerAuto("3P Middle Top Bottom");
-      return new TestAuto(m_robotDrive, m_LimeLightSubsystem);
+      return new TestAuto(m_driveSubsystem, m_LimeLightSubsystem);
   }
 }

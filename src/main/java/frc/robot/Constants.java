@@ -94,9 +94,9 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
-    public static final double discDiameterMeter = Units.inchesToMeters(2);
+    public static final double discDiameterMeter = Units.inchesToMeters(2.082);
     public static final double discCircumferenceMeter = discDiameterMeter * Math.PI;
-    public static final double discGearRatio = 1 / (5 * 4);
+    public static final double discGearRatio = 9; 
     public static final int elevatorMotorLeftCanId = 10;
     public static final int elevatorMotorRightCanId = 11;
     
