@@ -17,6 +17,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
 
 public class WristSubsystem extends SubsystemBase {
@@ -34,9 +35,7 @@ public class WristSubsystem extends SubsystemBase {
   
   public void wristRotateToPosition(double position) {
     Rotation2d desiredAngle = Rotation2d.fromDegrees(position);
-    //wristPidController.setReference(position, ControlType.kPosition);
-
-    wristPidController.setReference(Units.degreesToRadians(position), ControlType.kPosition);
+    wristPidController.setReference(desiredAngle.getRadians(), ControlType.kPosition);
   }
 
   public void printWristPosition() {

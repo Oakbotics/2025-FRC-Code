@@ -4,42 +4,49 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.WristSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class WristIntakeCommand extends Command {
+public class ElevatorPositionCommandTwo extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final WristSubsystem m_wristSubsystem;
+  // private final ExampleSubsystem m_subsystem;
+
+  private final ElevatorSubsystem m_ElevatorSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public WristIntakeCommand(WristSubsystem subsystem) {
-    m_wristSubsystem = subsystem;
+  public ElevatorPositionCommandTwo(ElevatorSubsystem ElevatorSubsystem) {
+    // m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(ElevatorSubsystem);
+    m_ElevatorSubsystem = ElevatorSubsystem;
+
   }
+
+  
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_wristSubsystem.wristRotateToPosition(90);
-
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_wristSubsystem.printWristPosition();
+    m_ElevatorSubsystem.elevatorRotatePID(90);
+    m_ElevatorSubsystem.printMotorPosition();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    //m_ElevatorSubsystem.SetElevatorSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
