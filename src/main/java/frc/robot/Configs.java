@@ -117,25 +117,28 @@ public final class Configs {
         public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
         static {
 
-                double wristEncoderMultiplier = 2 * Math.PI; //TEMPORARY
+                double wristEncoderFactor = 2 * Math.PI;
 
                 wristConfig
-                        .idleMode(IdleMode.kBrake)
-                        .smartCurrentLimit(30);
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(80);
                 wristConfig.absoluteEncoder
-                        // Invert the turning encoder, since the output shaft rotates in the opposite
-                        // direction of the steering motor in the MAXSwerve Module.
-                        .inverted(false)
-                        .positionConversionFactor(wristEncoderMultiplier) // radians
-                        .velocityConversionFactor(wristEncoderMultiplier / 60.0); // radians per second
-    
+                    // Invert the turning encoder, since the output shaft rotates in the opposite
+                    // direction of the steering motor in the MAXSwerve Module.
+                    .inverted(false)
+                    .positionConversionFactor(wristEncoderFactor) // radians
+                    .velocityConversionFactor(wristEncoderFactor / 60.0); // radians per second
                 wristConfig.closedLoop
-                        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                        .p(WristConstants.kP)
-                        .i(WristConstants.kI)
-                        .d(WristConstants.kD)
-                        .outputRange(WristConstants.minOutput, WristConstants.maxOutput)
-                        .velocityFF(WristConstants.velocityFF);
+                    .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                    // These are example gains you may need to them for your own robot!
+                    .pid(1, 0, 0)
+                    .outputRange(-1, 1)
+                    // Enable PID wrap around for the turning motor. This will allow the PID
+                    // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                    // to 10 degrees will go through 0 rather than the other direction which is a
+                    // longer route.
+                    .positionWrappingEnabled(true)
+                    .positionWrappingInputRange(0, wristEncoderFactor);
         }
     }
     public static final class CoralConfigs {
