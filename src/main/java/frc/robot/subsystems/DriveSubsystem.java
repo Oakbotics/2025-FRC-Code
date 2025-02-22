@@ -329,6 +329,14 @@ public class DriveSubsystem extends SubsystemBase {
     else 
       return AutoBuilder.pathfindToPose(pose, pathConstraints);
   }
+  public Command findPathToPose(Pose2d pose) {
+    limeLightPoseUpdate();
+    boolean isRedAlliance = DriverStation.getAlliance().get() == Alliance.Red;
+    if(isRedAlliance)
+      return AutoBuilder.pathfindToPoseFlipped(pose, pathConstraints);
+    else 
+      return AutoBuilder.pathfindToPose(pose, pathConstraints);
+  }
 
   public Command findPath(PathPlannerPath path) {
     return AutoBuilder.pathfindThenFollowPath(path, pathConstraints);
@@ -358,7 +366,7 @@ public class DriveSubsystem extends SubsystemBase {
     Pose2d botpose = getPose();
     double[] distances = new double[15];
     if(DriverStation.getAlliance().get() == Alliance.Blue){
-      for(int i = 1; i < 7; i++){
+      for(int i = 6; i < 12; i++){
         Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
         double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
         if(distance < nearestPolePoseDistance){
@@ -368,7 +376,7 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
     else if(DriverStation.getAlliance().get() == Alliance.Red){
-      for(int i = 7; i < 13; i++){
+      for(int i = 17; i < 23; i++){
         Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
         double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
         distances[i - 6] = distance;

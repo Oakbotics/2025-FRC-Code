@@ -60,8 +60,8 @@ public class LimeLightSubsystem extends SubsystemBase {
   }
 
   public int getID(){
-    SmartDashboard.putNumber("networkTableID", m_limeLightTable.getEntry("tid").getValue().getDouble());
-    return (int) m_limeLightTable.getEntry("tid").getDouble(-1);
+    //SmartDashboard.putNumber("networkTableID", m_limeLightTable.getEntry("tid").getValue().getInteger());
+    return ((int) m_limeLightTable.getEntry("tid").getDouble(-1));
   }
 
   // public Pose2d getClosestTagPose(){

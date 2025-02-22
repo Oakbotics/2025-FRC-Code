@@ -9,10 +9,13 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
+import frc.robot.commands.IntakeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.TestAuto;
+import frc.robot.commands.WristDownCommand;
+import frc.robot.commands.WristUpCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsytem;
@@ -42,24 +45,26 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_driveSubsystem.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true),
-            m_driveSubsystem));
+    // m_driveSubsystem.setDefaultCommand(
+    //     // The left stick controls translation of the robot.
+    //     // Turning is controlled by the X axis of the right stick.
+    //     new RunCommand(
+    //         () -> m_driveSubsystem.drive(
+    //             -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+    //             -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+    //             -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+    //             true),
+    //         m_driveSubsystem));
   }
   private void configureButtonBindings() {
   
     //Driver Controller
+    m_driverController.a().onTrue(new L2ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L2 Scoring
     m_driverController.y().onTrue(new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); //L4 Scoring
+    // m_driverController.y().onTrue(new WristUpCommand(m_wristSubsystem)); //L4 Scoring
       m_driverController.x().onTrue(new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); //L3 Scoring
-      m_driverController.a().onTrue(new L2ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L2 Scoring
-      //m_driverController.b().onTrue() // Not in use
+      // m_driverController.a().onTrue(new WristDownCommand(m_wristSubsystem)); // L2 Scoring
+      m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Not in use
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.zeroHeading()));
       // m_driverController.povLeft() // Not in use

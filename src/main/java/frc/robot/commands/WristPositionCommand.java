@@ -51,6 +51,6 @@ public class WristPositionCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_position - 2 < m_wristSubsystem.getWristAngle() && m_position + 2 > m_wristSubsystem.getWristAngle());
   }
 }

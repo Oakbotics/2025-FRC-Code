@@ -34,13 +34,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotorLeft = new SparkMax(ElevatorConstants.elevatorMotorLeftCanId, MotorType.kBrushless);
     elevatorMotorRight = new SparkMax(ElevatorConstants.elevatorMotorRightCanId, MotorType.kBrushless);
     
-    elevatorMotorLeft.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+    elevatorMotorLeft.configure(Configs.ElevatorConfigs.elevatorFollowerConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
     elevatorMotorRight.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
     
     m_elevatorEncoderLeft = elevatorMotorLeft.getEncoder();
     m_elevatorEncoderRight = elevatorMotorRight.getEncoder();
 
-    m_elevatorControllerLeft = elevatorMotorLeft.getClosedLoopController();
+    // m_elevatorControllerLeft = elevatorMotorLeft.getClosedLoopController();
     m_elevatorControllerRight = elevatorMotorRight.getClosedLoopController();
 
     // m_absoluteEncoder.setPosition(0);
@@ -48,16 +48,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     //probably should make this work based of a height variable in the future
   public void elevatorRotatePID(double position){
     double metersToAngle = (position * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;// 360/2 becasue 2:1 carrige ratio
-    m_elevatorControllerLeft.setReference(-metersToAngle, ControlType.kPosition);
+    // m_elevatorControllerLeft.setReference(-metersToAngle, ControlType.kPosition);
     m_elevatorControllerRight.setReference(metersToAngle, ControlType.kPosition);
   }
 
   public double getElevatorHeight(){
-    return (m_elevatorEncoderLeft.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
+    return (m_elevatorEncoderRight.getPosition() * (ElevatorConstants.discCircumferenceMeter / (180 * ElevatorConstants.discGearRatio)));
   }
 
   public void restartEncoder(){
-    m_elevatorEncoderLeft.setPosition(0);
+    m_elevatorEncoderRight.setPosition(0);
     // printMotorPosition();
   }
 
@@ -69,7 +69,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void setElevatorSpeed(double speed){
-    elevatorMotorLeft.set(speed);
+    // elevatorMotorLeft.set(speed);
     elevatorMotorRight.set(-speed);
   }
   
@@ -100,6 +100,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Elevator Height", getElevatorHeight());
+    SmartDashboard.putNumber("Elevator Encoder", m_elevatorEncoderLeft.getPosition());
+    SmartDashboard.putNumber("Elevator Output", elevatorMotorRight.getAppliedOutput());
   }
 
   @Override

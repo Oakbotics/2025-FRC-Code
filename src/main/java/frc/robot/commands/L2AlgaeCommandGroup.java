@@ -6,8 +6,8 @@ import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.Constants.MotionConstants;
 
-public class L2ScoreCommandGroup extends SequentialCommandGroup {
-    public L2ScoreCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
+public class L2AlgaeCommandGroup extends SequentialCommandGroup {
+    public L2AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
         addCommands(
             new WristPositionCommand(m_wristSubsystem, MotionConstants.l2.get("wrist").doubleValue())
                 .onlyIf(() -> (

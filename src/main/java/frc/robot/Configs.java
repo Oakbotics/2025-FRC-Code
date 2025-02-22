@@ -1,10 +1,14 @@
 package frc.robot;
 
+import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.util.Units;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.WristConstants;
 
@@ -57,34 +61,17 @@ public final class Configs {
     }
 
     public static final class ElevatorConfigs{
-        public static final SparkMaxConfig absoluteConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig();
         public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
         
         
         static{
                 double absoluteEncoderFactor = 2 * Math.PI;
 
-                absoluteConfig
+                elevatorConfig
+                    .closedLoopRampRate(0.1)
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(80);
-                absoluteConfig.absoluteEncoder
-                    // Invert the turning encoder, since the output shaft rotates in the opposite
-                    // direction of the steering motor in the MAXSwerve Module.
-                    .inverted(false)
-                    .positionConversionFactor(absoluteEncoderFactor) // radians
-                    .velocityConversionFactor(absoluteEncoderFactor / 60.0); // radians per second
-                absoluteConfig.closedLoop
-                    .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                    // These are example gains you may need to them for your own robot!
-                    .pid(1, 0, 0)
-                    .outputRange(-1, 1)
-                    // Enable PID wrap around for the turning motor. This will allow the PID
-                    // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
-                    // to 10 degrees will go through 0 rather than the other direction which is a
-                    // longer route.
-                    .positionWrappingEnabled(true)
-                    .positionWrappingInputRange(0, absoluteEncoderFactor);
-                
+                    .smartCurrentLimit(30);
                 elevatorConfig.encoder
                     .positionConversionFactor(360)
                     .velocityConversionFactor(1);
@@ -97,11 +84,19 @@ public final class Configs {
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // Set PID values for position control. We don't need to pass a closed loop
                     // slot, as it will default to slot 0.
-                    .p(0.1)
+                    .p(0.001)
                     .i(0)
                     .d(0)
-                    .outputRange(-0.1, 0.1);
-        }               
+                    .outputRange(-0.5, 0.5);
+                    // .apply(new MAXMotionConfig().positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal));
+                    // .maxMotion
+                    //     .maxVelocity(1)
+                    //     .maxAcceleration(1)
+                    //     .positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
+                elevatorFollowerConfig
+                    .apply(elevatorConfig)
+                    .follow(ElevatorConstants.elevatorMotorRightCanId, true);
+                }               
     }
     public static final class WristConfigs {
         public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
@@ -111,11 +106,11 @@ public final class Configs {
 
                 wristConfig
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(80);
+                    .smartCurrentLimit(20);
                 wristConfig.absoluteEncoder
                     // Invert the turning encoder, since the output shaft rotates in the opposite
                     // direction of the steering motor in the MAXSwerve Module.
-                    .inverted(false)
+                    .inverted(true)
                     .positionConversionFactor(wristEncoderFactor) // radians
                     .velocityConversionFactor(wristEncoderFactor / 60.0); // radians per second
                 wristConfig.closedLoop
@@ -130,9 +125,11 @@ public final class Configs {
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, wristEncoderFactor);
                 wristConfig.softLimit
-                    .forwardSoftLimit(WristConstants.maxPosition)
-                    .reverseSoftLimit(WristConstants.minPositon);
+                    .forwardSoftLimit(Units.degreesToRadians(WristConstants.maxPosition))
+                    .reverseSoftLimit(Units.degreesToRadians(WristConstants.minPositon));
+                wristConfig.inverted(true);
         }
+        
     }
     public static final class CoralConfigs {
         public static final SparkMaxConfig coralConfig = new SparkMaxConfig();

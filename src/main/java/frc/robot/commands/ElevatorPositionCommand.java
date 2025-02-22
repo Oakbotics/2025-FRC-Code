@@ -48,6 +48,6 @@ public class ElevatorPositionCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_position - 0.02 < m_elevatorSubsystem.getElevatorHeight() && m_position + 0.02 > m_elevatorSubsystem.getElevatorHeight());
   }
 }
