@@ -38,6 +38,10 @@ public class WristSubsystem extends SubsystemBase {
     wristPidController.setReference(desiredAngle.getRadians(), ControlType.kPosition);
   }
 
+  public double getWristAngle(){
+    return Rotation2d.fromRadians(wristEncoder.getPosition()).getDegrees();
+  }
+
   public void printWristPosition() {
     Rotation2d wristEncoderPosition = Rotation2d.fromRadians(wristEncoder.getPosition());
     SmartDashboard.putNumber("Wrist Position", (wristEncoderPosition.getDegrees()));

@@ -61,15 +61,19 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_elevatorControllerRight.setReference(metersToAngle, ControlType.kPosition);
   }
 
+  public double getElevatorHeight(){
+    return (m_elevatorEncoderLeft.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
+  }
+
   public void restartEncoder(){
     m_elevatorEncoderLeft.setPosition(0);
     // printMotorPosition();
   }
 
   public void printMotorPosition(){
-    double relativeEncoderMetersLeft = ((m_elevatorEncoderLeft.getPosition()) / 360) * ElevatorConstants.discCircumferenceMeter;
-    double relativeEncoderMetersRight = ((m_elevatorEncoderRight.getPosition()) / 360) * ElevatorConstants.discCircumferenceMeter;
-    SmartDashboard.putNumber("Left Motor", (relativeEncoderMetersLeft));
+    double relativeEncoderMetersLeft = (m_elevatorEncoderLeft.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
+    double relativeEncoderMetersRight = (m_elevatorEncoderRight.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
+    SmartDashboard.putNumber("Left Motor", (relativeEncoderMetersLeft ));
     SmartDashboard.putNumber("Right Motor", (relativeEncoderMetersRight));
   }
 
