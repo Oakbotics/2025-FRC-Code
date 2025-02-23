@@ -40,6 +40,8 @@ public final class Constants {
     // public static final int kBottomIntakeSensorCANID = 25;
   }
 
+
+
   public static final class FieldConstants {
       public static final Pose2d reefBranchA = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(0));
       public static final Pose2d reefBranchB = new Pose2d(3.246, 3.875,Rotation2d.fromDegrees(0));
@@ -91,6 +93,50 @@ public final class Constants {
         reefPolePositions.put(5, new Pose2d[]{new Pose2d(5.722, 3.9,Rotation2d.fromDegrees(-180)), new Pose2d(5.783, 4.171,Rotation2d.fromDegrees(-180))});
         reefPolePositions.put(6, new Pose2d[]{new Pose2d(4.964, 2.837,Rotation2d.fromDegrees(117.681)), new Pose2d(5.241, 2.984,Rotation2d.fromDegrees(117.681))});
       }
+  }
+
+  public static final class MotionConstants {
+    public static final HashMap<String, Double> l4 = new HashMap();
+    static{
+      l4.put("elevator", 1.42);
+      l4.put("wrist", 150.0);
+    }
+
+    public static final HashMap<String, Double> l3 = new HashMap();
+    static{
+      l3.put("elevator", 0.48);
+      l3.put("wrist", 180.0);
+    }
+
+    public static final HashMap<String, Double> l2 = new HashMap();
+    static{
+      l2.put("elevator", 0.08);
+      l2.put("wrist", 180.0);
+    }
+
+    public static final HashMap<String, Double> intake = new HashMap();
+    static{
+      intake.put("elevator", 0.18);
+      intake.put("wrist", 10.0);
+    }
+
+    public static final HashMap<String, Double> intakeClearanceOut = new HashMap();
+    static{
+      intakeClearanceOut.put("elevator", 0.31);
+      intakeClearanceOut.put("wrist", 180.0);
+    }
+
+    public static final HashMap<String, Double> intakeClearanceIn = new HashMap();
+    static{
+      intakeClearanceIn.put("elevator", 0.31);
+      intakeClearanceIn.put("wrist", 10.0);
+    }
+
+    public static final HashMap<String, Double> stowed = new HashMap();
+    static{
+      stowed.put("elevator", 0.0);
+      stowed.put("wrist", 0.0);
+    }
   }
 
   public static final class ElevatorConstants {
