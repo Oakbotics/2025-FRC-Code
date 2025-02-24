@@ -133,6 +133,9 @@ public final class Configs {
                     // longer route.
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, wristEncoderFactor);
+                wristConfig.softLimit
+                    .forwardSoftLimit(WristConstants.maxPosition)
+                    .reverseSoftLimit(WristConstants.minPositon);
         }
     }
     public static final class CoralConfigs {

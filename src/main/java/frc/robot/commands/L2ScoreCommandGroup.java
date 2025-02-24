@@ -10,8 +10,8 @@ public class L2ScoreCommandGroup extends ParallelCommandGroup {
         addCommands(
             new WristPositionCommand(m_wristSubsystem, MotionConstants.l2.get("wrist").doubleValue())
                 .onlyIf(() -> (
-                    m_elevatorSubsystem.getElevatorHeight() > MotionConstants.l4.get("elevator").doubleValue() - 0.03 
-                    || m_elevatorSubsystem.getElevatorHeight() < MotionConstants.stowed.get("elevator").doubleValue() + 0.03
+                    m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.l4.get("elevator").doubleValue() - 0.03) 
+                    || m_elevatorSubsystem.getElevatorHeight() < (MotionConstants.stowed.get("elevator").doubleValue() + 0.03)
                 )
             ),
             new IntakeClearanceOutCommand(m_elevatorSubsystem, m_wristSubsystem)

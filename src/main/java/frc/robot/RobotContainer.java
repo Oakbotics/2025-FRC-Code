@@ -13,11 +13,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.ElevatorDownCommand;
 import frc.robot.commands.ElevatorPositionCommand;
 import frc.robot.commands.ElevatorUpCommand;
+import frc.robot.commands.L2ScoreCommandGroup;
+import frc.robot.commands.L3ScoreCommandGroup;
+import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.TestAuto;
 import frc.robot.commands.WristUpCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -42,6 +46,7 @@ public class RobotContainer {
   private final IntakeSubsytem m_intakeSubsytem = new IntakeSubsytem();
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -63,17 +68,32 @@ public class RobotContainer {
             m_driveSubsystem));
   }
   private void configureButtonBindings() {
-    // m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(m_LimeLightSubsystem.getBotPoseTest())));
-    // m_driverController.povUp().onTrue(new InstantCommand(()-> m_driveSubsystem.zeroHeading()));
-    // m_driverController.povLeft().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d(0 , 0, Rotation2d.fromDegrees(0)))));
+  
+    //Driver Controller
+    m_driverController.y().onTrue(new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); //L4 Scoring
+      m_driverController.x().onTrue(new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); //L3 Scoring
+      m_driverController.a().onTrue(new L2ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L2 Scoring
+      //m_driverController.b().onTrue() // Not in use
 
-    // m_driverController.a().whileTrue(new WristL4Command(m_wristSubsystem));
-    // m_driverController.x().whileTrue(new WristIntakeCommand(m_wristSubsystem));
-    m_driverController.x().onTrue(new InstantCommand(() -> m_elevatorSubsystem.restartEncoder()));
-    m_driverController.y().onTrue(new ElevatorPositionCommand(m_elevatorSubsystem));
-    m_driverController.b().whileTrue(new ElevatorDownCommand(m_elevatorSubsystem));
-    m_driverController.rightTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));   
-    m_driverController.leftTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));   
+    m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.zeroHeading()));
+      // m_driverController.povLeft() // Not in use
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
+      // m_driverController.povRight() // Not in use
+
+    m_driverController.rightBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.findPathToPole(false), false));
+    m_driverController.leftBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.findPathToPole(true), false));
+
+    m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
+    m_driverController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
+  
+    //Operator Controller
+    m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
+    
+    // m_operatorController.a().onTrue(new ) // Algae Kick Out Postion L2
+    // m_operatorController.x().onTrue(new ) // Algae Kick Out Postion L3
+
+
+
 }
   public Command getAutonomousCommand() {
       // return new PathPlannerAuto("3P Middle Top Bottom");

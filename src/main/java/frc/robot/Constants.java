@@ -165,6 +165,9 @@ public final class Constants {
     public static final double minOutput = -1;
     public static final double maxOutput = 1;
     public static final double velocityFF = 0.5;
+
+    public static final double maxPosition = 210;
+    public static final double minPositon = 5;
   }
 
   public static final class IntakeConstants {
@@ -233,6 +236,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double kDriveDeadband = 0.05;
   }
 
