@@ -19,8 +19,6 @@ import frc.robot.commands.ElevatorDownCommand;
 import frc.robot.commands.ElevatorPositionCommand;
 import frc.robot.commands.ElevatorUpCommand;
 import frc.robot.commands.TestAuto;
-import frc.robot.commands.WristIntakeCommand;
-import frc.robot.commands.WristL4Command;
 import frc.robot.commands.WristUpCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -69,7 +67,7 @@ public class RobotContainer {
     // m_driverController.povUp().onTrue(new InstantCommand(()-> m_driveSubsystem.zeroHeading()));
     // m_driverController.povLeft().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d(0 , 0, Rotation2d.fromDegrees(0)))));
 
-    m_driverController.a().whileTrue(new WristL4Command(m_wristSubsystem));
+    // m_driverController.a().whileTrue(new WristL4Command(m_wristSubsystem));
     // m_driverController.x().whileTrue(new WristIntakeCommand(m_wristSubsystem));
     m_driverController.x().onTrue(new InstantCommand(() -> m_elevatorSubsystem.restartEncoder()));
     m_driverController.y().onTrue(new ElevatorPositionCommand(m_elevatorSubsystem));

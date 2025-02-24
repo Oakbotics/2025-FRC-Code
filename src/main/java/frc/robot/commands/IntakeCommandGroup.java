@@ -9,9 +9,12 @@ import frc.robot.subsystems.ElevatorSubsystem;
 public class IntakeCommandGroup extends SequentialCommandGroup {
     public IntakeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
         addCommands(
-            new WristPositionCommand(m_wristSubsystem, 180.0).onlyIf(() -> (m_elevatorSubsystem.getElevatorHeight() > 0.55 || m_elevatorSubsystem.getElevatorHeight() < 0.01)),
-            new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.intakeClearanceIn.get("elevator").doubleValue()),
-            new WristPositionCommand(m_wristSubsystem, MotionConstants.intakeClearanceIn.get("wrist").doubleValue()),
+            new WristPositionCommand(m_wristSubsystem, 180.0)
+                .onlyIf(() -> (
+                    m_elevatorSubsystem.getElevatorHeight() > MotionConstants.l4.get("elevator").doubleValue() - 0.03 
+                    || m_elevatorSubsystem.getElevatorHeight() < MotionConstants.stowed.get("elevator").doubleValue() + 0.03
+            )),
+            new IntakeClearanceInCommand(m_elevatorSubsystem, m_wristSubsystem),
             new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.intake.get("elevator").doubleValue())
 
         );
