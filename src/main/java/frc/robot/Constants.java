@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -41,7 +40,7 @@ public final class Constants {
   }
 
 
-
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static final class FieldConstants {
       public static final Pose2d reefBranchA = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(0));
       public static final Pose2d reefBranchB = new Pose2d(3.246, 3.875,Rotation2d.fromDegrees(0));
@@ -94,7 +93,7 @@ public final class Constants {
         reefPolePositions.put(6, new Pose2d[]{new Pose2d(4.964, 2.837,Rotation2d.fromDegrees(117.681)), new Pose2d(5.241, 2.984,Rotation2d.fromDegrees(117.681))});
       }
   }
-
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static final class MotionConstants {
     public static final HashMap<String, Double> l4 = new HashMap();
     static{

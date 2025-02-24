@@ -4,38 +4,24 @@
 
 package frc.robot;
 
-import java.util.Set;
-
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
-import frc.robot.commands.ElevatorDownCommand;
-import frc.robot.commands.ElevatorPositionCommand;
-import frc.robot.commands.ElevatorUpCommand;
 import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.TestAuto;
-import frc.robot.commands.WristUpCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
   // The robot's subsystems
@@ -88,9 +74,9 @@ public class RobotContainer {
   
     //Operator Controller
     m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
-    
-    // m_operatorController.a().onTrue(new ) // Algae Kick Out Postion L2
-    // m_operatorController.x().onTrue(new ) // Algae Kick Out Postion L3
+
+      // m_operatorController.a().onTrue(new ) // Algae Kick Out Postion L2
+      // m_operatorController.x().onTrue(new ) // Algae Kick Out Postion L3
 
 
 
