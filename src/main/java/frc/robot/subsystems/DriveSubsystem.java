@@ -125,76 +125,6 @@ public class DriveSubsystem extends SubsystemBase {
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
 
-  public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
-    return findPathToPose(new Pose2d(x, y, Rotation2d.fromDegrees(rotation)), isRedAlliance);
-  }
-
-  public Command findPathToPose(Pose2d pose, boolean isRedAlliance) {
-    limeLightPoseUpdate();
-    
-    if(isRedAlliance)
-      return AutoBuilder.pathfindToPoseFlipped(pose, pathConstraints);
-    else 
-      return AutoBuilder.pathfindToPose(pose, pathConstraints);
-  }
-
-  public Command findPath(PathPlannerPath path) {
-    return AutoBuilder.pathfindThenFollowPath(path, pathConstraints);
-  }
-    // OLD SOLUTION
-  // public Command findPathToPole(boolean isLeft){
-  //   limeLightPoseUpdate();
-  //   int aprilTagID = -1;
-  //   aprilTagID = m_limeLightSubsystem.getID();
-  //   Pose2d polePose = getPose();
-  //   if (aprilTagID != -1){ 
-  //     polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
-
-  //     SmartDashboard.putNumber("polePathX", polePose.getX());
-  //     SmartDashboard.putNumber("polePathY", polePose.getY());
-  //     SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
-  //     SmartDashboard.putNumber("polePathID", aprilTagID);
-
-  //     return AutoBuilder.pathfindToPose(polePose, pathConstraints);
-  //   }
-  //   return Commands.none();
-  // }
-
-  public Pose2d findPathToPole(boolean isLeft){
-    Pose2d nearestPolePose = getPose();
-    double nearestPolePoseDistance = 100000;
-    Pose2d botpose = getPose();
-    double[] distances = new double[15];
-    if(DriverStation.getAlliance().get() == Alliance.Blue){
-      for(int i = 1; i < 7; i++){
-        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
-        double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
-        if(distance < nearestPolePoseDistance){
-          nearestPolePoseDistance = distance;
-          nearestPolePose = polePose;
-        }
-      }
-    }
-    else if(DriverStation.getAlliance().get() == Alliance.Red){
-      for(int i = 7; i < 13; i++){
-        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
-        double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
-        distances[i - 6] = distance;
-        if(distance < nearestPolePoseDistance){
-          nearestPolePoseDistance = distance;
-          nearestPolePose = polePose;
-        }
-      }
-    }
-    SmartDashboard.putNumber("polePathX", nearestPolePose.getX());
-    SmartDashboard.putNumber("polePathY", nearestPolePose.getY());
-    SmartDashboard.putNumber("polePathRotation", nearestPolePose.getRotation().getDegrees());
-    SmartDashboard.putNumberArray("distances", distances);
-    SmartDashboard.putBoolean("Red Allience?", DriverStation.getAlliance().get() == Alliance.Red);
-
-    return nearestPolePose;
-  }
-
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
@@ -215,46 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
     
   }
 
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
-  public Pose2d getPose() {
-    return m_odometry.getEstimatedPosition();
-  }
-  
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        },
-        new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble())));
-  }
-
-  public ChassisSpeeds getChassisSpeeds(){
-    // SwerveModuleState[] swerveModuleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
-    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-  }
-  private SwerveModuleState[] getModuleStates() {
-    return new SwerveModuleState[] {
-            m_frontLeft.getState(),
-            m_frontRight.getState(),
-            m_rearLeft.getState(),
-            m_rearRight.getState()
-    };
-  }
-
-  /**
+   /**
    * Method to drive the robot using joystick info.
    *
    * @param xSpeed        Speed of the robot in the x direction (forward).
@@ -299,6 +190,50 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+  /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
+  public Pose2d getPose() {
+    return m_odometry.getEstimatedPosition();
+  }
+  
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(
+        Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+        },
+        new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble())));
+  }
+
+  public ChassisSpeeds getChassisSpeeds(){
+    // SwerveModuleState[] swerveModuleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
+  private SwerveModuleState[] getModuleStates() {
+    return new SwerveModuleState[] {
+            m_frontLeft.getState(),
+            m_frontRight.getState(),
+            m_rearLeft.getState(),
+            m_rearRight.getState()
+    };
+  }
+
+  public double getEncoderVelocity(){
+    return m_frontLeft.getEncoderVelocity();
   }
 
   /**
@@ -380,5 +315,75 @@ public class DriveSubsystem extends SubsystemBase {
       // resetOdometry(botPose);
       m_odometry.addVisionMeasurement(m_limeLightSubsystem.getBotPoseTest(),Timer.getFPGATimestamp());
     }
+  }
+
+  public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
+    return findPathToPose(new Pose2d(x, y, Rotation2d.fromDegrees(rotation)), isRedAlliance);
+  }
+
+  public Command findPathToPose(Pose2d pose, boolean isRedAlliance) {
+    limeLightPoseUpdate();
+    
+    if(isRedAlliance)
+      return AutoBuilder.pathfindToPoseFlipped(pose, pathConstraints);
+    else 
+      return AutoBuilder.pathfindToPose(pose, pathConstraints);
+  }
+
+  public Command findPath(PathPlannerPath path) {
+    return AutoBuilder.pathfindThenFollowPath(path, pathConstraints);
+  }
+    // OLD SOLUTION
+  // public Command findPathToPole(boolean isLeft){
+  //   limeLightPoseUpdate();
+  //   int aprilTagID = -1;
+  //   aprilTagID = m_limeLightSubsystem.getID();
+  //   Pose2d polePose = getPose();
+  //   if (aprilTagID != -1){ 
+  //     polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
+
+  //     SmartDashboard.putNumber("polePathX", polePose.getX());
+  //     SmartDashboard.putNumber("polePathY", polePose.getY());
+  //     SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
+  //     SmartDashboard.putNumber("polePathID", aprilTagID);
+
+  //     return AutoBuilder.pathfindToPose(polePose, pathConstraints);
+  //   }
+  //   return Commands.none();
+  // }
+
+  public Pose2d findPathToPole(boolean isLeft){
+    Pose2d nearestPolePose = getPose();
+    double nearestPolePoseDistance = 100000;
+    Pose2d botpose = getPose();
+    double[] distances = new double[15];
+    if(DriverStation.getAlliance().get() == Alliance.Blue){
+      for(int i = 1; i < 7; i++){
+        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
+        double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+          nearestPolePose = polePose;
+        }
+      }
+    }
+    else if(DriverStation.getAlliance().get() == Alliance.Red){
+      for(int i = 7; i < 13; i++){
+        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
+        double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
+        distances[i - 6] = distance;
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+          nearestPolePose = polePose;
+        }
+      }
+    }
+    SmartDashboard.putNumber("polePathX", nearestPolePose.getX());
+    SmartDashboard.putNumber("polePathY", nearestPolePose.getY());
+    SmartDashboard.putNumber("polePathRotation", nearestPolePose.getRotation().getDegrees());
+    SmartDashboard.putNumberArray("distances", distances);
+    SmartDashboard.putBoolean("Red Allience?", DriverStation.getAlliance().get() == Alliance.Red);
+
+    return nearestPolePose;
   }
 }
