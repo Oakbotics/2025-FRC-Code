@@ -6,10 +6,10 @@ import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.Constants.MotionConstants;
 
-public class L2AlgaeCommandGroup extends SequentialCommandGroup {
-    public L2AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
+public class L3AlgaeCommandGroup extends SequentialCommandGroup {
+    public L3AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
         addCommands(
-            new WristPositionCommand(m_wristSubsystem, MotionConstants.algaeL2Start.get("wrist").doubleValue())
+            new WristPositionCommand(m_wristSubsystem, MotionConstants.algaeL2End.get("wrist").doubleValue())
                 .onlyIf(() -> (
                     m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.l4.get("elevator").doubleValue() - 0.03) 
                     || m_elevatorSubsystem.getElevatorHeight() < (MotionConstants.stowed.get("elevator").doubleValue() + 0.03)
@@ -21,7 +21,7 @@ public class L2AlgaeCommandGroup extends SequentialCommandGroup {
                     && m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.intake.get("elevator").doubleValue() - 0.03)
                 )
             ),
-            new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.algaeL2Start.get("elevator").doubleValue())
+            new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.algaeL2End.get("elevator").doubleValue())
         );
     }
 }

@@ -21,6 +21,7 @@ public class L2ScoreCommandGroup extends SequentialCommandGroup {
                     && m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.intake.get("elevator").doubleValue() - 0.03)
                 )
             ),
+            new WristPositionCommand(m_wristSubsystem, MotionConstants.l2.get("wrist").doubleValue()),
             new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.l2.get("elevator").doubleValue())
         );
     }

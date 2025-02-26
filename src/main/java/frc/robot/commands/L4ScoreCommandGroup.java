@@ -17,8 +17,11 @@ public class L4ScoreCommandGroup extends SequentialCommandGroup {
                         && m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.intake.get("elevator").doubleValue() - 0.03)
                     )
             )),
-            new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.l4.get("elevator").doubleValue()),
-            new WristPositionCommand(m_wristSubsystem, MotionConstants.l4.get("wrist").doubleValue())
+            new ParallelCommandGroup(
+                new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.l4.get("elevator").doubleValue()),
+                new WristPositionCommand(m_wristSubsystem, MotionConstants.l4.get("wrist").doubleValue())
+            )
+            
         );
     }
 }
