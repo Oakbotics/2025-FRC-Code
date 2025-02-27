@@ -17,7 +17,7 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   public NetworkTable m_limeLightTable;
   public Pose2d m_closestTagPose;
-  
+
   private final Field2d m_field = new Field2d();
   /** Creates a new LimeLightSubsystem. */
   public LimeLightSubsystem() {
@@ -25,47 +25,57 @@ public class LimeLightSubsystem extends SubsystemBase {
     m_limeLightTable.getEntry("pipeline").setNumber(0);
     SmartDashboard.putData("Field", m_field);
   }
-  public Pose2d getBotPose(){
+
+  public Pose2d getBotPose() {
     double tx = m_limeLightTable.getEntry("tx").getDouble(0);
     double ty = m_limeLightTable.getEntry("ty").getDouble(0);
     double ta = m_limeLightTable.getEntry("ta").getDouble(0);
     double tid = m_limeLightTable.getEntry("tid").getDouble(0);
     double tbotpose = m_limeLightTable.getEntry("botpose[0]").getDouble(0);
-    
+
     SmartDashboard.putNumber("LimelightX", tx);
     SmartDashboard.putNumber("LimelightY", ty);
     SmartDashboard.putNumber("LimelightArea", ta);
     SmartDashboard.putNumber("AprilTagID", tid);
     SmartDashboard.putNumber("botpose", tbotpose);
 
-    return new Pose2d(tx, ty, Rotation2d.fromDegrees(ta));   
+    return new Pose2d(tx, ty, Rotation2d.fromDegrees(ta));
   }
-  
-  public Pose2d getBotPoseTest(){
-    double[] botPoseArray = m_limeLightTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
 
-    Pose2d botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botPoseArray[5]));
+  public Pose2d getBotPoseTest() {
+    double[] botPoseArray = m_limeLightTable.getEntry("botpose_orb").getDoubleArray(new double[10]);
+
+    Pose2d botPose =
+        new Pose2d(
+            botPoseArray[0] + 8.7736,
+            botPoseArray[1] + 4.0257,
+            Rotation2d.fromDegrees(botPoseArray[5]));
     SmartDashboard.putNumber("botPoseID", (int) m_limeLightTable.getEntry("tid").getDouble(-1));
     SmartDashboard.putNumber("botPoseX", botPose.getX());
     SmartDashboard.putNumber("botPoseY", botPose.getY());
-    m_field.setRobotPose(botPose);  
+    m_field.setRobotPose(botPose);
     return botPose;
   }
 
-  public Pose2d getRobotRelativeTargetPose(){
-    double[] targetPoseArray = m_limeLightTable.getEntry("targetpose_robotspace").getDoubleArray(new double[10]);
-    Pose2d targetPose = new Pose2d(targetPoseArray[2], targetPoseArray[0], Rotation2d.fromDegrees(targetPoseArray[4])); 
+  public Pose2d getRobotRelativeTargetPose() {
+    double[] targetPoseArray =
+        m_limeLightTable.getEntry("targetpose_robotspace").getDoubleArray(new double[10]);
+    Pose2d targetPose =
+        new Pose2d(
+            targetPoseArray[2], targetPoseArray[0], Rotation2d.fromDegrees(targetPoseArray[4]));
 
     return targetPose;
   }
 
-  public int getID(){
-    //SmartDashboard.putNumber("networkTableID", m_limeLightTable.getEntry("tid").getValue().getInteger());
+  public int getID() {
+    // SmartDashboard.putNumber("networkTableID",
+    // m_limeLightTable.getEntry("tid").getValue().getInteger());
     return ((int) m_limeLightTable.getEntry("tid").getDouble(-1));
   }
 
   // public Pose2d getClosestTagPose(){
-  //   // String allianceTableName = DriverStation.getAlliance() == Alliance.Blue ? "botpose_wpiblue": "botpose_wpired";
+  //   // String allianceTableName = DriverStation.getAlliance() == Alliance.Blue ?
+  // "botpose_wpiblue": "botpose_wpired";
   //   if(m_limeLightTable.getEntry("tv").getDouble(0) == 1){
   //     int numTags = m_limeLightTable
   //   }

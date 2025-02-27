@@ -4,14 +4,13 @@
 
 package frc.robot.commands.PIDTuningHelperCommands;
 
-import frc.robot.Constants;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.subsystems.DriveSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class VelocityTuningCommand extends Command {
@@ -19,6 +18,7 @@ public class VelocityTuningCommand extends Command {
   // private final ExampleSubsystem m_subsystem;
 
   double maxVel;
+
   double target;
   SlewRateLimiter limiter;
   Timer timer;
@@ -36,7 +36,7 @@ public class VelocityTuningCommand extends Command {
     SmartDashboard.putNumber("Sysid VelTarget", 0);
     SmartDashboard.putNumber("Sysid Vel", 0);
     SmartDashboard.putNumber("Sysid Accel", 0);
-    SmartDashboard.putNumber("Sysid BatteryVoltage", 0); 
+    SmartDashboard.putNumber("Sysid BatteryVoltage", 0);
     SmartDashboard.putNumber("KsVoltage", 1);
     // m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -55,7 +55,7 @@ public class VelocityTuningCommand extends Command {
     SmartDashboard.putNumber("Sysid VelTarget", 0);
     SmartDashboard.putNumber("Sysid Vel", 0);
     SmartDashboard.putNumber("Sysid Accel", 0);
-    SmartDashboard.putNumber("Sysid BatteryVoltage", 0);  
+    SmartDashboard.putNumber("Sysid BatteryVoltage", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,21 +63,21 @@ public class VelocityTuningCommand extends Command {
   public void execute() {
     double vel = limiter.calculate(target);
 
-    if(vel == maxVel){
-        timer.start();
+    if (vel == maxVel) {
+      timer.start();
     }
 
-    if(timer.get() > 0.5){
-        timer.reset();
-        target = 0;
+    if (timer.get() > 0.5) {
+      timer.reset();
+      target = 0;
     }
 
     m_driveSubsystem.drive(vel, 0, 0, false);
     SmartDashboard.putNumber("Sysid VelTarget", vel);
     SmartDashboard.putNumber("Sysid Vel", m_driveSubsystem.getChassisSpeeds().vxMetersPerSecond);
     SmartDashboard.putNumber("Sysid Encoder Vel", m_driveSubsystem.getEncoderVelocity());
-    SmartDashboard.putNumber("Sysid Accel", (vel - previousVel)/50);
-    SmartDashboard.putNumber("Sysid BatteryVoltage", RobotController.getBatteryVoltage());  
+    SmartDashboard.putNumber("Sysid Accel", (vel - previousVel) / 50);
+    SmartDashboard.putNumber("Sysid BatteryVoltage", RobotController.getBatteryVoltage());
   }
 
   // Called once the command ends or is interrupted.
@@ -88,7 +88,7 @@ public class VelocityTuningCommand extends Command {
     SmartDashboard.putNumber("Sysid VelTarget", 0);
     SmartDashboard.putNumber("Sysid Vel", 0);
     SmartDashboard.putNumber("Sysid Accel", 0);
-    SmartDashboard.putNumber("Sysid BatteryVoltage", 0); 
+    SmartDashboard.putNumber("Sysid BatteryVoltage", 0);
   }
 
   // Returns true when the command should end.

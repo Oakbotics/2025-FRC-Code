@@ -4,14 +4,15 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.WristSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class WristPositionCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   // private final ExampleSubsystem m_subsystem;
   private final WristSubsystem m_wristSubsystem;
+
   private final double m_position;
   /**
    * Creates a new ExampleCommand.
@@ -51,6 +52,7 @@ public class WristPositionCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_position - 2 < m_wristSubsystem.getWristAngle() && m_position + 2 > m_wristSubsystem.getWristAngle());
+    return (m_position - 2 < m_wristSubsystem.getWristAngle()
+        && m_position + 2 > m_wristSubsystem.getWristAngle());
   }
 }

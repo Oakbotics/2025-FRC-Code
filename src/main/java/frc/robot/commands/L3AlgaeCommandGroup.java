@@ -7,22 +7,28 @@
 // import frc.robot.Constants.MotionConstants;
 
 // public class L3AlgaeCommandGroup extends SequentialCommandGroup {
-//     public L3AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
+//     public L3AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem
+// m_wristSubsystem){
 //         addCommands(
-            // new WristPositionCommand(m_wristSubsystem, MotionConstants.algaeL3.get("wrist").doubleValue())
+            // new WristPositionCommand(m_wristSubsystem,
+            // MotionConstants.algaeL3.get("wrist").doubleValue())
 //                 .onlyIf(() -> (
-//                     m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.l4.get("elevator").doubleValue() - 0.03) 
-//                     || m_elevatorSubsystem.getElevatorHeight() < (MotionConstants.stowed.get("elevator").doubleValue() + 0.03)
+//                     m_elevatorSubsystem.getElevatorHeight() >
+// (MotionConstants.l4.get("elevator").doubleValue() - 0.03)
+//                     || m_elevatorSubsystem.getElevatorHeight() <
+// (MotionConstants.stowed.get("elevator").doubleValue() + 0.03)
 //                 )
 //             ),
 //             new IntakeClearanceOutCommand(m_elevatorSubsystem, m_wristSubsystem)
 //                 .onlyIf(() -> (
-//                     m_elevatorSubsystem.getElevatorHeight() < (MotionConstants.intake.get("elevator").doubleValue() + 0.03)
-//                     && m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.intake.get("elevator").doubleValue() - 0.03)
+//                     m_elevatorSubsystem.getElevatorHeight() <
+// (MotionConstants.intake.get("elevator").doubleValue() + 0.03)
+//                     && m_elevatorSubsystem.getElevatorHeight() >
+// (MotionConstants.intake.get("elevator").doubleValue() - 0.03)
 //                 )
 //             ),
-//             new ElevatorPositionCommand(m_elevatorSubsystem, MotionConstants.algaeL3.get("elevator").doubleValue())
+//             new ElevatorPositionCommand(m_elevatorSubsystem,
+// MotionConstants.algaeL3.get("elevator").doubleValue())
 //         );
 //     }
 // }
-

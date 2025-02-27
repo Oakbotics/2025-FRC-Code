@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class ElevatorDownCommand extends Command {
@@ -24,7 +24,6 @@ public class ElevatorDownCommand extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(ElevatorSubsystem);
     m_ElevatorSubsystem = ElevatorSubsystem;
-
   }
 
   // Called when the command is initially scheduled.
@@ -35,7 +34,7 @@ public class ElevatorDownCommand extends Command {
   @Override
   public void execute() {
     m_ElevatorSubsystem.setElevatorSpeed(-0.1);
-  }       
+  }
 
   // Called once the command ends or is interrupted.
   @Override

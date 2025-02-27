@@ -4,20 +4,18 @@
 
 package frc.robot.subsystems;
 
-
-import frc.robot.Configs;
-import frc.robot.Constants.ElevatorConstants;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.RelativeEncoder;;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Configs;
+import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax elevatorMotorLeft;
@@ -27,16 +25,24 @@ public class ElevatorSubsystem extends SubsystemBase {
   // Creates a PIDController with gains kP, kI, and kD
   private SparkClosedLoopController m_elevatorControllerLeft;
   private SparkClosedLoopController m_elevatorControllerRight;
-  
+
   /** Creates a new ExampleSubsystem. */
   public ElevatorSubsystem() {
 
-    elevatorMotorLeft = new SparkMax(ElevatorConstants.elevatorMotorLeftCanId, MotorType.kBrushless);
-    elevatorMotorRight = new SparkMax(ElevatorConstants.elevatorMotorRightCanId, MotorType.kBrushless);
-    
-    elevatorMotorLeft.configure(Configs.ElevatorConfigs.elevatorFollowerConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-    elevatorMotorRight.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-    
+    elevatorMotorLeft =
+        new SparkMax(ElevatorConstants.elevatorMotorLeftCanId, MotorType.kBrushless);
+    elevatorMotorRight =
+        new SparkMax(ElevatorConstants.elevatorMotorRightCanId, MotorType.kBrushless);
+
+    elevatorMotorLeft.configure(
+        Configs.ElevatorConfigs.elevatorFollowerConfig,
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+    elevatorMotorRight.configure(
+        Configs.ElevatorConfigs.elevatorConfig,
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+
     m_elevatorEncoderLeft = elevatorMotorLeft.getEncoder();
     m_elevatorEncoderRight = elevatorMotorRight.getEncoder();
 
@@ -45,34 +51,43 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // m_absoluteEncoder.setPosition(0);
   }
-    //probably should make this work based of a height variable in the future
-  public void elevatorRotatePID(double position){
-    double metersToAngle = (position * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;// 360/2 becasue 2:1 carrige ratio
+  // probably should make this work based of a height variable in the future
+  public void elevatorRotatePID(double position) {
+    double metersToAngle =
+        (position * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter))
+            * 180; // 360/2 becasue 2:1 carrige ratio
     // m_elevatorControllerLeft.setReference(-metersToAngle, ControlType.kPosition);
     m_elevatorControllerRight.setReference(metersToAngle, ControlType.kPosition);
   }
 
-  public double getElevatorHeight(){
-    return (m_elevatorEncoderRight.getPosition() * (ElevatorConstants.discCircumferenceMeter / (180 * ElevatorConstants.discGearRatio)));
+  public double getElevatorHeight() {
+    return (m_elevatorEncoderRight.getPosition()
+        * (ElevatorConstants.discCircumferenceMeter / (180 * ElevatorConstants.discGearRatio)));
   }
 
-  public void restartEncoder(){
+  public void restartEncoder() {
     m_elevatorEncoderRight.setPosition(0);
     // printMotorPosition();
   }
 
-  public void printMotorPosition(){
-    double relativeEncoderMetersLeft = (m_elevatorEncoderLeft.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
-    double relativeEncoderMetersRight = (m_elevatorEncoderRight.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
-    SmartDashboard.putNumber("Left Motor", (relativeEncoderMetersLeft ));
+  public void printMotorPosition() {
+    double relativeEncoderMetersLeft =
+        (m_elevatorEncoderLeft.getPosition()
+                * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter))
+            * 180;
+    double relativeEncoderMetersRight =
+        (m_elevatorEncoderRight.getPosition()
+                * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter))
+            * 180;
+    SmartDashboard.putNumber("Left Motor", (relativeEncoderMetersLeft));
     SmartDashboard.putNumber("Right Motor", (relativeEncoderMetersRight));
   }
 
-  public void setElevatorSpeed(double speed){
+  public void setElevatorSpeed(double speed) {
     // elevatorMotorLeft.set(speed);
     elevatorMotorRight.set(-speed);
   }
-  
+
   /**
    * Example command factory method.
    *

@@ -4,18 +4,15 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.AlgaeConfigs;
 import frc.robot.Configs.CoralConfigs;
 import frc.robot.Constants.IntakeConstants;
-
-
 
 public class IntakeSubsystem extends SubsystemBase {
   SparkMax coralMotor;
@@ -25,9 +22,14 @@ public class IntakeSubsystem extends SubsystemBase {
     coralMotor = new SparkMax(IntakeConstants.coralMotorCANID, MotorType.kBrushless);
     algaeMotor = new SparkMax(IntakeConstants.algaeMotorCANID, MotorType.kBrushless);
 
-    coralMotor.configure(CoralConfigs.coralConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    algaeMotor.configure(AlgaeConfigs.algaeConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+    coralMotor.configure(
+        CoralConfigs.coralConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+    algaeMotor.configure(
+        AlgaeConfigs.algaeConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
   }
 
   /**
@@ -35,11 +37,11 @@ public class IntakeSubsystem extends SubsystemBase {
    *
    * @return a command
    */
-  public void setAlgaeMotorSpeed(double speed){
+  public void setAlgaeMotorSpeed(double speed) {
     algaeMotor.set(speed);
   }
 
-  public void setCoralMotorSpeed(double speed){
+  public void setCoralMotorSpeed(double speed) {
     coralMotor.set(speed);
   }
 

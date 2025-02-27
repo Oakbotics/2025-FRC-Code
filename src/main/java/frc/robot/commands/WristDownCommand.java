@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.WristSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class WristDownCommand extends Command {
@@ -24,10 +24,7 @@ public class WristDownCommand extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(WristSubsystem);
     m_WristSubsystem = WristSubsystem;
-
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
@@ -37,9 +34,7 @@ public class WristDownCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -54,41 +49,7 @@ public class WristDownCommand extends Command {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//OLD CODE:
+// OLD CODE:
 // // Copyright (c) FIRST and other WPILib contributors.
 // // Open Source Software; you can modify and/or share it under the terms of
 // // the WPILib BSD license file in the root directory of this project.
@@ -118,8 +79,6 @@ public class WristDownCommand extends Command {
 
 //   }
 
-  
-
 //   // Called when the command is initially scheduled.
 //   @Override
 //   public void initialize() {
@@ -129,7 +88,7 @@ public class WristDownCommand extends Command {
 //   // Called every time the scheduler runs while the command is scheduled.
 //   @Override
 //   public void execute() {
-    
+
 //   }
 
 //   // Called once the command ends or is interrupted.

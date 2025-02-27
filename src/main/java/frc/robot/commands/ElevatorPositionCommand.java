@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class ElevatorPositionCommand extends Command {
@@ -9,6 +9,7 @@ public class ElevatorPositionCommand extends Command {
   // private final ExampleSubsystem m_subsystem;
 
   private final ElevatorSubsystem m_elevatorSubsystem;
+
   private final double m_position;
   /**
    * Creates a new ExampleCommand.
@@ -23,7 +24,7 @@ public class ElevatorPositionCommand extends Command {
     m_position = 0.0;
   }
 
-  public ElevatorPositionCommand(ElevatorSubsystem elevatorSubsystem, double position){
+  public ElevatorPositionCommand(ElevatorSubsystem elevatorSubsystem, double position) {
     addRequirements(elevatorSubsystem);
     m_elevatorSubsystem = elevatorSubsystem;
     m_position = position;
@@ -42,12 +43,13 @@ public class ElevatorPositionCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_ElevatorSubsystem.SetElevatorSpeed(0);
+    // m_ElevatorSubsystem.SetElevatorSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_position - 0.02 < m_elevatorSubsystem.getElevatorHeight() && m_position + 0.02 > m_elevatorSubsystem.getElevatorHeight());
+    return (m_position - 0.02 < m_elevatorSubsystem.getElevatorHeight()
+        && m_position + 0.02 > m_elevatorSubsystem.getElevatorHeight());
   }
 }

@@ -6,12 +6,11 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,23 +19,27 @@ import frc.robot.Constants.WristConstants;
 
 public class WristSubsystem extends SubsystemBase {
   private final SparkMax wristMotor;
-  private final AbsoluteEncoder wristEncoder; 
+  private final AbsoluteEncoder wristEncoder;
   private SparkClosedLoopController wristPidController;
+
   public WristSubsystem() {
     wristMotor = new SparkMax(WristConstants.wristMotorCANId, MotorType.kBrushless);
 
-    wristMotor.configure(Configs.WristConfigs.wristConfig, SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    wristMotor.configure(
+        Configs.WristConfigs.wristConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
 
     wristEncoder = wristMotor.getAbsoluteEncoder();
     wristPidController = wristMotor.getClosedLoopController();
   }
-  
+
   public void wristRotateToPosition(double position) {
     Rotation2d desiredAngle = Rotation2d.fromDegrees(position);
     wristPidController.setReference(desiredAngle.getRadians(), ControlType.kPosition);
   }
 
-  public double getWristAngle(){
+  public double getWristAngle() {
     return Rotation2d.fromRadians(wristEncoder.getPosition()).getDegrees();
   }
 
@@ -47,14 +50,14 @@ public class WristSubsystem extends SubsystemBase {
     // double encoderValue = wristEncoder.getPosition();
     // SmartDashboard.putNumber("Wrist Position", encoderValue);
   }
-  public void setWristSpeed(double speed){
+
+  public void setWristSpeed(double speed) {
     wristMotor.set(speed);
   }
 
   @Override
   public void periodic() {
     printWristPosition();
-
   }
 
   @Override
