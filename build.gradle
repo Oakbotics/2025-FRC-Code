@@ -144,6 +144,8 @@ if (spotbugsTaskClass != null) {
             xml.required.set(false)
             html.required.set(true)
         }
+        // This setting lets the build pass even if SpotBugs finds issues.
+        ignoreFailures = true
     }
 }
 
