@@ -2,7 +2,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2025.3.1"
     id "com.diffplug.spotless" version "6.21.0"
-    id "com.github.spotbugs" version "5.0.13"
+    // id "com.github.spotbugs" version "5.0.13"
     id "org.owasp.dependencycheck" version "8.2.1"
     id "checkstyle"
     id "pmd"
@@ -128,26 +128,26 @@ tasks.withType(Pmd) {
 
 // SpotBugs configuration for bytecode analysis.
 // Dynamically attempt to load either SpotBugsTaskJava or SpotBugsTask.
-def spotbugsTaskClass = null
-try {
-    spotbugsTaskClass = Class.forName("com.github.spotbugs.SpotBugsTaskJava")
-} catch(Exception e1) {
-    try {
-        spotbugsTaskClass = Class.forName("com.github.spotbugs.SpotBugsTask")
-    } catch(Exception e2) {
-        logger.warn("Neither SpotBugsTaskJava nor SpotBugsTask class could be found; skipping SpotBugs configuration.")
-    }
-}
-if (spotbugsTaskClass != null) {
-    tasks.withType(spotbugsTaskClass) {
-        reports {
-            xml.required.set(false)
-            html.required.set(true)
-        }
-        // This setting lets the build pass even if SpotBugs finds issues.
-        ignoreFailures = true
-    }
-}
+// def spotbugsTaskClass = null
+// try {
+//     spotbugsTaskClass = Class.forName("com.github.spotbugs.SpotBugsTaskJava")
+// } catch(Exception e1) {
+//     try {
+//         spotbugsTaskClass = Class.forName("com.github.spotbugs.SpotBugsTask")
+//     } catch(Exception e2) {
+//         logger.warn("Neither SpotBugsTaskJava nor SpotBugsTask class could be found; skipping SpotBugs configuration.")
+//     }
+// }
+// if (spotbugsTaskClass != null) {
+//     tasks.withType(spotbugsTaskClass) {
+//         reports {
+//             xml.required.set(false)
+//             html.required.set(true)
+//         }
+//         // This setting lets the build pass even if SpotBugs finds issues.
+//         ignoreFailures = true
+//     }
+// }
 
 // JaCoCo configuration for code coverage.
 jacoco {

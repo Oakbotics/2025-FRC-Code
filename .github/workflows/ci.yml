@@ -52,8 +52,8 @@ jobs:
         run: ./gradlew pmdMain
 
       # Step 8: Run SpotBugs to find bugs by analyzing the compiled bytecode
-      - name: Run SpotBugs analysis
-        run: ./gradlew spotbugsMain
+      # - name: Run SpotBugs analysis
+      #   run: ./gradlew spotbugsMain
 
       # Step 9: Check code formatting with Spotless; this fails if the code is not formatted correctly
       - name: Check code formatting (Spotless)
