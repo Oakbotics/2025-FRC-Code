@@ -5,20 +5,20 @@
 package frc.robot.commands;
 
 
-import frc.robot.subsystems.IntakeSubsytem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class CoralIntakeCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-   private final IntakeSubsytem m_intakeSubsystem;
+   private final IntakeSubsystem m_intakeSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public CoralIntakeCommand(IntakeSubsytem intakeSubsystem) {
+  public CoralIntakeCommand(IntakeSubsystem intakeSubsystem) {
      m_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_intakeSubsystem);

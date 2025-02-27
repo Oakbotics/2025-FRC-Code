@@ -140,6 +140,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
+    SmartDashboard.putNumber("Driving Velocity", m_frontLeft.getEncoderVelocity());
 
     // limeLightPoseUpdate();
     
@@ -269,8 +270,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /** Zeroes the heading of the robot. */
-  public void zeroHeading() {
-    m_gyro.setYaw(0);
+  public void setGyro(double angle) {
+    m_gyro.setYaw(angle);
   }
 
   /**

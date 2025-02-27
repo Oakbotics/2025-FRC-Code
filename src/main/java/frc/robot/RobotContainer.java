@@ -8,17 +8,19 @@ import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
+import frc.robot.commands.PIDTuningHelperCommands.*;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.IntakeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
+import frc.robot.commands.Middle3Piece;
 import frc.robot.commands.TestAuto;
 import frc.robot.commands.WristDownCommand;
 import frc.robot.commands.WristUpCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsytem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,7 +34,7 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_LimeLightSubsystem);
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final WristSubsystem m_wristSubsystem = new WristSubsystem();
-  private final IntakeSubsytem m_intakeSubsytem = new IntakeSubsytem();
+  private final IntakeSubsystem m_intakeSubsytem = new IntakeSubsystem();
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -45,16 +47,16 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    // m_driveSubsystem.setDefaultCommand(
-    //     // The left stick controls translation of the robot.
-    //     // Turning is controlled by the X axis of the right stick.
-    //     new RunCommand(
-    //         () -> m_driveSubsystem.drive(
-    //             -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-    //             -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-    //             -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-    //             true),
-    //         m_driveSubsystem));
+    m_driveSubsystem.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> m_driveSubsystem.drive(
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                true),
+            m_driveSubsystem));
   }
   private void configureButtonBindings() {
   
@@ -66,8 +68,8 @@ public class RobotContainer {
       // m_driverController.a().onTrue(new WristDownCommand(m_wristSubsystem)); // L2 Scoring
       m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Not in use
 
-    m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.zeroHeading()));
-      // m_driverController.povLeft() // Not in use
+    m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
+      m_driverController.povLeft().whileTrue(new VelocityTuningCommand(m_driveSubsystem)); // Not in use
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
       // m_driverController.povRight() // Not in use
 
@@ -80,15 +82,15 @@ public class RobotContainer {
     //Operator Controller
     m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
 
-      // m_operatorController.a().onTrue(new ) // Algae Kick Out Postion L2
-      // m_operatorController.x().onTrue(new ) // Algae Kick Out Postion L3
+      // m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
+      // m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
 
 
 
 }
   public Command getAutonomousCommand() {
       // return new PathPlannerAuto("3P Middle Top Bottom");
-      return new TestAuto(m_driveSubsystem, m_LimeLightSubsystem);
+      return new Middle3Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
   }
   
 }

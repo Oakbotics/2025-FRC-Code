@@ -17,11 +17,11 @@ import frc.robot.Constants.IntakeConstants;
 
 
 
-public class IntakeSubsytem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   SparkMax coralMotor;
   SparkMax algaeMotor;
   /** Creates a new ExampleSubsystem. */
-  public IntakeSubsytem() {
+  public IntakeSubsystem() {
     coralMotor = new SparkMax(IntakeConstants.coralMotorCANID, MotorType.kBrushless);
     algaeMotor = new SparkMax(IntakeConstants.algaeMotorCANID, MotorType.kBrushless);
 

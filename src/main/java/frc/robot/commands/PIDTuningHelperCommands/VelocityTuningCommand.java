@@ -46,10 +46,10 @@ public class VelocityTuningCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    maxVel = 2 / Constants.DriveConstants.kMaxSpeedMetersPerSecond; // desired max / max speed
+    maxVel = 3 / Constants.DriveConstants.kMaxSpeedMetersPerSecond; // desired max / max speed
     target = maxVel;
     limiter = new SlewRateLimiter(5);
-    // timer = new Timer();
+    timer = new Timer();
     previousVel = 0;
 
     SmartDashboard.putNumber("Sysid VelTarget", 0);
@@ -63,14 +63,14 @@ public class VelocityTuningCommand extends Command {
   public void execute() {
     double vel = limiter.calculate(target);
 
-    // if(vel == maxVel){
-    //     timer.start();
-    // }
+    if(vel == maxVel){
+        timer.start();
+    }
 
-    // if(timer.get() > 0.5){
-    //     timer.reset();
-    //     target = 0;
-    // }
+    if(timer.get() > 0.5){
+        timer.reset();
+        target = 0;
+    }
 
     m_driveSubsystem.drive(vel, 0, 0, false);
     SmartDashboard.putNumber("Sysid VelTarget", vel);

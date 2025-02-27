@@ -65,22 +65,22 @@ public final class Constants {
         reefPolePositions.put(7, new Pose2d[]{new Pose2d(14.324, 3.859,Rotation2d.fromDegrees(-178.596)), new Pose2d(14.337, 4.190,Rotation2d.fromDegrees(-178.596))});
         reefPolePositions.put(8, new Pose2d[]{new Pose2d(13.884, 5.015,Rotation2d.fromDegrees(-127.926)), new Pose2d(13.567, 5.216,Rotation2d.fromDegrees(-121.350))});
         reefPolePositions.put(9, new Pose2d[]{new Pose2d(12.534, 5.216,Rotation2d.fromDegrees(-56.014)), new Pose2d(12.265, 5.041,Rotation2d.fromDegrees(-56.014))});
-        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.771, 4.165,Rotation2d.fromDegrees(0)), new Pose2d(11.773, 3.859,Rotation2d.fromDegrees(0))});
+        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.771, 4.165,Rotation2d.fromDegrees(0)), new Pose2d(11.773, 3.859,Rotation2d.fromDegrees(180))});
         reefPolePositions.put(11, new Pose2d[]{new Pose2d(12.223, 3.049,Rotation2d.fromDegrees(54.545)), new Pose2d(12.545, 2.854,Rotation2d.fromDegrees(54.545))});
         reefPolePositions.put(17, new Pose2d[]{new Pose2d(3.706, 3.016,Rotation2d.fromDegrees(57.529)), new Pose2d(3.983, 2.865,Rotation2d.fromDegrees(57.529))});
         reefPolePositions.put(18, new Pose2d[]{new Pose2d(3.186, 4.133,Rotation2d.fromDegrees(1.893)), new Pose2d(3.218, 3.900,Rotation2d.fromDegrees(1.893))});
         reefPolePositions.put(19, new Pose2d[]{new Pose2d(3.950, 5.202,Rotation2d.fromDegrees(-60)), new Pose2d(3.722, 5.050,Rotation2d.fromDegrees(-60))});
         reefPolePositions.put(20, new Pose2d[]{new Pose2d(5.263, 5.033,Rotation2d.fromDegrees(-120)), new Pose2d(4.964, 5.213,Rotation2d.fromDegrees(-115))});
-        reefPolePositions.put(21, new Pose2d[]{new Pose2d(5.722, 3.9,Rotation2d.fromDegrees(-180)), new Pose2d(5.783, 4.171,Rotation2d.fromDegrees(-180))});
+        reefPolePositions.put(21, new Pose2d[]{new Pose2d(5.717, 3.848,Rotation2d.fromDegrees(-180)), new Pose2d(5.783, 4.171,Rotation2d.fromDegrees(0))});
         reefPolePositions.put(22, new Pose2d[]{new Pose2d(4.964, 2.837,Rotation2d.fromDegrees(117.681)), new Pose2d(5.241, 2.984,Rotation2d.fromDegrees(117.681))});
       }
       public static final HashMap<Integer, Pose2d[]> coralStationPosition = new HashMap();
 
-      static{
-        coralStationPosition.put(1, new Pose2d[]{new Pose2d(13.524, 2.830,Rotation2d.fromDegrees(117.987)), new Pose2d(13.833, 3.003,Rotation2d.fromDegrees(117.987))});
-        coralStationPosition.put(2, new Pose2d[]{new Pose2d(15.776, 7.477,Rotation2d.fromDegrees(-178.596)), new Pose2d(14.337, 4.190,Rotation2d.fromDegrees(-178.596))});
-        coralStationPosition.put(12, new Pose2d[]{new Pose2d(13.884, 5.015,Rotation2d.fromDegrees(-127.926)), new Pose2d(13.567, 5.216,Rotation2d.fromDegrees(-121.350))});
-        coralStationPosition.put(13, new Pose2d[]{new Pose2d(12.534, 5.216,Rotation2d.fromDegrees(-56.014)), new Pose2d(12.265, 5.041,Rotation2d.fromDegrees(-56.014))});
+      static{ //Value are left to right
+        coralStationPosition.put(1, new Pose2d[]{new Pose2d(17.027, 1.413,Rotation2d.fromDegrees(-60)), new Pose2d(15.921, 0.599,Rotation2d.fromDegrees(-55))}); // RED SIDE:
+        coralStationPosition.put(2, new Pose2d[]{new Pose2d(15.776, 7.477,Rotation2d.fromDegrees(50.0)), new Pose2d(17.020, 6.623,Rotation2d.fromDegrees(55))});
+        coralStationPosition.put(12, new Pose2d[]{new Pose2d(1.703, 0.565,Rotation2d.fromDegrees(-130)), new Pose2d(0.578, 1.407,Rotation2d.fromDegrees(-125))}); // BLUE SIDE:
+        coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.554, 6.635,Rotation2d.fromDegrees(125)), new Pose2d(14.350, 4.170,Rotation2d.fromDegrees(130))});
       }
   }
   @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -89,7 +89,7 @@ public final class Constants {
     public static final HashMap<String, Double> l4 = new HashMap();
     static{
       l4.put("elevator", 1.52);
-      l4.put("wrist", 138.0);
+      l4.put("wrist", 145.0);
     }
 
     //THE L3 BRANCH
@@ -131,13 +131,13 @@ public final class Constants {
       stowed.put("wrist", 0.0);
     }
 
-    public static final HashMap<String, Double> algaeL2Start = new HashMap();
+    public static final HashMap<String, Double> algaeL2 = new HashMap();
     static{
       stowed.put("elevator", 0.08);
       stowed.put("wrist", 80.0);
     }
 
-    public static final HashMap<String, Double> algaeL2End = new HashMap();
+    public static final HashMap<String, Double> algaeL3 = new HashMap();
     static{
       stowed.put("elevator", 0.56);
       stowed.put("wrist", 80.0);
@@ -183,9 +183,13 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 2;
+    public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     
+    public static final double kV = 2.76;
+    public static final double kS = 0.024;
+    public static final double kA = 0.02;
+
 
 
     // Chassis configuration
@@ -230,7 +234,7 @@ public final class Constants {
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     // public static final double kWheelDiameterMeters = 0.0713;
-    public static final double kWheelDiameterMeters = 0.07346;
+    public static final double kWheelDiameterMeters = 0.071;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion
@@ -242,7 +246,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
-    public static final double kDriveDeadband = 0.05;
+    public static final double kDriveDeadband = 0.03;
   }
 
   public static final class AutoConstants {
