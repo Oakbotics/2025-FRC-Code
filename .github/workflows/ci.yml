@@ -1,5 +1,6 @@
-name: CI
+name: CI Pipeline
 
+# Trigger the workflow on pushes, pull requests, and allow manual dispatch
 on:
   push:
     branches:
@@ -7,24 +8,25 @@ on:
   pull_request:
     branches:
       - Robot-master-Tugluke-CI
+  workflow_dispatch:  # Enables manual triggering from the GitHub UI
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
-      # 1) Check out your code
-      - name: Checkout
+      # Step 1: Check out the repository code so that the workflow can access it
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2) Set up Java 
+      # Step 2: Set up JDK 17 on the runner using Temurin
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: temurin
 
-      # 3) Cache Gradle packages for faster builds
+      # Step 3: Cache Gradle dependencies to speed up builds on runs
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
@@ -33,16 +35,43 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 4) Make the Gradle wrapper script executable
+      # Step 4: Make sure the Gradle wrapper (gradlew) has execute permissions
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      # 5) Build the code (and run tests) via Gradle
-      - name: Build and test with Gradle
+      # Step 5: Build the project and run unit tests (configured in build.gradle)
+      - name: Run build and tests
         run: ./gradlew build
 
-#Checkout: Pulls down your code onto the runner.
-#Set up Java: Installs a JDK that Gradle can use.
-#Cache Gradle: Speeds up subsequent builds by caching dependencies.
-#Make gradlew executable: On Linux/macOS runners, the Gradle wrapper needs chmod +x gradlew.
-#Gradle build: Actually runs the build command, so you can see if your code compiles and tests pass.
+      # Step 6: Run Checkstyle to enforce code style guidelines
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain
+
+      # Step 7: Run PMD for static analysis to detect potential code issues
+      - name: Run PMD analysis
+        run: ./gradlew pmdMain
+
+      # Step 8: Run SpotBugs to find bugs by analyzing the compiled bytecode
+      - name: Run SpotBugs analysis
+        run: ./gradlew spotbugsMain
+
+      # Step 9: Check code formatting with Spotless; this fails if the code is not formatted correctly
+      - name: Check code formatting (Spotless)
+        run: ./gradlew spotlessCheck
+
+      # Step 10: Run tests again to generate a JaCoCo code coverage report
+      - name: Run tests and generate coverage report
+        run: ./gradlew test jacocoTestReport
+
+      # Step 11: Run OWASP Dependency Check to scan for vulnerabilities in your dependencies
+      - name: Run dependency vulnerability check
+        run: ./gradlew dependencyCheckAnalyze
+
+      # Step 12: Upload build reports and code coverage reports as artifacts for later review
+      - name: Upload CI artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            build/reports
+            build/jacoco/test/html

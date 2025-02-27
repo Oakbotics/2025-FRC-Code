@@ -1,6 +1,12 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2025.3.1"
+    id "com.diffplug.spotless" version "6.21.0"
+    id "com.github.spotbugs" version "5.0.13"
+    id "org.owasp.dependencycheck" version "8.2.1"
+    id "checkstyle"
+    id "pmd"
+    id "jacoco"
 }
 
 java {
@@ -10,31 +16,18 @@ java {
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
-// Define my targets (RoboRIO) and artifacts (deployable files)
-// This is added by GradleRIO's backing project DeployUtils.
+// Define targets and deployable artifacts for RoboRIO.
 deploy {
     targets {
         roborio(getTargetTypeClass('RoboRIO')) {
-            // Team number is loaded either from the .wpilib/wpilib_preferences.json
-            // or from command line. If not found an exception will be thrown.
-            // You can use getTeamOrDefault(team) instead of getTeamNumber if you
-            // want to store a team number in this file.
             team = project.frc.getTeamNumber()
             debug = project.frc.getDebugOrDefault(false)
-
             artifacts {
-                // First part is artifact name, 2nd is artifact type
-                // getTargetTypeClass is a shortcut to get the class type using a string
-
-                frcJava(getArtifactTypeClass('FRCJavaArtifact')) {
-                }
-
-                // Static files artifact
+                frcJava(getArtifactTypeClass('FRCJavaArtifact')) { }
                 frcStaticFileDeploy(getArtifactTypeClass('FileTreeArtifact')) {
                     files = project.fileTree('src/main/deploy')
                     directory = '/home/lvuser/deploy'
-                    deleteOldFiles = false // Change to true to delete files on roboRIO that no
-                                           // longer exist in deploy directory of this project
+                    deleteOldFiles = false
                 }
             }
         }
@@ -43,14 +36,10 @@ deploy {
 
 def deployArtifact = deploy.targets.roborio.artifacts.frcJava
 
-// Set to true to use debug for JNI.
+// Configure WPILib settings.
 wpi.java.debugJni = false
-
-// Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
-// Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
-// Also defines JUnit 5.
 dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()
     implementation wpi.java.deps.wpilib()
@@ -79,13 +68,11 @@ test {
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
 }
 
-// Simulation configuration (e.g. environment variables).
+// Simulation configuration.
 wpi.sim.addGui().defaultEnabled = true
 wpi.sim.addDriverstation()
 
-// Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
-// in order to make them all available at runtime. Also adding the manifest so WPILib
-// knows where to look for our Robot Class.
+// Configure the Jar as a fat jar with a manifest for WPILib.
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     from sourceSets.main.allSource
@@ -93,12 +80,84 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-// Configure jar and deploy tasks
+// Configure deploy tasks.
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
 
-// Configure string concat to always inline compile
+// Inline string concatenation configuration.
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+}
+
+// ----- Code Quality and Analysis Configuration -----
+
+// Checkstyle configuration.
+checkstyle {
+    toolVersion = '10.12.3'
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required.set(false)
+        html.required.set(true)
+    }
+}
+
+// Spotless configuration for code formatting.
+spotless {
+    java {
+        googleJavaFormat('1.15.0')
+        // Uncomment to enforce formatting failures:
+        // enforceCheck true
+    }
+}
+
+// PMD configuration for static analysis.
+pmd {
+    toolVersion = '6.55.0'
+    ruleSets = [] // Disable default rules if using custom rules.
+    ruleSetFiles = files('config/pmd/ruleset.xml')
+}
+tasks.withType(Pmd) {
+    reports {
+        xml.required.set(false)
+        html.required.set(true)
+    }
+}
+
+// SpotBugs configuration for bytecode analysis.
+// Dynamically attempt to load either SpotBugsTaskJava or SpotBugsTask.
+def spotbugsTaskClass = null
+try {
+    spotbugsTaskClass = Class.forName("com.github.spotbugs.SpotBugsTaskJava")
+} catch(Exception e1) {
+    try {
+        spotbugsTaskClass = Class.forName("com.github.spotbugs.SpotBugsTask")
+    } catch(Exception e2) {
+        logger.warn("Neither SpotBugsTaskJava nor SpotBugsTask class could be found; skipping SpotBugs configuration.")
+    }
+}
+if (spotbugsTaskClass != null) {
+    tasks.withType(spotbugsTaskClass) {
+        reports {
+            xml.required.set(false)
+            html.required.set(true)
+        }
+    }
+}
+
+// JaCoCo configuration for code coverage.
+jacoco {
+    toolVersion = "0.8.10"
+}
+test {
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
