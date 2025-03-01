@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.rmi.registry.RegistryHandler;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -78,9 +80,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearLeft.getPosition(),
         m_rearRight.getPosition()
     },
-    
-    new Pose2d(m_limeLightSubsystem.getBotPoseTest().getX(),m_limeLightSubsystem.getBotPoseTest().getY(),Rotation2d.fromDegrees(0))
-
+    new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d())
     );
     m_gyro.setYaw(0);
     // All other subsystem initialization
@@ -140,7 +140,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
-    SmartDashboard.putNumber("Driving Velocity", m_frontLeft.getEncoderVelocity());
+    // SmartDashboard.putNumber("Driving Velocity", m_frontLeft.getEncoderVelocity());
 
     // limeLightPoseUpdate();
     
@@ -208,15 +208,17 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
+  
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        },
-        new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble())));
+      Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
+      new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+      },
+      pose
+    );
   }
 
   public ChassisSpeeds getChassisSpeeds(){
@@ -293,29 +295,20 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void limeLightPoseUpdate() {
-    // boolean reject = false;
     // LimelightHelpers.SetRobotOrientation("limelight",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
-    // LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-    // if(Math.abs(m_gyro.getRate()) > 720)
-    //   reject = true;
-    // if(mt2.tagCount == 0)
-    //   reject = true;
-    // if(!reject)
-
-    //   m_odometry.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-    // m_odometry.addVisionMeasurement(m_limeLightSubsystem.getBotPoseTest(),Timer.getFPGATimestamp());
-    LimelightHelpers.SetRobotOrientation("limelight",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
-
-    boolean reject = false;
-    // if(Math.abs(getTurnRate()) > 720)
-      // reject = true;
-    if(m_limeLightSubsystem.getID() == 0)
-      reject = true;
-    if(!reject){
-      // Pose2d botPose = new Pose2d(m_limeLightSubsystem.getBotPoseTest().getX(), m_limeLightSubsystem.getBotPoseTest().getY(), Rotation2d.fromDegrees(getHeading()));
-      // resetOdometry(botPose);
-      m_odometry.addVisionMeasurement(m_limeLightSubsystem.getBotPoseTest(),Timer.getFPGATimestamp());
-    }
+    if(m_limeLightSubsystem.getRightID() != -1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
+    //m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()),Timer.getFPGATimestamp());
+    if(m_limeLightSubsystem.getTopID() != -1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
+  //m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()),Timer.getFPGATimestamp());
+  }
+  public Pose2d getLimeLightPose() {
+    if(m_limeLightSubsystem.getTopID() != -1)
+      return m_limeLightSubsystem.getBotPoseTopLL();
+    if(m_limeLightSubsystem.getRightID() != -1)
+      return m_limeLightSubsystem.getBotPoseRightLL();
+    return new Pose2d();
   }
 
   public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
@@ -361,32 +354,36 @@ public class DriveSubsystem extends SubsystemBase {
   //   return Commands.none();
   // }
 
-  public Pose2d findPathToPole(boolean isLeft){
-    Pose2d nearestPolePose = getPose();
+  public Pose2d getPolePose(boolean isLeft){
+    Pose2d nearestPolePose = new Pose2d();
     double nearestPolePoseDistance = 100000;
     Pose2d botpose = getPose();
-    double[] distances = new double[15];
-    if(DriverStation.getAlliance().get() == Alliance.Blue){
+    double[] distances = new double[24];
+    if(DriverStation.getAlliance().get() == Alliance.Red){
       for(int i = 6; i < 12; i++){
         Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
         double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
+        distances[i] = distance;
         if(distance < nearestPolePoseDistance){
           nearestPolePoseDistance = distance;
           nearestPolePose = polePose;
         }
       }
     }
-    else if(DriverStation.getAlliance().get() == Alliance.Red){
+    else if(DriverStation.getAlliance().get() == Alliance.Blue){
       for(int i = 17; i < 23; i++){
         Pose2d polePose = FieldConstants.reefPolePositions.get(i)[isLeft ? 0 : 1];
         double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
-        distances[i - 6] = distance;
+        distances[i] = distance;
         if(distance < nearestPolePoseDistance){
           nearestPolePoseDistance = distance;
           nearestPolePose = polePose;
         }
       }
     }
+    SmartDashboard.putNumber("botPoseX pole", botpose.getX());
+    SmartDashboard.putNumber("botPoseY pole", botpose.getY());
+    SmartDashboard.putNumber("botPoseRotation pole", botpose.getRotation().getDegrees());
     SmartDashboard.putNumber("polePathX", nearestPolePose.getX());
     SmartDashboard.putNumber("polePathY", nearestPolePose.getY());
     SmartDashboard.putNumber("polePathRotation", nearestPolePose.getRotation().getDegrees());

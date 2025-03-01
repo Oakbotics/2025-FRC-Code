@@ -5,25 +5,33 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.PIDTuningHelperCommands.*;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.IntakeCommandGroup;
+import frc.robot.commands.L2AlgaeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
+import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
-import frc.robot.commands.Middle3Piece;
 import frc.robot.commands.TestAuto;
 import frc.robot.commands.WristDownCommand;
 import frc.robot.commands.WristUpCommand;
+import frc.robot.commands.Autos.Bottom1Piece;
+import frc.robot.commands.Autos.Middle1Piece;
+import frc.robot.commands.Autos.Middle3Piece;
+import frc.robot.commands.Autos.Middle3PieceLL;
+import frc.robot.commands.Autos.Top1Piece;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -69,12 +77,16 @@ public class RobotContainer {
       m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Not in use
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-      m_driverController.povLeft().whileTrue(new VelocityTuningCommand(m_driveSubsystem)); // Not in use
+    m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d()))); // Not in use
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
-      // m_driverController.povRight() // Not in use
 
-    m_driverController.rightBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.findPathToPole(false), false));
-    m_driverController.leftBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.findPathToPole(true), false));
+      m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(180))); // Not in use
+
+    // m_driverController.rightBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(false), false));
+    // m_driverController.leftBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true), false));
+    m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_driveSubsystem.getPolePose(false)));
+    m_driverController.leftBumper().whileTrue(new InstantCommand(() -> m_driveSubsystem.getPolePose(true)));
+
 
     m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
     m_driverController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
@@ -82,15 +94,17 @@ public class RobotContainer {
     //Operator Controller
     m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
 
-      // m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
-      // m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
+      m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
+      m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
 
 
 
 }
   public Command getAutonomousCommand() {
       // return new PathPlannerAuto("3P Middle Top Bottom");
-      return new Middle3Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-  }
-  
+      // return new Top1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+      // return new Middle1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+      // return new Bottom1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+      return null;
+  } 
 }
