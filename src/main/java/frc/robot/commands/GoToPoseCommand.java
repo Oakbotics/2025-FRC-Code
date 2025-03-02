@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -37,7 +38,7 @@ public class GoToPoseCommand extends Command {
   @Override
   public void initialize() {
     Pose2d nearestPolePose = new Pose2d();
-    double nearestPolePoseDistance = 100000;
+    double nearestPolePoseDistance = Double.MAX_VALUE;
     Pose2d botpose = m_driveSubsystem.getPose();
     double[] distances = new double[24];
     if(DriverStation.getAlliance().get() == Alliance.Red){
@@ -62,12 +63,23 @@ public class GoToPoseCommand extends Command {
         }
       }
     }
+
+    SmartDashboard.putNumber("botPoseX pole", botpose.getX());
+    SmartDashboard.putNumber("botPoseY pole", botpose.getY());
+    SmartDashboard.putNumber("botPoseRotation pole", botpose.getRotation().getDegrees());
+    SmartDashboard.putNumber("polePathX", nearestPolePose.getX());
+    SmartDashboard.putNumber("polePathY", nearestPolePose.getY());
+    SmartDashboard.putNumber("polePathRotation", nearestPolePose.getRotation().getDegrees());
+    SmartDashboard.putNumberArray("distances", distances);
+    SmartDashboard.putBoolean("Red Allience?", DriverStation.getAlliance().get() == Alliance.Red);
     m_driveSubsystem.findPathToPose(nearestPolePose).schedule();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override

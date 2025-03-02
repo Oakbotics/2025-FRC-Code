@@ -85,7 +85,7 @@ public final class Constants {
       
       //Starting Position Constants:
       public static final Pose2d topStartingPose = new Pose2d(7.105, 6.171, Rotation2d.fromDegrees(180));
-      public static final Pose2d middleStartingPose = new Pose2d(7.181, 4.037, Rotation2d.fromDegrees(180));
+      public static final Pose2d middleStartingPose = new Pose2d(7.181 + 0.10, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
       public static final Pose2d bottomStartingPose = new Pose2d(7.085, 1.843, Rotation2d.fromDegrees(180));
   }
   @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -93,8 +93,8 @@ public final class Constants {
     //THE L4 BRANCH
     public static final HashMap<String, Double> l4 = new HashMap();
     static{
-      l4.put("elevator", 1.48);
-      l4.put("wrist", 145.0);
+      l4.put("elevator", 1.28);
+      l4.put("wrist", 180.0);
     }
 
     //THE L3 BRANCH

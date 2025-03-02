@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Set;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Constants.OIConstants;
@@ -33,6 +35,7 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -47,6 +50,7 @@ public class RobotContainer {
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  // Set<DriveSubsystem> subsystems = new Set(m_driveSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -78,15 +82,15 @@ public class RobotContainer {
       m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Not in use
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d()))); // Not in use
+    m_driverController.povLeft().onTrue((new InstantCommand(() -> m_driveSubsystem.setGyro(m_LimeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees())))); // Not in use
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
 
-      m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(180))); // Not in use
+      // m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(180))); // Not in use
 
     // m_driverController.rightBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(false), false));
     // m_driverController.leftBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true), false));
-    // m_driverController.rightBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, false));
-    // m_driverController.leftBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, true));
+    // m_driverController.rightBumper().whileTrue(new DeferredCommand(() -> m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(false)), null));
+    // m_driverController.leftBumper().whileTrue(new DeferredCommand(() -> m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true)), new Set<SubsystemBase>));
 
 
     m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
