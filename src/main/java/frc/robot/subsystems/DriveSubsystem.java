@@ -136,14 +136,14 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-    
+    LimelightHelpers.SetRobotOrientation("limelight-right",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
+    LimelightHelpers.SetRobotOrientation("limelight-top",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
+    // LimelightHelpers.SetRobotOrientation("limelight-right",180,0,0,0,0,0 );
+
+
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
-    SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
-    // SmartDashboard.putNumber("Driving Velocity", m_frontLeft.getEncoderVelocity());
-
-    // limeLightPoseUpdate();
-    
+    SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());    
   }
 
    /**
@@ -295,14 +295,13 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void limeLightPoseUpdate() {
-    // LimelightHelpers.SetRobotOrientation("limelight",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
-    if(m_limeLightSubsystem.getRightID() != -1)
+
+    if(m_limeLightSubsystem.getRightID() != -1){}
       resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
-    //m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()),Timer.getFPGATimestamp());
     if(m_limeLightSubsystem.getTopID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
-  //m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()),Timer.getFPGATimestamp());
   }
+
   public Pose2d getLimeLightPose() {
     if(m_limeLightSubsystem.getTopID() != -1)
       return m_limeLightSubsystem.getBotPoseTopLL();

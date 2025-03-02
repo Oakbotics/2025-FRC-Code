@@ -100,7 +100,7 @@ public final class Constants {
     //THE L3 BRANCH
     public static final HashMap<String, Double> l3 = new HashMap();
     static{
-      l3.put("elevator", 0.56);
+      l3.put("elevator", 0.58);
 
       l3.put("wrist", 185.0);
     }
@@ -108,13 +108,13 @@ public final class Constants {
     //THE L2 BRANCH
     public static final HashMap<String, Double> l2 = new HashMap();
     static{
-      l2.put("elevator", 0.08);
+      l2.put("elevator", 0.10);
       l2.put("wrist", 185.0);
     }
 
     public static final HashMap<String, Double> intake = new HashMap();
     static{
-      intake.put("elevator", 0.18);
+      intake.put("elevator", 0.16);
       intake.put("wrist", 22.0);
     }
 
@@ -256,7 +256,7 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 2;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

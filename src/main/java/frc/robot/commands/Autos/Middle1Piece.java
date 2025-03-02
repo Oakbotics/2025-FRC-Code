@@ -19,7 +19,7 @@ public class Middle1Piece extends SequentialCommandGroup {
             new InstantCommand(() -> m_driveSubsystem.resetOdometry(FieldConstants.middleStartingPose)),
             new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
             m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(21)[1]),
-            new CoralOuttakeCommand(m_intakeSubsystem)
+            new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1)
             // m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(12)[0]),
             // m_driveSubsystem.findPathToPose(FieldConstants.reefBranchE),
             // m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(12)[0]),

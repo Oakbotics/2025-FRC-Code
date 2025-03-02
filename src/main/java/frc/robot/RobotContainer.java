@@ -11,6 +11,7 @@ import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.PIDTuningHelperCommands.*;
 import frc.robot.commands.CoralOuttakeCommand;
+import frc.robot.commands.GoToPoseCommand;
 import frc.robot.commands.IntakeCommandGroup;
 import frc.robot.commands.L2AlgaeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
@@ -60,9 +61,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1), OIConstants.kDriveDeadband),
                 true),
             m_driveSubsystem));
   }
@@ -84,15 +85,16 @@ public class RobotContainer {
 
     // m_driverController.rightBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(false), false));
     // m_driverController.leftBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true), false));
-    m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_driveSubsystem.getPolePose(false)));
-    m_driverController.leftBumper().whileTrue(new InstantCommand(() -> m_driveSubsystem.getPolePose(true)));
+    // m_driverController.rightBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, false));
+    // m_driverController.leftBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, true));
 
 
     m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
-    m_driverController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
+    // m_driverController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
   
     //Operator Controller
     m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
+    m_operatorController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
 
       m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
       m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
@@ -103,8 +105,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
       // return new PathPlannerAuto("3P Middle Top Bottom");
       // return new Top1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-      // return new Middle1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+      return new Middle1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
       // return new Bottom1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-      return null;
   } 
 }
