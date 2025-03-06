@@ -72,7 +72,10 @@ public class GoToPoseCommand extends Command {
     SmartDashboard.putNumber("polePathRotation", nearestPolePose.getRotation().getDegrees());
     SmartDashboard.putNumberArray("distances", distances);
     SmartDashboard.putBoolean("Red Allience?", DriverStation.getAlliance().get() == Alliance.Red);
-    m_driveSubsystem.findPathToPose(nearestPolePose).schedule();
+    Command pathCommand = AutoBuilder.pathfindToPose(nearestPolePose, m_driveSubsystem.pathConstraints);
+    // Command findPathToPose = m_driveSubsystem.findPathToPose(nearestPolePose);
+    pathCommand.schedule();
+    // findPathToPose.execute();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -88,6 +91,6 @@ public class GoToPoseCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

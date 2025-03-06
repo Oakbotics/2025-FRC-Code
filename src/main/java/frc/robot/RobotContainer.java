@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import java.util.HashSet;
 import java.util.Set;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -38,6 +41,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
@@ -50,12 +55,14 @@ public class RobotContainer {
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
-  // Set<DriveSubsystem> subsystems = new Set(m_driveSubsystem);
-
+  Set<Subsystem> deferredSubsystemsSet = new HashSet<Subsystem>();
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    deferredSubsystemsSet.add(m_driveSubsystem);
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -87,11 +94,17 @@ public class RobotContainer {
 
       // m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(180))); // Not in use
 
-    // m_driverController.rightBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(false), false));
-    // m_driverController.leftBumper().whileTrue(m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true), false));
-    // m_driverController.rightBumper().whileTrue(new DeferredCommand(() -> m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(false)), null));
-    // m_driverController.leftBumper().whileTrue(new DeferredCommand(() -> m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true)), new Set<SubsystemBase>));
-
+    // m_driverController.rightBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, false));
+    // m_driverController.leftBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, true));
+    
+    //------------TO PLAY AROUND WITH AFTER MATCH:------------
+    // m_driverController.rightBumper().onTrue(new GoToPoseCommand(m_driveSubsystem, false));
+    // m_driverController.leftBumper().onTrue(new GoToPoseCommand(m_driveSubsystem, true));
+    m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(() -> m_driveSubsystem.getPolePose(true)));
+    m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(() -> m_driveSubsystem.getPolePose(false)));
+    
+    // m_driverController.leftBumper().whileTrue(new DeferredCommand(() -> m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true)), deferredSubsystemsSet));
+    
 
     m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
     // m_driverController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));

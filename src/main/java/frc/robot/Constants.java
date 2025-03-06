@@ -85,7 +85,7 @@ public final class Constants {
       
       //Starting Position Constants:
       public static final Pose2d topStartingPose = new Pose2d(7.105, 6.171, Rotation2d.fromDegrees(180));
-      public static final Pose2d middleStartingPose = new Pose2d(7.181 + 0.10, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
+      public static final Pose2d middleStartingPose = new Pose2d(7.181, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
       public static final Pose2d bottomStartingPose = new Pose2d(7.085, 1.843, Rotation2d.fromDegrees(180));
   }
   @SuppressWarnings({ "rawtypes", "unchecked" })

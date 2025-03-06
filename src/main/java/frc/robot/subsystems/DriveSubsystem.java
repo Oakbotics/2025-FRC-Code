@@ -5,14 +5,20 @@
 package frc.robot.subsystems;
 
 import java.rmi.registry.RegistryHandler;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPoint;
+import com.pathplanner.lib.path.Waypoint;
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -33,6 +39,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -64,7 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.GyroCanId);
   // Odometry class for tracking robot pose
   SwerveDrivePoseEstimator m_odometry;
-  PathConstraints pathConstraints = new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared, AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared);
+  public PathConstraints pathConstraints = new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared, AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared);
 
   
   /** Creates a new DriveSubsystem. */
@@ -340,12 +347,30 @@ public class DriveSubsystem extends SubsystemBase {
     // if(isRedAlliance)
     //   return AutoBuilder.pathfindToPoseFlipped(pose, pathConstraints);
     // else 
-      return AutoBuilder.pathfindToPose(pose, pathConstraints);
+    return AutoBuilder.pathfindToPose(pose, pathConstraints);
   }
 
-  public Command findPath(PathPlannerPath path) {
-    return AutoBuilder.pathfindThenFollowPath(path, pathConstraints);
+  public PathPlannerPath createPathToPose(Supplier<Pose2d> pose){
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      getPose(),
+      pose.get()
+    );
+    PathPlannerPath path = new PathPlannerPath(waypoints, pathConstraints, null, new GoalEndState(0,pose.get().getRotation()));
+    // PathPlannerPath path = PathPlannerPath.fromPathPoints(waypoints, pathConstraints, null);
+    return path;
   }
+
+  public Command findPath(Supplier<PathPlannerPath> path) {
+    return new DeferredCommand(() -> {
+      return AutoBuilder.pathfindThenFollowPath(path.get(), pathConstraints);
+    }
+    , Set.of(this));
+  }
+
+  public Command findPathToPole(Supplier<Pose2d> pose) {
+    return findPath(() -> createPathToPose(pose));
+  }
+
     // OLD SOLUTION
   // public Command findPathToPole(boolean isLeft){
   //   limeLightPoseUpdate();
