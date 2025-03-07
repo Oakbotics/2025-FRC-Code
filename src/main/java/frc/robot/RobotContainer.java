@@ -134,7 +134,7 @@ public class RobotContainer {
     // m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true)),
     // deferredSubsystemsSet));
 
-    // m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
+    m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
     // m_driverController.leftTrigger().whileTrue(new
     // CoralIntakeCommand(m_intakeSubsytem));
 

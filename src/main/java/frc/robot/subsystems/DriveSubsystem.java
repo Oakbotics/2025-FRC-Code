@@ -348,13 +348,16 @@ public class DriveSubsystem extends SubsystemBase {
     else 
       return AutoBuilder.pathfindToPose(pose, pathConstraints);
   }
-  
+
   public Command findPathToPose(Pose2d pose) {
     return Commands.defer(() -> AutoBuilder.pathfindToPose(pose, pathConstraints), Set.of(this));
   }
 
   public Command findPathToPole(boolean isLeft) {
     return Commands.defer(() -> AutoBuilder.pathfindToPose(getPolePose(isLeft), pathConstraints), Set.of(this));
+  }
+  public Command findPathToPoleAuto(boolean isLeft) {
+    return  AutoBuilder.pathfindToPose(getPolePose(isLeft), pathConstraints);
   }
 
     // OLD SOLUTION
