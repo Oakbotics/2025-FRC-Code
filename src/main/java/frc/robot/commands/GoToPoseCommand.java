@@ -74,14 +74,16 @@ public class GoToPoseCommand extends Command {
     SmartDashboard.putBoolean("Red Allience?", DriverStation.getAlliance().get() == Alliance.Red);
     Command pathCommand = AutoBuilder.pathfindToPose(nearestPolePose, m_driveSubsystem.pathConstraints);
     // Command findPathToPose = m_driveSubsystem.findPathToPose(nearestPolePose);
-    pathCommand.schedule();
     // findPathToPose.execute();
+    pathCommand.schedule();
+    SmartDashboard.putBoolean("Go to Pose command is Schedualed", pathCommand.isScheduled());
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    
   }
 
   // Called once the command ends or is interrupted.

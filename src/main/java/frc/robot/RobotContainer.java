@@ -28,6 +28,7 @@ import frc.robot.commands.WristDownCommand;
 import frc.robot.commands.WristUpCommand;
 import frc.robot.commands.Autos.Bottom1Piece;
 import frc.robot.commands.Autos.Middle1Piece;
+import frc.robot.commands.Autos.Middle1PieceLL;
 import frc.robot.commands.Autos.Middle3Piece;
 import frc.robot.commands.Autos.Middle3PieceLL;
 import frc.robot.commands.Autos.Top1Piece;
@@ -56,7 +57,7 @@ public class RobotContainer {
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
   Set<Subsystem> deferredSubsystemsSet = new HashSet<Subsystem>();
-  
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -64,7 +65,6 @@ public class RobotContainer {
     deferredSubsystemsSet.add(m_driveSubsystem);
 
     // Configure the button bindings
-    configureButtonBindings();
 
     // Configure default commands
     m_driveSubsystem.setDefaultCommand(
@@ -72,57 +72,89 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(
+                    m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                    OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(
+                    m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                    OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(
+                    m_driverController.getRightX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                    OIConstants.kDriveDeadband),
                 true),
             m_driveSubsystem));
+            
+      configureButtonBindings();
+
   }
+
   private void configureButtonBindings() {
-  
-    //Driver Controller
+
+    // Driver Controller
     m_driverController.a().onTrue(new L2ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L2 Scoring
-    m_driverController.y().onTrue(new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); //L4 Scoring
-    // m_driverController.y().onTrue(new WristUpCommand(m_wristSubsystem)); //L4 Scoring
-      m_driverController.x().onTrue(new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); //L3 Scoring
-      // m_driverController.a().onTrue(new WristDownCommand(m_wristSubsystem)); // L2 Scoring
-      m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Not in use
+    m_driverController.y().onTrue(new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L4 Scoring
+    // m_driverController.y().onTrue(new WristUpCommand(m_wristSubsystem)); //L4
+    // Scoring
+    m_driverController.x().onTrue(new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L3 Scoring
+    // m_driverController.a().onTrue(new WristDownCommand(m_wristSubsystem)); // L2
+    // Scoring
+    m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Not in use
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    m_driverController.povLeft().onTrue((new InstantCommand(() -> m_driveSubsystem.setGyro(m_LimeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees())))); // Not in use
+    m_driverController.povLeft().onTrue((new InstantCommand(
+        () -> m_driveSubsystem.gyroLimelightReset()))); // Not
+                                                        // in
+                                                        // use
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
+    m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
+    // m_driverController.povRight().onTrue(new InstantCommand(() ->
+    // m_driveSubsystem.setGyro(180))); // Not in use
 
-      // m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(180))); // Not in use
+    // m_driverController.rightBumper().whileTrue(new
+    // GoToPoseCommand(m_driveSubsystem, false));
+    // m_driverController.leftBumper().whileTrue(new
+    // GoToPoseCommand(m_driveSubsystem, true));
 
-    // m_driverController.rightBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, false));
-    // m_driverController.leftBumper().whileTrue(new GoToPoseCommand(m_driveSubsystem, true));
-    
-    //------------TO PLAY AROUND WITH AFTER MATCH:------------
-    // m_driverController.rightBumper().onTrue(new GoToPoseCommand(m_driveSubsystem, false));
-    // m_driverController.leftBumper().onTrue(new GoToPoseCommand(m_driveSubsystem, true));
-    m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(() -> m_driveSubsystem.getPolePose(true)));
-    m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(() -> m_driveSubsystem.getPolePose(false)));
-    
-    // m_driverController.leftBumper().whileTrue(new DeferredCommand(() -> m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true)), deferredSubsystemsSet));
-    
+    // ------------TO PLAY AROUND WITH AFTER MATCH:------------
+    m_driverController.rightBumper().onTrue(
+        m_driveSubsystem.findPathToPole(false));
+    m_driverController.leftBumper().onTrue(
+        m_driveSubsystem.findPathToPole(true));
 
-    m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
-    // m_driverController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
-  
-    //Operator Controller
+    // m_driverController.rightBumper().onTrue(new DeferredCommand(() -> 
+    //   m_driveSubsystem.findPathToPole(m_driveSubsystem.getPolePose(false)),
+    //   Set.of(m_driveSubsystem)));
+    // m_driverController.leftBumper().onTrue(new DeferredCommand(() -> 
+    //   m_driveSubsystem.findPathToPole(m_driveSubsystem.getPolePose(true)),
+    //   Set.of(m_driveSubsystem)));
+
+    // m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(() -> m_driveSubsystem.getPolePose(true)));
+    // m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(() -> m_driveSubsystem.getPolePose(false)));
+    // m_driverController.leftBumper().whileTrue(new DeferredCommand(() ->
+    // m_driveSubsystem.findPathToPose(m_driveSubsystem.getPolePose(true)),
+    // deferredSubsystemsSet));
+
+    // m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
+    // m_driverController.leftTrigger().whileTrue(new
+    // CoralIntakeCommand(m_intakeSubsytem));
+
+    // Operator Controller
     m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
     m_operatorController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
 
-      m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
-      m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
+    m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out
+                                                                                                     // Postion L2
+    m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out
+                                                                                                     // Postion L3
 
+  }
 
-
-}
   public Command getAutonomousCommand() {
-      // return new PathPlannerAuto("3P Middle Top Bottom");
-      // return new Top1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-      return new Middle1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-      // return new Bottom1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-  } 
+    // return new PathPlannerAuto("3P Middle Top Bottom");
+    // return new Top1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem,
+    // m_intakeSubsytem);
+    return new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_LimeLightSubsystem);
+    // return new Bottom1Piece(m_driveSubsystem, m_elevatorSubsystem,
+    // m_wristSubsystem, m_intakeSubsytem);
+  }
 }

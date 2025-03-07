@@ -52,7 +52,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   public Pose2d getBotPoseRightLL(){
     double[] botRotArray = m_limeLightRightTable.getEntry("botpose").getDoubleArray(new double[10]); 
     double[] botPoseArray = m_limeLightRightTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
-    Pose2d botPose;
+    Pose2d botPose = new Pose2d();
     // SmartDashboard.putNumber("LimelightX", botPoseArray);
     // SmartDashboard.putNumber("LimelightY", ty);
     // SmartDashboard.putNumber("LimelightArea", ta);
@@ -60,11 +60,13 @@ public class LimeLightSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("botpose", tbotpose);
     if(getRightID() !=-1){
       if(DriverStation.getAlliance().get() == Alliance.Red)  botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botRotArray[5] + 180));
-      else botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botRotArray[5]));
-      m_field.setRobotPose(botPose);  
+      else botPose = new Pose2d(botPoseArray[0] + 8.7736, botPoseArray[1] + 4.0257, Rotation2d.fromDegrees(botRotArray[5]));
+      SmartDashboard.putNumber("LimelightX", botPose.getX());
+      SmartDashboard.putNumber("LimelightY", botPose.getY());
+      // m_field.setRobotPose(botPose);  
       return botPose;
     }
-    return new Pose2d();
+    return botPose;
   }
 
   public Pose2d getBotPoseTopLL(){

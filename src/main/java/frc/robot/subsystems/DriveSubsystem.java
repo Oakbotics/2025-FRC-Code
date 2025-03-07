@@ -39,6 +39,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -148,7 +150,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
-    SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());    
+    SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
   }
 
    /**
@@ -317,7 +319,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void limeLightPoseUpdate() {
 
-    if(m_limeLightSubsystem.getRightID() != -1){}
+    if(m_limeLightSubsystem.getRightID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
     if(m_limeLightSubsystem.getTopID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
@@ -331,6 +333,11 @@ public class DriveSubsystem extends SubsystemBase {
     return new Pose2d();
   }
 
+  public void gyroLimelightReset(){
+    if(DriverStation.getAlliance().get() == Alliance.Red) setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees() + 180);
+    else setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees());
+  }
+
   public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
     return findPathToPose(new Pose2d(x, y, Rotation2d.fromDegrees(rotation)), isRedAlliance);
   }
@@ -341,34 +348,13 @@ public class DriveSubsystem extends SubsystemBase {
     else 
       return AutoBuilder.pathfindToPose(pose, pathConstraints);
   }
+  
   public Command findPathToPose(Pose2d pose) {
-    // boolean isRedAlliance = DriverStation.getAlliance().get() == Alliance.Red;
-    // SmartDashboard.putBoolean("is Red", isRedAlliance);
-    // if(isRedAlliance)
-    //   return AutoBuilder.pathfindToPoseFlipped(pose, pathConstraints);
-    // else 
-    return AutoBuilder.pathfindToPose(pose, pathConstraints);
+    return Commands.defer(() -> AutoBuilder.pathfindToPose(pose, pathConstraints), Set.of(this));
   }
 
-  public PathPlannerPath createPathToPose(Supplier<Pose2d> pose){
-    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      getPose(),
-      pose.get()
-    );
-    PathPlannerPath path = new PathPlannerPath(waypoints, pathConstraints, null, new GoalEndState(0,pose.get().getRotation()));
-    // PathPlannerPath path = PathPlannerPath.fromPathPoints(waypoints, pathConstraints, null);
-    return path;
-  }
-
-  public Command findPath(Supplier<PathPlannerPath> path) {
-    return new DeferredCommand(() -> {
-      return AutoBuilder.pathfindThenFollowPath(path.get(), pathConstraints);
-    }
-    , Set.of(this));
-  }
-
-  public Command findPathToPole(Supplier<Pose2d> pose) {
-    return findPath(() -> createPathToPose(pose));
+  public Command findPathToPole(boolean isLeft) {
+    return Commands.defer(() -> AutoBuilder.pathfindToPose(getPolePose(isLeft), pathConstraints), Set.of(this));
   }
 
     // OLD SOLUTION
