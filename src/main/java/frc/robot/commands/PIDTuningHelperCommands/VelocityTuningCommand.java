@@ -6,7 +6,6 @@ package frc.robot.commands.PIDTuningHelperCommands;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;

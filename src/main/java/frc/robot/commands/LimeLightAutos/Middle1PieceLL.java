@@ -1,5 +1,5 @@
-package frc.robot.commands.Autos;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+package frc.robot.commands.LimeLightAutos;
+
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;

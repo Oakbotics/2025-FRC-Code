@@ -110,7 +110,6 @@ public class MAXSwerveModule {
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
     correctedDesiredState.optimize(new Rotation2d(m_turningEncoder.getPosition()));
-    SwerveModuleState optimizedDesiredState = correctedDesiredState;
     
     driveSetPoint = correctedDesiredState.speedMetersPerSecond;
     arbFF = driveFeedForward.calculate(driveSetPoint, (driveSetPoint - lastDriveSetPoint) * 50);

@@ -1,10 +1,8 @@
 package frc.robot;
 
-import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.util.Units;
@@ -66,8 +64,6 @@ public final class Configs {
         
         
         static{
-                double absoluteEncoderFactor = 2 * Math.PI;
-
                 elevatorConfig
                     .closedLoopRampRate(0.1)
                     .idleMode(IdleMode.kBrake)
@@ -75,7 +71,6 @@ public final class Configs {
                 elevatorConfig.encoder
                     .positionConversionFactor(360)
                     .velocityConversionFactor(1);
-            
                 /*
                  * Configure the closed loop controller. We want to make sure we set the
                  * feedback sensor as the primary encoder.
@@ -86,13 +81,7 @@ public final class Configs {
                     // slot, as it will default to slot 0.
                     .p(0.001)
                     .i(0)
-                    .d(0)
-                    .outputRange(-0.5, 0.5);
-                    // .apply(new MAXMotionConfig().positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal));
-                    // .maxMotion
-                    //     .maxVelocity(1)
-                    //     .maxAcceleration(1)
-                    //     .positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
+                    .d(0);
                 elevatorFollowerConfig
                     .apply(elevatorConfig)
                     .follow(ElevatorConstants.elevatorMotorRightCanId, true);

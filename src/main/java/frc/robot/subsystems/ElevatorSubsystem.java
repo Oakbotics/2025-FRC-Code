@@ -25,7 +25,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final RelativeEncoder m_elevatorEncoderLeft;
   private final RelativeEncoder m_elevatorEncoderRight;
   // Creates a PIDController with gains kP, kI, and kD
-  private SparkClosedLoopController m_elevatorControllerLeft;
+  // private SparkClosedLoopController m_elevatorControllerLeft;
   private SparkClosedLoopController m_elevatorControllerRight;
   
   /** Creates a new ExampleSubsystem. */

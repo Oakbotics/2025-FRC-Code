@@ -65,13 +65,13 @@ public final class Constants {
         reefPolePositions.put(7, new Pose2d[]{new Pose2d(14.426, 3.859,Rotation2d.fromDegrees(0)), new Pose2d(14.337, 4.190,Rotation2d.fromDegrees(0))});
         reefPolePositions.put(8, new Pose2d[]{new Pose2d(13.884, 5.015,Rotation2d.fromDegrees(60)), new Pose2d(13.567, 5.216,Rotation2d.fromDegrees(60))});
         reefPolePositions.put(9, new Pose2d[]{new Pose2d(12.534, 5.216,Rotation2d.fromDegrees(120)), new Pose2d(12.265, 5.041,Rotation2d.fromDegrees(120))});
-        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.771, 4.165,Rotation2d.fromDegrees(0)), new Pose2d(11.744, 3.859,Rotation2d.fromDegrees(0))});
+        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.771, 4.165,Rotation2d.fromDegrees(0)), new Pose2d(11.773, 3.859,Rotation2d.fromDegrees(0))});
         reefPolePositions.put(11, new Pose2d[]{new Pose2d(12.223, 3.049,Rotation2d.fromDegrees(-120)), new Pose2d(12.545, 2.854,Rotation2d.fromDegrees(-120))});
         reefPolePositions.put(17, new Pose2d[]{new Pose2d(3.706, 3.016,Rotation2d.fromDegrees(60)), new Pose2d(3.983, 2.865,Rotation2d.fromDegrees(60))});
-        reefPolePositions.put(18, new Pose2d[]{new Pose2d(3.141, 4.205,Rotation2d.fromDegrees(0)), new Pose2d(3.218, 3.900,Rotation2d.fromDegrees(0))});
+        reefPolePositions.put(18, new Pose2d[]{new Pose2d(3.180, 4.180,Rotation2d.fromDegrees(0)), new Pose2d(3.180, 3.850,Rotation2d.fromDegrees(0))});
         reefPolePositions.put(19, new Pose2d[]{new Pose2d(3.950, 5.202,Rotation2d.fromDegrees(-60)), new Pose2d(3.722, 5.050,Rotation2d.fromDegrees(-60))});
         reefPolePositions.put(20, new Pose2d[]{new Pose2d(5.263, 5.033,Rotation2d.fromDegrees(-120)), new Pose2d(4.964, 5.213,Rotation2d.fromDegrees(-120))});
-        reefPolePositions.put(21, new Pose2d[]{new Pose2d(5.717, 3.848,Rotation2d.fromDegrees(180)), new Pose2d(5.717, 4.171,Rotation2d.fromDegrees(180))});
+        reefPolePositions.put(21, new Pose2d[]{new Pose2d(5.717, 3.848,Rotation2d.fromDegrees(180)), new Pose2d(5.783, 4.171,Rotation2d.fromDegrees(180))});
         reefPolePositions.put(22, new Pose2d[]{new Pose2d(4.964, 2.837,Rotation2d.fromDegrees(120)), new Pose2d(5.241, 2.984,Rotation2d.fromDegrees(120))});
       }
       public static final HashMap<Integer, Pose2d[]> coralStationPosition = new HashMap();
@@ -85,7 +85,7 @@ public final class Constants {
       
       //Starting Position Constants:
       public static final Pose2d topStartingPose = new Pose2d(7.105, 6.171, Rotation2d.fromDegrees(180));
-      public static final Pose2d middleStartingPose = new Pose2d(7.181, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
+      public static final Pose2d middleStartingPose = new Pose2d(7.181 + 0.10, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
       public static final Pose2d bottomStartingPose = new Pose2d(7.085, 1.843, Rotation2d.fromDegrees(180));
   }
   @SuppressWarnings({ "rawtypes", "unchecked" })
