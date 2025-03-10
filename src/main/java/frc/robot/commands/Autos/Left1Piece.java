@@ -10,13 +10,13 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.L4ScoreCommandGroup;
 
-public class Bottom1Piece extends SequentialCommandGroup {
-    public Bottom1Piece(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem){
+public class Left1Piece extends SequentialCommandGroup {
+    public Left1Piece(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem){
         addCommands(
             new InstantCommand(() -> m_driveSubsystem.setGyro(180.0)),
-            new InstantCommand(() -> m_driveSubsystem.resetOdometry(FieldConstants.bottomStartingPose)),
+            new InstantCommand(() -> m_driveSubsystem.resetOdometry(FieldConstants.topStartingPose)),
             new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-            m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(22)[0]),
+            m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1]),
             new CoralOuttakeCommand(m_intakeSubsystem)
             // m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(12)[0]),
             // m_driveSubsystem.findPathToPose(FieldConstants.reefBranchE),

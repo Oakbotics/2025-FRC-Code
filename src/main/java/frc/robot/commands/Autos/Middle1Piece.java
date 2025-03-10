@@ -22,10 +22,7 @@ public class Middle1Piece extends SequentialCommandGroup {
             m_driveSubsystem.findPathToPose(new Pose2d(FieldConstants.reefPolePositions.get(21)[1].getX() + 0.15, FieldConstants.reefPolePositions.get(21)[1].getY(), FieldConstants.reefPolePositions.get(21)[1].getRotation())).withTimeout(5),
             new WaitCommand(5),
             new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1)
-            // m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(12)[0]),
-            // m_driveSubsystem.findPathToPose(FieldConstants.reefBranchE),
-            // m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(12)[0]),
-            // m_driveSubsystem.findPathToPose(FieldConstants.reefBranchF)
+
         );
     }
 }
