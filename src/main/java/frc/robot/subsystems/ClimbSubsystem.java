@@ -5,12 +5,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,6 +46,11 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void setSpeed(double speed){
     climbMotorTop.set(speed);
+  }
+
+  public void setServo(double position) {
+    climbMotorServoTop.set(position);
+    climbMotorServoBottom.set(position);
   }
   /**
    * Example command factory method.
