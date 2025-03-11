@@ -183,6 +183,8 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final int coralMotorCANID = 14;
     public static final int algaeMotorCANID = 13;
+    public static final int funnelIntakeSensor = 17;
+    public static final int wristIntakeSensor = 18;
   }
 
   public static final class DriveConstants {

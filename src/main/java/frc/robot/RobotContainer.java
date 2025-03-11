@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
@@ -18,6 +19,7 @@ import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.LimeLightAutos.Middle1PieceLL;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.FunnelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
@@ -25,14 +27,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
   // The robot's subsystems
-  private final LimeLightSubsystem m_LimeLightSubsystem = new LimeLightSubsystem();
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_LimeLightSubsystem);
+  private final LimeLightSubsystem m_limeLightSubsystem = new LimeLightSubsystem();
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_limeLightSubsystem);
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
   private final WristSubsystem m_wristSubsystem = new WristSubsystem();
   private final IntakeSubsystem m_intakeSubsytem = new IntakeSubsystem();
+  private final FunnelSubsystem m_funnelSubsystem = new FunnelSubsystem();
   // The drivers controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -60,6 +64,20 @@ public class RobotContainer {
       );
       // Configure the button bindings  
       configureButtonBindings();
+
+      new Trigger(() -> m_intakeSubsytem.isCoralOnWrist())
+        .onTrue(new RunCommand(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 1.0)).withTimeout(1.0)
+        .andThen(new RunCommand(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 0.0)))
+      );
+
+      new Trigger(() -> m_intakeSubsytem.isCoralOnWrist())
+      .onTrue(new RunCommand(() -> m_driverController.setRumble(RumbleType.kBothRumble, 1.0)).withTimeout(1.0)
+      .andThen(new RunCommand(() -> m_driverController.setRumble(RumbleType.kBothRumble, 0.0)))
+      );
+
+      new Trigger(() -> (!m_intakeSubsytem.isCoralOnWrist() && m_funnelSubsystem.isCoralInFunnel()))
+        .onTrue(new CoralIntakeCommand(m_intakeSubsytem).withTimeout(3.0)
+      );
 
   }
 
@@ -96,6 +114,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_LimeLightSubsystem);
+    return new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
   }
 }

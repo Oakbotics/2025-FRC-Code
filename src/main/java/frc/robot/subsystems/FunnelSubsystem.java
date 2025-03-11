@@ -4,68 +4,52 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkMax;
-
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
-
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Configs.AlgaeConfigs;
-import frc.robot.Configs.CoralConfigs;
+import frc.robot.Constants.FunnelConstants;
 import frc.robot.Constants.IntakeConstants;
 
-
-
-public class IntakeSubsystem extends SubsystemBase {
-  SparkMax coralMotor;
-  SparkMax algaeMotor;
-
-
-  LaserCan wristIntakeSensor;
+public class FunnelSubsystem extends SubsystemBase {
+  LaserCan funnelIntakeSensor;
+  Servo funnelServo;
   /** Creates a new ExampleSubsystem. */
-  public IntakeSubsystem() {
-    coralMotor = new SparkMax(IntakeConstants.coralMotorCANID, MotorType.kBrushless);
-    algaeMotor = new SparkMax(IntakeConstants.algaeMotorCANID, MotorType.kBrushless);
-
-    wristIntakeSensor = new LaserCan(IntakeConstants.wristIntakeSensor);
-
-    coralMotor.configure(CoralConfigs.coralConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    algaeMotor.configure(AlgaeConfigs.algaeConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  public FunnelSubsystem() {
+    funnelServo = new Servo(FunnelConstants.funnelServo);
+    funnelIntakeSensor = new LaserCan(IntakeConstants.funnelIntakeSensor);
 
     try {
-      wristIntakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
-      wristIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,4,4 ));
-      wristIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+      funnelIntakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
+      funnelIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,4,4 ));
+      funnelIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
     } catch (ConfigurationFailedException e) {
       e.printStackTrace();
     }
   }
 
-  
+  /**
+   * Example command factory method.
+   *
+   * @return a command
+   */
+
   public double getSensorValue(){
-    Measurement measurment = wristIntakeSensor.getMeasurement();
+    Measurement measurment = funnelIntakeSensor.getMeasurement();
     if(measurment != null){
       return measurment.distance_mm;
     }
     return -1;
   }
 
-  public boolean isCoralOnWrist(){
-    return (getSensorValue() < 5);
-  }
+   public boolean isCoralInFunnel(){
+    return (getSensorValue() < 50);
+   }
 
-  public void setAlgaeMotorSpeed(double speed){
-    algaeMotor.set(speed);
-  }
-
-  public void setCoralMotorSpeed(double speed){
-    coralMotor.set(speed);
+  public void openFunnel(){
+    funnelServo.set(0);
   }
 
   public Command exampleMethodCommand() {
