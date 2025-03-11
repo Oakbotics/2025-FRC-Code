@@ -217,21 +217,7 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  public void resetOdometryLL(Pose2d pose) {
-    m_gyro.setYaw(pose.getRotation().getDegrees());
 
-    m_odometry.resetPosition(
-      Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
-      // pose.getRotation(),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      },
-      new Pose2d(pose.getX(), pose.getY(), m_gyro.getRotation2d())
-    );
-  }
   public ChassisSpeeds getChassisSpeeds(){
     // SwerveModuleState[] swerveModuleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
     return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
@@ -325,48 +311,28 @@ public class DriveSubsystem extends SubsystemBase {
     if(DriverStation.getAlliance().get() == Alliance.Red) setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees() + 180);
     else setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees());
   }
-
-  public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
-    return findPathToPose(new Pose2d(x, y, Rotation2d.fromDegrees(rotation)), isRedAlliance);
-  }
-
-  public Command findPathToPose(Pose2d pose, boolean isRedAlliance) {    
-    if(isRedAlliance)
-      return AutoBuilder.pathfindToPoseFlipped(pose, pathConstraints);
-    else 
-      return AutoBuilder.pathfindToPose(pose, pathConstraints);
-  }
-
+  /**
+   *  creates defered command from auto build to pose
+   * @param pose goal position
+   * @return drive command
+   */
   public Command findPathToPose(Pose2d pose) {
     return Commands.defer(() -> AutoBuilder.pathfindToPose(pose, pathConstraints), Set.of(this));
   }
-
+  /**
+   * Creates a defered command from auto builder to drive to nearest pole
+   * @param isLeft left or right pole
+   * @return drive command
+   */
   public Command findPathToPole(boolean isLeft) {
     return Commands.defer(() -> AutoBuilder.pathfindToPose(getPolePose(isLeft), pathConstraints), Set.of(this));
   }
-  public Command findPathToPoleAuto(boolean isLeft) {
-    return  AutoBuilder.pathfindToPose(getPolePose(isLeft), pathConstraints);
-  }
 
-    // OLD SOLUTION
-  // public Command findPathToPole(boolean isLeft){
-  //   limeLightPoseUpdate();
-  //   int aprilTagID = -1;
-  //   aprilTagID = m_limeLightSubsystem.getID();
-  //   Pose2d polePose = getPose();
-  //   if (aprilTagID != -1){ 
-  //     polePose = FieldConstants.reefPolePositions.get(aprilTagID)[isLeft ? 0 : 1];
-
-  //     SmartDashboard.putNumber("polePathX", polePose.getX());
-  //     SmartDashboard.putNumber("polePathY", polePose.getY());
-  //     SmartDashboard.putNumber("polePathRotation", polePose.getRotation().getDegrees());
-  //     SmartDashboard.putNumber("polePathID", aprilTagID);
-
-  //     return AutoBuilder.pathfindToPose(polePose, pathConstraints);
-  //   }
-  //   return Commands.none();
-  // }
-
+  /**
+   * Calculates and returns the nearest poles position from pre defined hashmap relative to odometry pose at time of calling
+   * @param isLeft left or right pole 
+   * @return pole pose
+   */
   public Pose2d getPolePose(boolean isLeft){
     Pose2d nearestPolePose = new Pose2d();
     double nearestPolePoseDistance = Double.MAX_VALUE;
@@ -394,15 +360,6 @@ public class DriveSubsystem extends SubsystemBase {
         }
       }
     }
-    SmartDashboard.putNumber("botPoseX pole", botpose.getX());
-    SmartDashboard.putNumber("botPoseY pole", botpose.getY());
-    SmartDashboard.putNumber("botPoseRotation pole", botpose.getRotation().getDegrees());
-    SmartDashboard.putNumber("polePathX", nearestPolePose.getX());
-    SmartDashboard.putNumber("polePathY", nearestPolePose.getY());
-    SmartDashboard.putNumber("polePathRotation", nearestPolePose.getRotation().getDegrees());
-    SmartDashboard.putNumberArray("distances", distances);
-    SmartDashboard.putBoolean("Red Allience?", DriverStation.getAlliance().get() == Alliance.Red);
-
     return nearestPolePose;
   }
 }
