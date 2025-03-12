@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimeLightSubsystem extends SubsystemBase {
@@ -21,7 +20,7 @@ public class LimeLightSubsystem extends SubsystemBase {
    public NetworkTable m_limeLightTopTable;
   public Pose2d m_closestTagPose;
   // Limelight Left: http://10.37.39.11:5801/
-  //Limelight Right: 
+  //Limelight Right: http://10.37.39.12:5801/
   
   private final Field2d m_field = new Field2d();
   /** Creates a new LimeLightSubsystem. */
@@ -32,23 +31,6 @@ public class LimeLightSubsystem extends SubsystemBase {
     SmartDashboard.putData("Field", m_field);
 
   }
-  
-  // public Pose2d getBotPose(){
-  //   double tx = m_limeLightTable.getEntry("tx").getDouble(0);
-  //   double ty = m_limeLightTable.getEntry("ty").getDouble(0);
-  //   double ta = m_limeLightTable.getEntry("ta").getDouble(0);
-  //   double tid = m_limeLightTable.getEntry("tid").getDouble(0);
-  //   double tbotpose = m_limeLightTable.getEntry("botpose[0]").getDouble(0);
-    
-  //   SmartDashboard.putNumber("LimelightX", tx);
-  //   SmartDashboard.putNumber("LimelightY", ty);
-  //   SmartDashboard.putNumber("LimelightArea", ta);
-  //   SmartDashboard.putNumber("AprilTagID", tid);
-  //   SmartDashboard.putNumber("botpose", tbotpose);
-
-  //   return new Pose2d(tx, ty, Rotation2d.fromDegrees(ta));   
-  // }
-  
   public Pose2d getBotPoseRightLL(){
     double[] botRotArray = m_limeLightRightTable.getEntry("botpose").getDoubleArray(new double[10]); 
     double[] botPoseArray = m_limeLightRightTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
@@ -105,29 +87,8 @@ public class LimeLightSubsystem extends SubsystemBase {
   //   }
   // }
 
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
-
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    //getBotPose();
     getBotPoseRightLL();
     getBotPoseTopLL();
   }
