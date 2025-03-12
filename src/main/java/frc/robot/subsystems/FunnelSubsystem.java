@@ -31,11 +31,10 @@ public class FunnelSubsystem extends SubsystemBase {
   }
 
   /**
-   * Example command factory method.
+   * gets the sensor mesurments
    *
-   * @return a command
+   * @return mesurements in millimeters
    */
-
   public double getSensorValue(){
     Measurement measurment = funnelIntakeSensor.getMeasurement();
     if(measurment != null){
@@ -44,10 +43,18 @@ public class FunnelSubsystem extends SubsystemBase {
     return -1;
   }
 
+  /**
+   * Uses the sensor to tell if there is a coral in the funnel. If there is a corale we DO NOT want to open the funnel 
+   * 
+   * @return if there is a coral
+   */
    public boolean isCoralInFunnel(){
     return (getSensorValue() < 50);
    }
-
+   /**  
+    * Opens the funnel to climb
+    *
+    */
   public void openFunnel(){
     funnelServo.set(0);
   }

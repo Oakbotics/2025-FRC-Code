@@ -47,7 +47,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
-  
+    /**
+   * gets the sensor mesurments
+   *
+   * @return mesurements in millimeters
+   */
   public double getSensorValue(){
     Measurement measurment = wristIntakeSensor.getMeasurement();
     if(measurment != null){
@@ -55,17 +59,31 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     return -1;
   }
-
+  /**
+   * Uses sensor to tell if there is a coral on the wrist of the robot
+   * 
+   * @return if there is a coral on the wrist
+   */
   public boolean isCoralOnWrist(){
     return (getSensorValue() < 5);
   }
 
+  /**
+   * Sets the speed of the algae motor to remove algae off the reef
+   * 
+   * @param speed
+   */
   public void setAlgaeMotorSpeed(double speed){
     algaeMotor.set(speed);
   }
 
+  /**
+   * Sets speed of coral intake
+   * 
+   * @param speed speed  of motor
+   */
   public void setCoralMotorSpeed(double speed){
-    coralMotor.set(speed);
+    coralMotor.set(speed); 
   }
 
   public Command exampleMethodCommand() {

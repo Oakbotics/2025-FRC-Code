@@ -39,15 +39,27 @@ public class ClimbSubsystem extends SubsystemBase {
     climbAbsoluteEncoder = climbMotorTop.getAbsoluteEncoder();
     climberPIDController = climbMotorTop.getClosedLoopController();
   }
-
+  /**
+   * climber function rotates to the position it is set to for the robot to pull the cage into itself so it can climb 
+   * 
+   * @param position position of robot
+   */
   public void rotateToPosition(double position){
     climberPIDController.setReference(position, ControlType.kPosition);
   }
-
+  /**
+   * Sets the speed of the climb motor
+   * 
+   * @param speed value of the speed
+   */
   public void setSpeed(double speed){
     climbMotorTop.set(speed);
   }
-
+  /**
+   * this sets the the climb to be in a position we set
+   * 
+   * @param position where we want climb?
+   */
   public void setServo(double position) {
     climbMotorServoTop.set(position);
     climbMotorServoBottom.set(position);
