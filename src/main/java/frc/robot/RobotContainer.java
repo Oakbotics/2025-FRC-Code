@@ -42,7 +42,6 @@ public class RobotContainer {
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   public RobotContainer() {
-
     // Configure default commands
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -64,25 +63,19 @@ public class RobotContainer {
       );
       // Configure the button bindings  
       configureButtonBindings();
-
       new Trigger(() -> m_intakeSubsytem.isCoralOnWrist())
         .onTrue(new RunCommand(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 1.0)).withTimeout(1.0)
         .andThen(new RunCommand(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 0.0)))
       );
-
       new Trigger(() -> m_intakeSubsytem.isCoralOnWrist())
       .onTrue(new RunCommand(() -> m_driverController.setRumble(RumbleType.kBothRumble, 1.0)).withTimeout(1.0)
       .andThen(new RunCommand(() -> m_driverController.setRumble(RumbleType.kBothRumble, 0.0)))
       );
-
       new Trigger(() -> (!m_intakeSubsytem.isCoralOnWrist() && m_funnelSubsystem.isCoralInFunnel()))
         .onTrue(new CoralIntakeCommand(m_intakeSubsytem).withTimeout(3.0)
       );
-
   }
-
   private void configureButtonBindings() {
-
     // Driver Controller
     m_driverController.a().onTrue(new L2ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L2 Position
     m_driverController.y().onTrue(new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // L4 Position
@@ -106,10 +99,8 @@ public class RobotContainer {
     m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
     m_operatorController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
 
-    m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out
-                                                                                                     // Postion L2
-    m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out
-                                                                                                     // Postion L3
+    m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
+    m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
 
   }
 
