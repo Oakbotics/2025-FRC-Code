@@ -8,7 +8,6 @@ import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FunnelConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -31,11 +30,10 @@ public class FunnelSubsystem extends SubsystemBase {
   }
 
   /**
-   * Example command factory method.
+   * gets the sensor mesurments
    *
-   * @return a command
+   * @return mesurements in millimeters
    */
-
   public double getSensorValue(){
     Measurement measurment = funnelIntakeSensor.getMeasurement();
     if(measurment != null){
@@ -44,31 +42,21 @@ public class FunnelSubsystem extends SubsystemBase {
     return -1;
   }
 
+  /**
+   * Uses the sensor to tell if there is a coral in the funnel. If there is a corale we DO NOT want to open the funnel 
+   * 
+   * @return if there is a coral
+   */
    public boolean isCoralInFunnel(){
     return (getSensorValue() < 50);
    }
 
+   /**  
+    * Opens the funnel to climb
+    *
+    */
   public void openFunnel(){
     funnelServo.set(0);
-  }
-
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
   }
 
   @Override

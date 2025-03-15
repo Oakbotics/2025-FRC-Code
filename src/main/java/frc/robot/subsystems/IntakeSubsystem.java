@@ -14,18 +14,14 @@ import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.AlgaeConfigs;
 import frc.robot.Configs.CoralConfigs;
 import frc.robot.Constants.IntakeConstants;
 
-
-
 public class IntakeSubsystem extends SubsystemBase {
   SparkMax coralMotor;
   SparkMax algaeMotor;
-
 
   LaserCan wristIntakeSensor;
   /** Creates a new ExampleSubsystem. */
@@ -46,8 +42,11 @@ public class IntakeSubsystem extends SubsystemBase {
       e.printStackTrace();
     }
   }
-
-  
+  /**
+   * gets the sensor mesurments
+   *
+   * @return mesurements in millimeters
+   */
   public double getSensorValue(){
     Measurement measurment = wristIntakeSensor.getMeasurement();
     if(measurment != null){
@@ -55,36 +54,31 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     return -1;
   }
-
+  /**
+   * Uses sensor to tell if there is a coral on the wrist of the robot
+   * 
+   * @return if there is a coral on the wrist
+   */
   public boolean isCoralOnWrist(){
     return (getSensorValue() < 5);
   }
 
+  /**
+   * Sets the speed of the algae motor to remove algae off the reef
+   * 
+   * @param speed
+   */
   public void setAlgaeMotorSpeed(double speed){
     algaeMotor.set(speed);
   }
 
-  public void setCoralMotorSpeed(double speed){
-    coralMotor.set(speed);
-  }
-
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
   /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
+   * Sets speed of coral intake
+   * 
+   * @param speed speed  of motor
    */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+  public void setCoralMotorSpeed(double speed){
+    coralMotor.set(speed); 
   }
 
   @Override
