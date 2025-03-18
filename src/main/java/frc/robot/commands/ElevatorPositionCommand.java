@@ -36,7 +36,7 @@ public class ElevatorPositionCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevatorSubsystem.printMotorPosition();
+    // m_elevatorSubsystem.printMotorPosition();
   }
 
   // Called once the command ends or is interrupted.

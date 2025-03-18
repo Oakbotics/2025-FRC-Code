@@ -268,7 +268,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
-  /** Zeroes the heading of the robot. */
+  /** Sets the heading of the robot. */
   public void setGyro(double angle) {
     m_gyro.setYaw(angle);
   }

@@ -28,7 +28,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     m_limeLightRightTable = NetworkTableInstance.getDefault().getTable("limelight-right");
     m_limeLightTopTable = NetworkTableInstance.getDefault().getTable("limelight-top");
     m_limeLightRightTable.getEntry("pipeline").setNumber(0);
-    SmartDashboard.putData("Field", m_field);
+    // SmartDashboard.putData("Field", m_field);
 
   }
   public Pose2d getBotPoseRightLL(){

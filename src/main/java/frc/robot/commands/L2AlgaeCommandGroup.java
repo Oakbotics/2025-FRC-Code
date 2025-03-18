@@ -8,17 +8,6 @@ public class L2AlgaeCommandGroup extends SequentialCommandGroup {
     public L2AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
         addCommands(
             new WristPositionCommand(m_wristSubsystem, 80),
-            //     .onlyIf(() -> (
-            //         m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.l4.get("elevator").doubleValue() - 0.03) 
-            //         || m_elevatorSubsystem.getElevatorHeight() < (MotionConstants.stowed.get("elevator").doubleValue() + 0.03)
-            //     )
-            // ),
-            // new IntakeClearanceOutCommand(m_elevatorSubsystem, m_wristSubsystem)
-            //     .onlyIf(() -> (
-            //         m_elevatorSubsystem.getElevatorHeight() < (MotionConstants.intake.get("elevator").doubleValue() + 0.03)
-            //         && m_elevatorSubsystem.getElevatorHeight() > (MotionConstants.intake.get("elevator").doubleValue() - 0.03)
-            //     )
-            // ),
             new ElevatorPositionCommand(m_elevatorSubsystem, 0.12)
         );
     }

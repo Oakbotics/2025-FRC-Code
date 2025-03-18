@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
@@ -16,7 +17,12 @@ import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
+import frc.robot.commands.LimeLightAutos.Left1PieceLL;
+import frc.robot.commands.LimeLightAutos.Left2PieceLL;
+import frc.robot.commands.LimeLightAutos.Left3PieceLL;
 import frc.robot.commands.LimeLightAutos.Middle1PieceLL;
+import frc.robot.commands.LimeLightAutos.Right1PieceLL;
+import frc.robot.commands.LimeLightAutos.Right2PieceLL;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FunnelSubsystem;
@@ -40,8 +46,20 @@ public class RobotContainer {
   // The drivers controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  
+  //Auto Chooser
+  // SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
+    // AutoChooser Choices
+    // m_autoChooser.setDefaultOption("Middle 1 Piece", new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
+    // m_autoChooser.addOption("Left 1 Piece", new Left1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
+    // m_autoChooser.addOption("Right 1 Piece", new Right1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
+    // m_autoChooser.addOption("Left 2 Piece", new Left2PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
+    // m_autoChooser.addOption("Right 2 Piece", new Right2PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
+    // m_autoChooser.addOption("Left 3 Piece", new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
+    // m_autoChooser.addOption("Right 3 Piece", new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
+
     // Configure default commands
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -63,6 +81,8 @@ public class RobotContainer {
       );
       // Configure the button bindings  
       configureButtonBindings();
+
+      //Intake Sensor Auto Intake and Rumble
       new Trigger(() -> m_intakeSubsytem.isCoralOnWrist())
         .onTrue(new RunCommand(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 1.0)).withTimeout(1.0)
         .andThen(new RunCommand(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 0.0)))
@@ -105,6 +125,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    // return m_autoChooser.getSelected();
     return new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
   }
 }

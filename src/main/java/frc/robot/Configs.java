@@ -15,7 +15,6 @@ public final class Configs {
     public static final class MAXSwerveModule {
         public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
         public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
-
         static {
             // Use module constants to calculate conversion factors and feed forward gain.
             double drivingFactor = ModuleConstants.kWheelDiameterMeters * Math.PI
@@ -58,12 +57,9 @@ public final class Configs {
                     .positionWrappingInputRange(0, turningFactor);
         }
     }
-
     public static final class ElevatorConfigs{
         public static final SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig();
         public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-        
-        
         static{
                 elevatorConfig
                     .closedLoopRampRate(0.1)
@@ -91,9 +87,7 @@ public final class Configs {
     public static final class WristConfigs {
         public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
         static {
-
                 double wristEncoderFactor = 2 * Math.PI;
-
                 wristConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(20);
@@ -119,12 +113,10 @@ public final class Configs {
                     .reverseSoftLimit(Units.degreesToRadians(WristConstants.minPositon));
                 wristConfig.inverted(true);
         }
-        
     }
     public static final class CoralConfigs {
         public static final SparkMaxConfig coralConfig = new SparkMaxConfig();
         static {
-
                 coralConfig
                         .idleMode(IdleMode.kBrake)
                         .smartCurrentLimit(40);
@@ -133,20 +125,16 @@ public final class Configs {
     public static final class AlgaeConfigs {
         public static final SparkMaxConfig algaeConfig = new SparkMaxConfig();
         static {
-
                 algaeConfig
                         .idleMode(IdleMode.kBrake)
                         .smartCurrentLimit(40);
         }
     }
-   
     public static final class ClimbConfigs {
         public static final SparkMaxConfig climbConfig = new SparkMaxConfig();
         public static final SparkMaxConfig climbFollowerConfig = new SparkMaxConfig();
         static {
-
                 double climbEncoderFactor = 360;
-
                 climbConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(40);
@@ -174,7 +162,5 @@ public final class Configs {
                     .apply(climbConfig)
                     .follow(ClimbConstants.climbMotorBottomID, false);
         }
-        
     }
-
 }

@@ -43,9 +43,6 @@ public class WristSubsystem extends SubsystemBase {
   public void printWristPosition() {
     Rotation2d wristEncoderPosition = Rotation2d.fromRadians(wristEncoder.getPosition());
     SmartDashboard.putNumber("Wrist Position", (wristEncoderPosition.getDegrees()));
-
-    // double encoderValue = wristEncoder.getPosition();
-    // SmartDashboard.putNumber("Wrist Position", encoderValue);
   }
   public void setWristSpeed(double speed){
     wristMotor.set(speed);
@@ -53,8 +50,6 @@ public class WristSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    printWristPosition();
-
   }
 
   @Override
