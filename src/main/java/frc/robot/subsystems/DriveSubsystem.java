@@ -339,6 +339,26 @@ public class DriveSubsystem extends SubsystemBase {
     return Commands.defer(() -> AutoBuilder.pathfindToPose(getPolePose(isLeft), pathConstraints), Set.of(this));
   }
 
+  // Written Brendan: Test? 
+  /**
+   * @param isLeft
+   * @return
+   */
+  public Command findPolePath(boolean isLeft) {
+    return Commands.defer(() -> {
+        Pose2d targetPose = getPolePose(isLeft);
+        
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
+            targetPose = new Pose2d(
+                targetPose.getX(), 
+                targetPose.getY(), 
+                targetPose.getRotation().plus(Rotation2d.fromDegrees(180))
+            );
+        }
+
+        return AutoBuilder.pathfindToPose(targetPose, pathConstraints);
+    }, Set.of(this));
+}
   /**
    * Calculates and returns the nearest poles position from pre defined hashmap relative to odometry pose at time of calling
    * @param isLeft left or right pole 
