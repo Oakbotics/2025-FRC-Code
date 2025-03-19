@@ -110,4 +110,25 @@ public class LimeLightSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+  public Pose2d getAveragedBotPose() {
+        Pose2d pose1 = getBotPoseRightLL();
+        Pose2d pose2 = getBotPoseLeftLL();
+
+        double avgX = (pose1.getX() + pose2.getX()) / 2.0;
+        double avgY = (pose1.getY() + pose2.getY()) / 2.0;
+        double avgTheta = (pose1.getRotation().getDegrees() + pose2.getRotation().getDegrees()) / 2.0;
+
+        double stdX = Math.sqrt((Math.pow(pose1.getX() - avgX, 2) + Math.pow(pose2.getX() - avgX, 2)) / 2);
+        double stdY = Math.sqrt((Math.pow(pose1.getY() - avgY, 2) + Math.pow(pose2.getY() - avgY, 2)) / 2);
+        double stdTheta = Math.sqrt((Math.pow(pose1.getRotation().getDegrees() - avgTheta, 2) +
+                                     Math.pow(pose2.getRotation().getDegrees() - avgTheta, 2)) / 2);
+
+        SmartDashboard.putNumber("Pose StdDev X", stdX);
+        SmartDashboard.putNumber("Pose StdDev Y", stdY);
+        SmartDashboard.putNumber("Pose StdDev Theta", stdTheta);
+
+        return new Pose2d(avgX, avgY, Rotation2d.fromDegrees(avgTheta));
+  }
+
 }
