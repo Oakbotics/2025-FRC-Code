@@ -27,7 +27,7 @@ public class CoralIntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intakeSubsystem.setCoralMotorSpeed(0.8);
+    m_intakeSubsystem.setCoralMotorSpeed(0.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -133,7 +133,15 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-    LimelightHelpers.SetRobotOrientation("limelight-right",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
+    if(DriverStation.getAlliance().get() == Alliance.Blue) {
+      LimelightHelpers.SetRobotOrientation("limelight-right",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
+      LimelightHelpers.SetRobotOrientation("limelight-left",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
+    } 
+    else {
+      LimelightHelpers.SetRobotOrientation("limelight-right",m_odometry.getEstimatedPosition().getRotation().getDegrees() + 180,0,0,0,0,0 );
+      LimelightHelpers.SetRobotOrientation("limelight-left",m_odometry.getEstimatedPosition().getRotation().getDegrees() + 180,0,0,0,0,0 );
+    }
+
     //LimelightHelpers.SetRobotOrientation("limelight-top",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
 
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
@@ -295,21 +303,24 @@ public class DriveSubsystem extends SubsystemBase {
 
     if(m_limeLightSubsystem.getRightID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
-    if(m_limeLightSubsystem.getTopID() != -1)
+    else if(m_limeLightSubsystem.getLeftID() != -1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseLeftLL());
+    else if(m_limeLightSubsystem.getTopID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
   }
 
   public Pose2d getLimeLightPose() {
     if(m_limeLightSubsystem.getTopID() != -1)
       return m_limeLightSubsystem.getBotPoseTopLL();
-    if(m_limeLightSubsystem.getRightID() != -1)
+    else if(m_limeLightSubsystem.getRightID() != -1)
+      return m_limeLightSubsystem.getBotPoseRightLL();
+    else if(m_limeLightSubsystem.getRightID() != -1)
       return m_limeLightSubsystem.getBotPoseRightLL();
     return new Pose2d();
   }
 
   public void gyroLimelightReset(){
-    if(DriverStation.getAlliance().get() == Alliance.Red) setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees() + 180);
-    else setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees());
+    setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees());
   }
   /**
    *  creates defered command from auto build to pose
@@ -360,6 +371,10 @@ public class DriveSubsystem extends SubsystemBase {
         }
       }
     }
+    SmartDashboard.putNumber("Goal pose X", nearestPolePose.getX());
+    SmartDashboard.putNumber("Goal pose Y", nearestPolePose.getY());
+    SmartDashboard.putNumber("Goal pose rotation", nearestPolePose.getRotation().getDegrees());
+    
     return nearestPolePose;
   }
 }

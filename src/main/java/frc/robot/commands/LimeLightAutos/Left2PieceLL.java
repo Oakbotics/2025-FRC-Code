@@ -1,4 +1,6 @@
 package frc.robot.commands.LimeLightAutos;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -41,6 +43,7 @@ public class Left2PieceLL extends SequentialCommandGroup {
         else
             addCommands(
                 new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.01),
+                m_driveSubsystem.findPathToPose(new Pose2d(m_driveSubsystem.getPose().getX(), m_driveSubsystem.getPose().getY(), Rotation2d.fromDegrees(-120))),
                 new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
                 new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),

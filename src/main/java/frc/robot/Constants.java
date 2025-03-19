@@ -65,7 +65,7 @@ public final class Constants {
         reefPolePositions.put(7, new Pose2d[]{new Pose2d(14.426, 3.859,Rotation2d.fromDegrees(0)), new Pose2d(14.337, 4.190,Rotation2d.fromDegrees(0))});
         reefPolePositions.put(8, new Pose2d[]{new Pose2d(13.884, 5.015,Rotation2d.fromDegrees(60)), new Pose2d(13.567, 5.216,Rotation2d.fromDegrees(60))});
         reefPolePositions.put(9, new Pose2d[]{new Pose2d(12.534, 5.216,Rotation2d.fromDegrees(120)), new Pose2d(12.265, 5.041,Rotation2d.fromDegrees(120))});
-        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.771, 4.165,Rotation2d.fromDegrees(0)), new Pose2d(11.773, 3.859,Rotation2d.fromDegrees(0))});
+        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.771, 4.195,Rotation2d.fromDegrees(180)), new Pose2d(11.773, 3.859,Rotation2d.fromDegrees(180))});
         reefPolePositions.put(11, new Pose2d[]{new Pose2d(12.223, 3.049,Rotation2d.fromDegrees(-120)), new Pose2d(12.545, 2.854,Rotation2d.fromDegrees(-120))});
         reefPolePositions.put(17, new Pose2d[]{new Pose2d(3.706, 3.016,Rotation2d.fromDegrees(60)), new Pose2d(3.983, 2.865,Rotation2d.fromDegrees(60))});
         reefPolePositions.put(18, new Pose2d[]{new Pose2d(3.180, 4.180,Rotation2d.fromDegrees(0)), new Pose2d(3.180, 3.850,Rotation2d.fromDegrees(0))});
@@ -108,7 +108,7 @@ public final class Constants {
     //THE L2 BRANCH
     public static final HashMap<String, Double> l2 = new HashMap();
     static{
-      l2.put("elevator", 0.10);
+      l2.put("elevator", 0.14);
       l2.put("wrist", 185.0);
     }
 
@@ -258,7 +258,7 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 2;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

@@ -103,7 +103,6 @@ public class RobotContainer {
     m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Intake Position
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    m_driverController.povLeft().onTrue((new InstantCommand(() -> m_driveSubsystem.gyroLimelightReset())));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
     m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
 
@@ -126,6 +125,6 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return m_autoChooser.getSelected();
-    return new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
+    return new Left2PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
   }
 }

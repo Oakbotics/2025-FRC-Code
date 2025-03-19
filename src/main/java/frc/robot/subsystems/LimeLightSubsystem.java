@@ -18,7 +18,8 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   public NetworkTable m_limeLightRightTable; 
    public NetworkTable m_limeLightTopTable;
-  public Pose2d m_closestTagPose;
+   public NetworkTable m_limeLightLeftTable; 
+   public Pose2d m_closestTagPose;
   // Limelight Left: http://10.37.39.11:5801/
   //Limelight Right: http://10.37.39.12:5801/
   
@@ -27,6 +28,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   public LimeLightSubsystem() {
     m_limeLightRightTable = NetworkTableInstance.getDefault().getTable("limelight-right");
     m_limeLightTopTable = NetworkTableInstance.getDefault().getTable("limelight-top");
+    m_limeLightLeftTable = NetworkTableInstance.getDefault().getTable("limelight-left");
     m_limeLightRightTable.getEntry("pipeline").setNumber(0);
     // SmartDashboard.putData("Field", m_field);
 
@@ -34,35 +36,41 @@ public class LimeLightSubsystem extends SubsystemBase {
   public Pose2d getBotPoseRightLL(){
     double[] botRotArray = m_limeLightRightTable.getEntry("botpose").getDoubleArray(new double[10]); 
     double[] botPoseArray = m_limeLightRightTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
-    Pose2d botPose = new Pose2d();
+    Pose2d botPose;
     // SmartDashboard.putNumber("LimelightX", botPoseArray);
     // SmartDashboard.putNumber("LimelightY", ty);
     // SmartDashboard.putNumber("LimelightArea", ta);
     // SmartDashboard.putNumber("AprilTagID", tid);
     // SmartDashboard.putNumber("botpose", tbotpose);
-    if(getRightID() !=-1){
       if(DriverStation.getAlliance().get() == Alliance.Red)  botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botRotArray[5] + 180));
       else botPose = new Pose2d(botPoseArray[0] + 8.7736, botPoseArray[1] + 4.0257, Rotation2d.fromDegrees(botRotArray[5]));
       SmartDashboard.putNumber("LimelightX", botPose.getX());
       SmartDashboard.putNumber("LimelightY", botPose.getY());
       // m_field.setRobotPose(botPose);  
       return botPose;
-    }
-    return botPose;
+
   }
 
   public Pose2d getBotPoseTopLL(){
     double[] botRotArray = m_limeLightTopTable.getEntry("botpose").getDoubleArray(new double[10]); 
     double[] botPoseArray = m_limeLightTopTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
     Pose2d botPose;
-    if(getTopID() != -1){
       if(DriverStation.getAlliance().get() == Alliance.Red)  botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botRotArray[5] + 180));
       else botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botRotArray[5]));
       m_field.setRobotPose(botPose);  
       return botPose;
-    }
-    return new Pose2d();
   }
+
+  public Pose2d getBotPoseLeftLL(){
+    double[] botRotArray = m_limeLightLeftTable.getEntry("botpose").getDoubleArray(new double[10]); 
+    double[] botPoseArray = m_limeLightLeftTable.getEntry("botpose_orb").getDoubleArray(new double[10]); 
+    Pose2d botPose;
+      if(DriverStation.getAlliance().get() == Alliance.Red)  botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botRotArray[5] + 180));
+      else botPose = new Pose2d(botPoseArray[0]+8.7736, botPoseArray[1]+4.0257, Rotation2d.fromDegrees(botRotArray[5]));
+      m_field.setRobotPose(botPose);  
+      return botPose;
+  }
+
 
   public Pose2d getRobotRelativeTargetPose(){
     double[] targetPoseArray = m_limeLightRightTable.getEntry("targetpose_robotspace").getDoubleArray(new double[10]);
@@ -74,6 +82,11 @@ public class LimeLightSubsystem extends SubsystemBase {
   public int getRightID(){
     //SmartDashboard.putNumber("networkTableID", m_limeLightTable.getEntry("tid").getValue().getInteger());
     return ((int) m_limeLightRightTable.getEntry("tid").getDouble(-1));
+  }
+
+  public int getLeftID(){
+    //SmartDashboard.putNumber("networkTableID", m_limeLightTable.getEntry("tid").getValue().getInteger());
+    return ((int) m_limeLightLeftTable.getEntry("tid").getDouble(-1));
   }
 
   public int getTopID(){

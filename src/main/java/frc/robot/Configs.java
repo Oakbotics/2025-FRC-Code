@@ -78,7 +78,8 @@ public final class Configs {
                     // slot, as it will default to slot 0.
                     .p(0.001)
                     .i(0)
-                    .d(0);
+                    .d(0)
+                    .outputRange(-0.6, 0.8);
                 elevatorFollowerConfig
                     .apply(elevatorConfig)
                     .follow(ElevatorConstants.elevatorMotorRightCanId, true);
