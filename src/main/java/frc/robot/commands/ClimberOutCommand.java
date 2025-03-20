@@ -26,7 +26,7 @@ public class ClimberOutCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climbSubsystem.setSpeed(0.5);
+    m_climbSubsystem.setSpeed(1);
     m_climbSubsystem.setServo(0);
   }
 
