@@ -272,18 +272,20 @@ public final class Constants {
   }
  
  public static final class ClimbConstants {
-    public static final int climbMotorServoTopChannel = 0;
-    public static final int climbMotorServoBottomChannel = 1;
+    public static final int climbMotorServoTopChannel = 1;
+    public static final int climbMotorServoBottomChannel = 2;
 
-    public static final int climbMotorTopID = 15;
-    public static final int climbMotorBottomID = 16;
+    public static final double climberGearRatio = (40.0/12.0) * 100.0;
+
+    public static final int climbMotorTopID = 16;
+    public static final int climbMotorBottomID = 15;
     
     public static final double minPosition = 0;
     public static final double maxPosition = 270;
  }
 
  public static final class FunnelConstants {
-    public static final int funnelServo = 2;
+    public static final int funnelServo = 0;
  }
 
 }

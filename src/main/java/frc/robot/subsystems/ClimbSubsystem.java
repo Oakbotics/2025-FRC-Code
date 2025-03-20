@@ -32,8 +32,8 @@ public class ClimbSubsystem extends SubsystemBase {
     climbMotorTop = new SparkMax(ClimbConstants.climbMotorTopID, MotorType.kBrushless);
     climbMotorBottom = new SparkMax(ClimbConstants.climbMotorBottomID, MotorType.kBrushless);
 
-    climbMotorTop.configure(ClimbConfigs.climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    climbMotorBottom.configure(ClimbConfigs.climbFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    climbMotorTop.configure(ClimbConfigs.climbFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    climbMotorBottom.configure(ClimbConfigs.climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     climbAbsoluteEncoder = climbMotorTop.getAbsoluteEncoder();
     climberPIDController = climbMotorTop.getClosedLoopController();
@@ -52,12 +52,13 @@ public class ClimbSubsystem extends SubsystemBase {
    * @param speed value of the speed
    */
   public void setSpeed(double speed){
-    climbMotorTop.set(speed);
+    // climbMotorTop.set(speed);
+    climbMotorBottom.set(speed);
   }
   /**
    * this sets the the climb to be in a position we set
    * 
-   * @param position where we want climb?
+   * @param position where we want climb
    */
   public void setServo(double position) {
     climbMotorServoTop.set(position);

@@ -7,7 +7,11 @@ package frc.robot.subsystems;
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
+// import com.studica.frc.Servo;
+import com.studica.frc.*;
+
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FunnelConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -27,6 +31,7 @@ public class FunnelSubsystem extends SubsystemBase {
     } catch (ConfigurationFailedException e) {
       e.printStackTrace();
     }
+    // funnelServo.setBounds(2.1, 2.1, 1.5, 0.95, 0.9);
   }
 
   /**
@@ -56,12 +61,18 @@ public class FunnelSubsystem extends SubsystemBase {
     *
     */
   public void openFunnel(){
-    funnelServo.set(0);
+    funnelServo.set(0.8);
+  }
+
+  public void closeFunnel(){
+    funnelServo.set(0.2);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Servo Position", funnelServo.getPosition());
+
   }
 
   @Override

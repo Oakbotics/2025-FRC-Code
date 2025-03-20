@@ -32,14 +32,16 @@ public class ClimberPositionCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climbSubsystem.rotateToPosition(90); //TEMPORARY
-    m_climbSubsystem.setServo(0);
-    m_funnelSubsystem.openFunnel();
+    // m_climbSubsystem.rotateToPosition(90); //TEMPORARY
+    m_climbSubsystem.setServo(1);
+    // m_funnelSubsystem.openFunnel();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_funnelSubsystem.openFunnel();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
