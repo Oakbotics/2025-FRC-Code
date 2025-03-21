@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotation;
+
+import java.time.LocalDate;
 import java.util.Set;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -14,6 +17,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,6 +28,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -109,10 +114,10 @@ public class DriveSubsystem extends SubsystemBase {
               // This will flip the path being followed to the red side of the field.
               // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
+              // var alliance = DriverStation.getAlliance();
+              // if (alliance.isPresent()) {
+              //   return alliance.get() == DriverStation.Alliance.Red;
+              // }
               return false;
             },
             this // Reference to this subsystem to set requirements
@@ -121,6 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
   }
+  
 
   @Override
   public void periodic() {
@@ -133,21 +139,24 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-    if(DriverStation.getAlliance().get() == Alliance.Blue) {
       LimelightHelpers.SetRobotOrientation("limelight-right",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
       LimelightHelpers.SetRobotOrientation("limelight-left",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
-    } 
-    else {
-      LimelightHelpers.SetRobotOrientation("limelight-right",m_odometry.getEstimatedPosition().getRotation().getDegrees() + 180,0,0,0,0,0 );
-      LimelightHelpers.SetRobotOrientation("limelight-left",m_odometry.getEstimatedPosition().getRotation().getDegrees() + 180,0,0,0,0,0 );
-    }
-
-    //LimelightHelpers.SetRobotOrientation("limelight-top",m_odometry.getEstimatedPosition().getRotation().getDegrees(),0,0,0,0,0 );
+      
+      if(getChassisSpeeds().vxMetersPerSecond < 0.01
+        && getChassisSpeeds().vyMetersPerSecond < 0.01
+        && getChassisSpeeds().omegaRadiansPerSecond < 0.01)
+        limeLightPoseUpdate();
+    
+    SmartDashboard.putNumber("velocity x", getChassisSpeeds().vxMetersPerSecond);
+    SmartDashboard.putNumber("velocity y", getChassisSpeeds().vyMetersPerSecond);
+    SmartDashboard.putNumber("velocity rotation", getChassisSpeeds().omegaRadiansPerSecond);
 
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
     SmartDashboard.putNumber("Odometry rot", m_odometry.getEstimatedPosition().getRotation().getDegrees());
   }
+
+
 
    /**
    * Method to drive the robot using joystick info.
@@ -204,7 +213,10 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getEstimatedPosition();
   }
-  
+  public Pose2d getAutoPose() {
+    if(DriverStation.getAlliance().get() == Alliance.Red) return new Pose2d(m_odometry.getEstimatedPosition().getX(), m_odometry.getEstimatedPosition().getY(), Rotation2d.fromDegrees(m_odometry.getEstimatedPosition().getRotation().getDegrees() + 180));
+    return m_odometry.getEstimatedPosition();
+  }
   /**
    * Resets the odometry to the specified pose.
    *
@@ -227,7 +239,15 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   public ChassisSpeeds getChassisSpeeds(){
-    // SwerveModuleState[] swerveModuleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
+    // boolean isFlipped = DriverStation.getAlliance().get() == Alliance.Red;
+    // if(isFlipped) {
+    //   return ChassisSpeeds.fromFieldRelativeSpeeds(new ChassisSpeeds(
+    //       -DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates()).vxMetersPerSecond, 
+    //       -DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates()).vyMetersPerSecond, 
+    //       DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond
+    //     ), 
+    //     Rotation2d.fromDegrees(m_odometry.getEstimatedPosition().getRotation().getDegrees() + 180));
+    // }
     return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
   }
 
@@ -299,7 +319,7 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public void limeLightPoseUpdate() {
+  public void resetPoseLL() {
 
     if(m_limeLightSubsystem.getRightID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
@@ -307,6 +327,37 @@ public class DriveSubsystem extends SubsystemBase {
       resetOdometry(m_limeLightSubsystem.getBotPoseLeftLL());
     else if(m_limeLightSubsystem.getTopID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
+  }
+
+  public void limeLightPoseUpdate() {
+    if(getPoleDistance() < 1) {
+      if(m_limeLightSubsystem.getRightID() != -1){
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+      }
+      else if(m_limeLightSubsystem.getLeftID() != -1){
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+      }
+      else if(m_limeLightSubsystem.getTopID() != -1){
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+      }
+    } else {
+      if(m_limeLightSubsystem.getRightID() != -1){
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(24, 4, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+      }
+      else if(m_limeLightSubsystem.getLeftID() != -1){
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(4, 4, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+      }
+        // resetOdometry(m_limeLightSubsystem.getBotPoseLeftLL());
+      else if(m_limeLightSubsystem.getTopID() != -1){
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(4, 4, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+      }// resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
+    }
   }
 
   public Pose2d getLimeLightPose() {
@@ -377,4 +428,33 @@ public class DriveSubsystem extends SubsystemBase {
     
     return nearestPolePose;
   }
+
+  public double getPoleDistance(){
+    double nearestPolePoseDistance = Double.MAX_VALUE;
+    Pose2d botpose = getPose();
+    double[] distances = new double[24];
+    if(DriverStation.getAlliance().get() == Alliance.Red){
+      for(int i = 6; i < 12; i++){
+        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[0];
+        double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
+        distances[i] = distance;
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+         
+        }
+      }
+    }
+    else if(DriverStation.getAlliance().get() == Alliance.Blue){
+      for(int i = 17; i < 23; i++){
+        Pose2d polePose = FieldConstants.reefPolePositions.get(i)[0];
+        double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
+        distances[i] = distance;
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+        }
+      }
+    }
+    return nearestPolePoseDistance;
+  }
+
 }

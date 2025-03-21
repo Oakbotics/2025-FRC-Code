@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.OIConstants;
@@ -59,8 +61,27 @@ public class RobotContainer {
     // m_autoChooser.addOption("Right 2 Piece", new Right2PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
     // m_autoChooser.addOption("Left 3 Piece", new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
     // m_autoChooser.addOption("Right 3 Piece", new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
-
+    if(DriverStation.getAlliance().get() == Alliance.Red)
+    m_driveSubsystem.setDefaultCommand(
+      // The left stick controls translation of the robot.
+      // Turning is controlled by the X axis of the right stick.
+      new RunCommand(
+          () -> m_driveSubsystem.drive(
+              -MathUtil.applyDeadband(
+                  -m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                  OIConstants.kDriveDeadband),
+              -MathUtil.applyDeadband(
+                  -m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                  OIConstants.kDriveDeadband),
+              -MathUtil.applyDeadband(
+                  m_driverController.getRightX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                  OIConstants.kDriveDeadband),
+              true),
+          m_driveSubsystem
+      )
+    );
     // Configure default commands
+    else
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
@@ -105,6 +126,7 @@ public class RobotContainer {
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
     m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
+    m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetPoseLL()));
 
     m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false));
     m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(true));
