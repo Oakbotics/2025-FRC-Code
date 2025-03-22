@@ -88,6 +88,7 @@ public class RobotContainer {
     );
     // Configure default commands
 
+
     
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -107,6 +108,7 @@ public class RobotContainer {
             m_driveSubsystem
         )
       );
+
 
     // m_driveSubsystem.setDefaultCommand(
     //     // The left stick controls translation of the robot.
@@ -170,6 +172,10 @@ public class RobotContainer {
     m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
     m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
 
+    m_operatorController.povUp().onTrue(new ClimberPositionCommand(m_climbSubsystem, m_funnelSubsystem));
+    m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
+    m_operatorController.povLeft().whileTrue(new ClimberOutCommand(m_climbSubsystem));
+    m_operatorController.povRight().whileTrue(new FunnelResetCommand(m_climbSubsystem, m_funnelSubsystem));
     m_operatorController.povUp().onTrue(new ClimberPositionCommand(m_climbSubsystem, m_funnelSubsystem));
     m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
     m_operatorController.povLeft().whileTrue(new ClimberOutCommand(m_climbSubsystem));
