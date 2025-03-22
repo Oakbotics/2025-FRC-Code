@@ -135,9 +135,10 @@ public final class Configs {
         public static final SparkMaxConfig climbConfig = new SparkMaxConfig();
         public static final SparkMaxConfig climbFollowerConfig = new SparkMaxConfig();
         static {
-                double climbEncoderFactor = 360;
+                double climbEncoderFactor = 360; //* ClimbConstants.climberGearRatio;
                 climbConfig
                     .idleMode(IdleMode.kBrake)
+
                     .smartCurrentLimit(40);
                 climbConfig.absoluteEncoder
                     // Invert the turning encoder, since the output shaft rotates in the opposite
@@ -156,9 +157,9 @@ public final class Configs {
                     // longer route.
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, climbEncoderFactor);
-                climbConfig.softLimit
-                    .forwardSoftLimit(Units.degreesToRadians(ClimbConstants.maxPosition))
-                    .reverseSoftLimit(Units.degreesToRadians(ClimbConstants.minPosition));
+                // climbConfig.softLimit
+                //     .forwardSoftLimit(Units.degreesToRadians(ClimbConstants.maxPosition))
+                //     .reverseSoftLimit(Units.degreesToRadians(ClimbConstants.minPosition));
                 climbFollowerConfig
                     .apply(climbConfig)
                     .follow(ClimbConstants.climbMotorBottomID, false);

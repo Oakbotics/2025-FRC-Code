@@ -13,12 +13,16 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
+import frc.robot.commands.FunnelResetCommand;
 import frc.robot.commands.IntakeCommandGroup;
 import frc.robot.commands.L2AlgaeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
+import frc.robot.commands.ClimberPositionCommand;
+import frc.robot.commands.ClimberOutCommand;
+import frc.robot.commands.ClimberInCommand;
 import frc.robot.commands.LimeLightAutos.Left1PieceLL;
 import frc.robot.commands.LimeLightAutos.Left2PieceLL;
 import frc.robot.commands.LimeLightAutos.Left3PieceLL;
@@ -31,6 +35,7 @@ import frc.robot.subsystems.FunnelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -45,6 +50,7 @@ public class RobotContainer {
   private final WristSubsystem m_wristSubsystem = new WristSubsystem();
   private final IntakeSubsystem m_intakeSubsytem = new IntakeSubsystem();
   private final FunnelSubsystem m_funnelSubsystem = new FunnelSubsystem();
+  private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
   // The drivers controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -81,7 +87,8 @@ public class RobotContainer {
       )
     );
     // Configure default commands
-    else
+
+    
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
@@ -100,6 +107,26 @@ public class RobotContainer {
             m_driveSubsystem
         )
       );
+
+    // m_driveSubsystem.setDefaultCommand(
+    //     // The left stick controls translation of the robot.
+    //     // Turning is controlled by the X axis of the right stick.
+    //     new RunCommand(
+    //         () -> m_driveSubsystem.drive(
+    //             -MathUtil.applyDeadband(
+    //                 m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+    //                 OIConstants.kDriveDeadband),
+    //             -MathUtil.applyDeadband(
+    //                 m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+    //                 OIConstants.kDriveDeadband),
+    //             -MathUtil.applyDeadband(
+    //                 m_driverController.getRightX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+    //                 OIConstants.kDriveDeadband),
+    //             true),
+    //         m_driveSubsystem
+    //     )
+    //   );
+
       // Configure the button bindings  
       configureButtonBindings();
 
@@ -143,6 +170,10 @@ public class RobotContainer {
     m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
     m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
 
+    m_operatorController.povUp().onTrue(new ClimberPositionCommand(m_climbSubsystem, m_funnelSubsystem));
+    m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
+    m_operatorController.povLeft().whileTrue(new ClimberOutCommand(m_climbSubsystem));
+    m_operatorController.povRight().whileTrue(new FunnelResetCommand(m_climbSubsystem, m_funnelSubsystem));
   }
 
   public Command getAutonomousCommand() {
