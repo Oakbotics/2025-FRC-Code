@@ -20,15 +20,18 @@ import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
+import frc.robot.commands.Autos.Middle1Piece;
 import frc.robot.commands.ClimberPositionCommand;
 import frc.robot.commands.ClimberOutCommand;
 import frc.robot.commands.ClimberInCommand;
 import frc.robot.commands.LimeLightAutos.Left1PieceLL;
 import frc.robot.commands.LimeLightAutos.Left2PieceLL;
 import frc.robot.commands.LimeLightAutos.Left3PieceLL;
+import frc.robot.commands.LimeLightAutos.Left4PieceLL;
 import frc.robot.commands.LimeLightAutos.Middle1PieceLL;
 import frc.robot.commands.LimeLightAutos.Right1PieceLL;
 import frc.robot.commands.LimeLightAutos.Right2PieceLL;
+import frc.robot.commands.LimeLightAutos.Right3PieceLL;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FunnelSubsystem;
@@ -159,6 +162,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return m_autoChooser.getSelected();
-    return new Left2PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+    return new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+    // return new Middle1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
   }
 }

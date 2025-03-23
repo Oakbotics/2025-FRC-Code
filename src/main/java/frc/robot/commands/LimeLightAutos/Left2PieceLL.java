@@ -21,11 +21,11 @@ public class Left2PieceLL extends SequentialCommandGroup {
     public Left2PieceLL(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem){
         if(DriverStation.getAlliance().get() == Alliance.Blue)
             addCommands(
-                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.01),
-                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.01),
+                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.05),
+                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.05),
                 new ParallelCommandGroup(
                     new SequentialCommandGroup(
-                        Commands.waitSeconds(1),
+                        Commands.waitSeconds(0.5),
                         new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                     ),
                     m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1])

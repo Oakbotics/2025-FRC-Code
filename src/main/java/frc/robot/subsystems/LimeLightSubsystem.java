@@ -93,6 +93,22 @@ public class LimeLightSubsystem extends SubsystemBase {
     //SmartDashboard.putNumber("networkTableID", m_limeLightTable.getEntry("tid").getValue().getInteger());
     return ((int) m_limeLightTopTable.getEntry("tid").getDouble(-1));
   }
+
+  
+  public int getTopIDCount(){
+    return ((int) m_limeLightTopTable.getEntry("botpose_orb").getDoubleArray(new double[10])[7]);
+
+  }
+
+  public int getRightIDCount(){
+    return ((int) m_limeLightRightTable.getEntry("botpose_orb").getDoubleArray(new double[10])[7]);
+
+  }
+
+  public int getLeftIDCount(){
+    return ((int) m_limeLightLeftTable.getEntry("botpose_orb").getDoubleArray(new double[10])[7]);
+
+  }
   // public Pose2d getClosestTagPose(){
   //   // String allianceTableName = DriverStation.getAlliance() == Alliance.Blue ? "botpose_wpiblue": "botpose_wpired";
   //   if(m_limeLightTable.getEntry("tv").getDouble(0) == 1){

@@ -105,7 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
             this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> autoDrive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(9.0, 0.0, 0.1), // Translation PID constants
+                    new PIDConstants(9.0, 0.0, 0.1), // Translation PID constants 9.0, 0.0, 0.1
                     new PIDConstants(8.0, 0.0, 0.0) // Rotation PID constants
             ),
             config, // The robot configuration
@@ -213,10 +213,7 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getEstimatedPosition();
   }
-  public Pose2d getAutoPose() {
-    if(DriverStation.getAlliance().get() == Alliance.Red) return new Pose2d(m_odometry.getEstimatedPosition().getX(), m_odometry.getEstimatedPosition().getY(), Rotation2d.fromDegrees(m_odometry.getEstimatedPosition().getRotation().getDegrees() + 180));
-    return m_odometry.getEstimatedPosition();
-  }
+
   /**
    * Resets the odometry to the specified pose.
    *
@@ -321,25 +318,33 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetPoseLL() {
 
-    if(m_limeLightSubsystem.getRightID() != -1)
+
+    if(m_limeLightSubsystem.getRightID() != -1 && m_limeLightSubsystem.getRightIDCount() > 1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
+    else if(m_limeLightSubsystem.getLeftID() != -1 && m_limeLightSubsystem.getLeftIDCount() > 1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseLeftLL());
+    else if(m_limeLightSubsystem.getTopID() != -1 && m_limeLightSubsystem.getTopIDCount() > 1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
+  
+    else if(m_limeLightSubsystem.getRightID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
     else if(m_limeLightSubsystem.getLeftID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseLeftLL());
     else if(m_limeLightSubsystem.getTopID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
-  }
+    }
 
   public void limeLightPoseUpdate() {
       if(m_limeLightSubsystem.getRightID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance(), 9999999));
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.1, 9999999));
         m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
       }
       else if(m_limeLightSubsystem.getLeftID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance(), 9999999));
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.1, 9999999));
         m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
       }
       else if(m_limeLightSubsystem.getTopID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance(), 9999999));
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.1, 9999999));
         m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
       }
   }
