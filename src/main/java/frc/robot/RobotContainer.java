@@ -87,9 +87,7 @@ public class RobotContainer {
       )
     );
     // Configure default commands
-
-
-    
+    else
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
@@ -108,27 +106,6 @@ public class RobotContainer {
             m_driveSubsystem
         )
       );
-
-
-    // m_driveSubsystem.setDefaultCommand(
-    //     // The left stick controls translation of the robot.
-    //     // Turning is controlled by the X axis of the right stick.
-    //     new RunCommand(
-    //         () -> m_driveSubsystem.drive(
-    //             -MathUtil.applyDeadband(
-    //                 m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
-    //                 OIConstants.kDriveDeadband),
-    //             -MathUtil.applyDeadband(
-    //                 m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
-    //                 OIConstants.kDriveDeadband),
-    //             -MathUtil.applyDeadband(
-    //                 m_driverController.getRightX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
-    //                 OIConstants.kDriveDeadband),
-    //             true),
-    //         m_driveSubsystem
-    //     )
-    //   );
-
       // Configure the button bindings  
       configureButtonBindings();
 
@@ -153,12 +130,14 @@ public class RobotContainer {
     m_driverController.b().onTrue(new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Intake Position
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.limeLightPoseUpdate()));
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.gyroLimelightReset()));
     m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
     m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetPoseLL()));
 
-    m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false));
-    m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(true));
+    
+    // m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false));
+    m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
+    m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(true)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
 
     m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
 
@@ -172,10 +151,6 @@ public class RobotContainer {
     m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
     m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
 
-    m_operatorController.povUp().onTrue(new ClimberPositionCommand(m_climbSubsystem, m_funnelSubsystem));
-    m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
-    m_operatorController.povLeft().whileTrue(new ClimberOutCommand(m_climbSubsystem));
-    m_operatorController.povRight().whileTrue(new FunnelResetCommand(m_climbSubsystem, m_funnelSubsystem));
     m_operatorController.povUp().onTrue(new ClimberPositionCommand(m_climbSubsystem, m_funnelSubsystem));
     m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
     m_operatorController.povLeft().whileTrue(new ClimberOutCommand(m_climbSubsystem));

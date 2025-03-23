@@ -1,6 +1,7 @@
 package frc.robot.commands.LimeLightAutos;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -19,26 +20,37 @@ public class Left3PieceLL extends SequentialCommandGroup {
         if(DriverStation.getAlliance().get() == Alliance.Blue)
             addCommands(
                 new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.01),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
+                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.01),
                 new ParallelCommandGroup(
-                    new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.9),
+                        new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
                     m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1])
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
                 new ParallelCommandGroup(
-                    new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.5),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                        ),
                     m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1])
                 ),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup(
-                    new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(1),
+                        new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.5),
                     m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(19)[0])
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
                 new ParallelCommandGroup(
-                    new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.5),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                        ),
                     m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1])
                 ),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.2),
@@ -46,8 +58,7 @@ public class Left3PieceLL extends SequentialCommandGroup {
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
                     m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(19)[1])
                 ),
-                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01)
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2)
             );
         else
             addCommands(

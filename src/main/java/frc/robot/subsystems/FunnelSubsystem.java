@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
-// import com.studica.frc.Servo;
-import com.studica.frc.*;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

@@ -80,7 +80,7 @@ public final class Constants {
         coralStationPosition.put(1, new Pose2d[]{new Pose2d(17.027, 1.413,Rotation2d.fromDegrees(-60)), new Pose2d(15.921, 0.599,Rotation2d.fromDegrees(-55))}); // RED SIDE:
         coralStationPosition.put(2, new Pose2d[]{new Pose2d(15.776, 7.477,Rotation2d.fromDegrees(50.0)), new Pose2d(17.020, 6.623,Rotation2d.fromDegrees(55))});
         coralStationPosition.put(12, new Pose2d[]{new Pose2d(1.703, 0.565,Rotation2d.fromDegrees(-130)), new Pose2d(0.578, 1.407,Rotation2d.fromDegrees(-125))}); // BLUE SIDE:
-        coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.554, 6.635,Rotation2d.fromDegrees(125)), new Pose2d(14.350, 4.170,Rotation2d.fromDegrees(130))});
+        coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.554, 6.635,Rotation2d.fromDegrees(-55)), new Pose2d(1.69,7.35,Rotation2d.fromDegrees(-55))});
       }
       
       //Starting Position Constants:
@@ -190,7 +190,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = 5;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     
     public static final double kV = 2.76;
@@ -259,7 +259,7 @@ public final class Constants {
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 2;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
     // Constraint for the motion profiled robot angle controller
