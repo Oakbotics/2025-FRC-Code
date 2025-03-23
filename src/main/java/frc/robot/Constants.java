@@ -77,7 +77,7 @@ public final class Constants {
       public static final HashMap<Integer, Pose2d[]> coralStationPosition = new HashMap();
 
       static{ //Value are left to right
-        coralStationPosition.put(1, new Pose2d[]{new Pose2d(17.027, 1.413,Rotation2d.fromDegrees(-60)), new Pose2d(15.921, 0.599,Rotation2d.fromDegrees(-55))}); // RED SIDE:
+        coralStationPosition.put(1, new Pose2d[]{new Pose2d(17.027, 1.413,Rotation2d.fromDegrees(120)), new Pose2d(15.921, 0.599,Rotation2d.fromDegrees(120))}); // RED SIDE:
         coralStationPosition.put(2, new Pose2d[]{new Pose2d(15.776, 7.477,Rotation2d.fromDegrees(50.0)), new Pose2d(17.020, 6.623,Rotation2d.fromDegrees(55))});
         coralStationPosition.put(12, new Pose2d[]{new Pose2d(1.703, 0.565,Rotation2d.fromDegrees(-130)), new Pose2d(0.578, 1.407,Rotation2d.fromDegrees(-125))}); // BLUE SIDE:
         coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.554, 6.635,Rotation2d.fromDegrees(-55)), new Pose2d(1.52,7.23,Rotation2d.fromDegrees(-55))});

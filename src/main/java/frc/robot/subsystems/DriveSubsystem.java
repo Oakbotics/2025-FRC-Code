@@ -360,7 +360,15 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void gyroLimelightReset(){
-    if(m_limeLightSubsystem.getTopID() != -1)
+    if(DriverStation.getAlliance().get() == Alliance.Red){
+      if(m_limeLightSubsystem.getTopID() != -1)
+        setGyro(m_limeLightSubsystem.getBotPoseTopLL().getRotation().getDegrees() + 180); 
+      else if(m_limeLightSubsystem.getRightID() != -1)
+        setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees() + 180); 
+      else if(m_limeLightSubsystem.getLeftID() != -1)
+        setGyro(m_limeLightSubsystem.getBotPoseLeftLL().getRotation().getDegrees() + 180);
+    }
+    else if(m_limeLightSubsystem.getTopID() != -1)
       setGyro(m_limeLightSubsystem.getBotPoseTopLL().getRotation().getDegrees()); 
     else if(m_limeLightSubsystem.getRightID() != -1)
       setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees()); 
