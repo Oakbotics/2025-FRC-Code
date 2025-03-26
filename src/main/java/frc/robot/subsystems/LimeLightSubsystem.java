@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 
 public class LimeLightSubsystem extends SubsystemBase {
 
@@ -108,6 +109,15 @@ public class LimeLightSubsystem extends SubsystemBase {
   public int getLeftIDCount(){
     return ((int) m_limeLightLeftTable.getEntry("botpose_orb").getDoubleArray(new double[10])[7]);
 
+  }
+  public double getRightLimelightTime(){
+    return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-right").timestampSeconds;
+  }
+  public double getLeftLimelightTime(){
+    return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-left").timestampSeconds;
+  }
+  public double getTopLimelightTime(){
+    return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelihgt-top").timestampSeconds;
   }
   // public Pose2d getClosestTagPose(){
   //   // String allianceTableName = DriverStation.getAlliance() == Alliance.Blue ? "botpose_wpiblue": "botpose_wpired";

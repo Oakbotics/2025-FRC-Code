@@ -18,6 +18,7 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -335,17 +336,18 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
   public void limeLightPoseUpdate() {
+    
       if(m_limeLightSubsystem.getRightID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.1, 9999999));
-        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getRightLimelightTime());
       }
       else if(m_limeLightSubsystem.getLeftID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.1, 9999999));
-        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()),  m_limeLightSubsystem.getLeftLimelightTime());
       }
       else if(m_limeLightSubsystem.getTopID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.1, 9999999));
-        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), Timer.getFPGATimestamp());
+        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getTopLimelightTime());
       }
   }
 
@@ -457,6 +459,15 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
     return nearestPolePoseDistance;
+  }
+  public void goToPosePidloop(Pose2d goalPose){
+    PIDController xController =new PIDController(9.0, 0.0, 0.1);
+    PIDController yController = new PIDController(9.0, 0.0, 0.1);
+    PIDController rotController = new PIDController(8.0, 0.0, 0.0);
+    xController.calculate(getPose().getX(),goalPose.getX());
+    yController.calculate(getPose().getY(),goalPose.getY());
+    rotController.calculate(getPose().getRotation().getDegrees(),goalPose.getRotation().getDegrees());
+
   }
 
 }

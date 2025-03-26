@@ -61,12 +61,12 @@ public final class Constants {
       public static final HashMap<Integer, Pose2d[]> reefPolePositions = new HashMap();
 
       static { //branches are ordered left to right
-        reefPolePositions.put(6, new Pose2d[]{new Pose2d(13.54, 2.81,Rotation2d.fromDegrees(120)), new Pose2d(13.868, 3.003,Rotation2d.fromDegrees(120))});
-        reefPolePositions.put(7, new Pose2d[]{new Pose2d(14.426, 3.859,Rotation2d.fromDegrees(180)), new Pose2d(14.337, 4.190,Rotation2d.fromDegrees(180))});
-        reefPolePositions.put(8, new Pose2d[]{new Pose2d(13.884, 5.015,Rotation2d.fromDegrees(-120)), new Pose2d(13.567, 5.216,Rotation2d.fromDegrees(-120))});
-        reefPolePositions.put(9, new Pose2d[]{new Pose2d(12.534, 5.216,Rotation2d.fromDegrees(-60)), new Pose2d(12.265, 5.041,Rotation2d.fromDegrees(-60))});
-        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.771, 4.195,Rotation2d.fromDegrees(0)), new Pose2d(11.773, 3.859,Rotation2d.fromDegrees(0))});
-        reefPolePositions.put(11, new Pose2d[]{new Pose2d(12.223, 3.049,Rotation2d.fromDegrees(60)), new Pose2d(12.545, 2.854,Rotation2d.fromDegrees(60))});
+        reefPolePositions.put(6, new Pose2d[]{new Pose2d(13.47, 2.82,Rotation2d.fromDegrees(125)), new Pose2d(13.85, 3.04,Rotation2d.fromDegrees(128))});
+        reefPolePositions.put(7, new Pose2d[]{new Pose2d(14.36, 3.85,Rotation2d.fromDegrees(180)), new Pose2d(14.42, 4.180,Rotation2d.fromDegrees(180))});
+        reefPolePositions.put(8, new Pose2d[]{new Pose2d(13.85, 5.06,Rotation2d.fromDegrees(-115)), new Pose2d(13.56, 5.21,Rotation2d.fromDegrees(-115))});
+        reefPolePositions.put(9, new Pose2d[]{new Pose2d(12.23, 5.03,Rotation2d.fromDegrees(-50)), new Pose2d(12.57, 5.23,Rotation2d.fromDegrees(-50))});
+        reefPolePositions.put(10, new Pose2d[]{new Pose2d(11.77, 3.85,Rotation2d.fromDegrees(0)), new Pose2d(11.77, 4.21,Rotation2d.fromDegrees(0))});
+        reefPolePositions.put(11, new Pose2d[]{new Pose2d(12.66, 2.92,Rotation2d.fromDegrees(60)), new Pose2d(12.30, 3.18,Rotation2d.fromDegrees(60))});
         reefPolePositions.put(17, new Pose2d[]{new Pose2d(3.706, 3.016,Rotation2d.fromDegrees(60)), new Pose2d(3.983, 2.865,Rotation2d.fromDegrees(60))});
         reefPolePositions.put(18, new Pose2d[]{new Pose2d(3.180, 4.180,Rotation2d.fromDegrees(0)), new Pose2d(3.180, 3.850,Rotation2d.fromDegrees(0))});
         reefPolePositions.put(19, new Pose2d[]{new Pose2d(3.950, 5.202,Rotation2d.fromDegrees(-60)), new Pose2d(3.722, 5.050,Rotation2d.fromDegrees(-60))});
@@ -77,7 +77,7 @@ public final class Constants {
       public static final HashMap<Integer, Pose2d[]> coralStationPosition = new HashMap();
 
       static{ //Value are left to right
-        coralStationPosition.put(1, new Pose2d[]{new Pose2d(17.027, 1.413,Rotation2d.fromDegrees(120)), new Pose2d(15.921, 0.599,Rotation2d.fromDegrees(120))}); // RED SIDE:
+        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.50, 0.83,Rotation2d.fromDegrees(120)), new Pose2d(16.50, 0.83,Rotation2d.fromDegrees(120))}); // RED SIDE:
         coralStationPosition.put(2, new Pose2d[]{new Pose2d(15.776, 7.477,Rotation2d.fromDegrees(50.0)), new Pose2d(17.020, 6.623,Rotation2d.fromDegrees(55))});
         coralStationPosition.put(12, new Pose2d[]{new Pose2d(1.703, 0.565,Rotation2d.fromDegrees(-130)), new Pose2d(0.578, 1.407,Rotation2d.fromDegrees(-125))}); // BLUE SIDE:
         coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.554, 6.635,Rotation2d.fromDegrees(-55)), new Pose2d(1.52,7.23,Rotation2d.fromDegrees(-55))});
@@ -190,8 +190,8 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 4;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAngularSpeed =  Math.PI; // radians per second
     
     public static final double kV = 2.76;
     public static final double kS = 0.024;
@@ -258,8 +258,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 4;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
