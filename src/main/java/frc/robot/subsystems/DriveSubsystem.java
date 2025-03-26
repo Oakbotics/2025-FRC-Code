@@ -461,12 +461,15 @@ public class DriveSubsystem extends SubsystemBase {
     return nearestPolePoseDistance;
   }
   public void goToPosePidloop(Pose2d goalPose){
-    PIDController xController =new PIDController(9.0, 0.0, 0.1);
-    PIDController yController = new PIDController(9.0, 0.0, 0.1);
-    PIDController rotController = new PIDController(8.0, 0.0, 0.0);
-    xController.calculate(getPose().getX(),goalPose.getX());
-    yController.calculate(getPose().getY(),goalPose.getY());
-    rotController.calculate(getPose().getRotation().getDegrees(),goalPose.getRotation().getDegrees());
+    PIDController xController =new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
+    PIDController yController = new PIDController(DriveConstants.kYP,DriveConstants.kYI, DriveConstants.kYD);
+    PIDController rotController = new PIDController(DriveConstants.kRP,DriveConstants.kRI, DriveConstants.kRD);
+
+    rotController.enableContinuousInput(-180, 180);
+    
+    drive(xController.calculate(getPose().getX(),goalPose.getX()),  
+          yController.calculate(getPose().getY(),goalPose.getY()), 
+          rotController.calculate(getPose().getRotation().getDegrees(),goalPose.getRotation().getDegrees()), false);
 
   }
 

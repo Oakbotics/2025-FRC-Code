@@ -197,7 +197,18 @@ public final class Constants {
     public static final double kS = 0.024;
     public static final double kA = 0.02;
 
+    //PID Controllers PID values
+    public static final double kXP = 9.0;
+    public static final double kXI = 0.0;
+    public static final double kXD = 0.1;
 
+    public static final double kYP = 9.0;
+    public static final double kYI = 0.0;
+    public static final double kYD = 0.1;
+
+    public static final double kRP = 8.0;
+    public static final double kRI = 0.0;
+    public static final double kRD = 0.0;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
