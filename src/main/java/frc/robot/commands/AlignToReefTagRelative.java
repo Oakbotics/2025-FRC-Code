@@ -22,12 +22,17 @@ public class AlignToReefTagRelative extends Command {
   private LimeLightSubsystem m_limeLightSubsystem;
   private double tagID = -1;
   private double X_SETPOINT_REEF_ALIGNMENT = Units.inchesToMeters(6.5); // to be found
-  private double Y_SETPOINT_REEF_ALIGNMENT = 0.44; // to be found
-  private double ROT_SETPOINT_REEF_ALIGNMENT;
+  private double Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.44; // to be found
+  private double Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 0.44; // to be found
+  private double ROT_LEFT_SETPOINT_REEF_ALIGNMENT;
+  private double ROT_RIGHT_SETPOINT_REEF_ALIGNMENT;
 
   private double X_TOLERANCE_REEF_ALIGNMENT;
   private double Y_TOLERANCE_REEF_ALIGNMENT;
+
   private double ROT_TOLERANCE_REEF_ALIGNMENT;
+
+
 
   private String limelightUsed;
 
@@ -46,35 +51,42 @@ public class AlignToReefTagRelative extends Command {
     if(m_limeLightSubsystem.getLeftID() != 1){
       limelightUsed = "limelight-left";
 
-      // X_SETPOINT_REEF_ALIGNMENT = 999999999;
-      // Y_SETPOINT_REEF_ALIGNMENT = 999999999;
-      // if(isLeft)
-      //   ROT_SETPOINT_REEF_ALIGNMENT = 99999999;
-      // else
-      //   ROT_SETPOINT_REEF_ALIGNMENT = 99999999;
+      X_SETPOINT_REEF_ALIGNMENT = 999999999;
+      if(isLeft){
+        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
+        ROT_LEFT_SETPOINT_REEF_ALIGNMENT = 99999999;
+      }
+      else{
+        ROT_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
+        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
+      }
     }
     else if(m_limeLightSubsystem.getRightID() != 1){
       limelightUsed = "limelight-right";
 
-      // X_SETPOINT_REEF_ALIGNMENT = 999999999;
-      // Y_SETPOINT_REEF_ALIGNMENT = 999999999;
-      // if(isLeft)
-      //   ROT_SETPOINT_REEF_ALIGNMENT = 99999999;
-      // else
-      //   ROT_SETPOINT_REEF_ALIGNMENT = 99999999;
+      X_SETPOINT_REEF_ALIGNMENT = 999999999;
+      if(isLeft){
+        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
+        ROT_LEFT_SETPOINT_REEF_ALIGNMENT = 99999999;
+      }
+      else{
+        ROT_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
+        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
+      }
     }
+
     this.stopTimer = new Timer();
     this.stopTimer.start();
     this.dontSeeTagTimer = new Timer();
     this.dontSeeTagTimer.start();
 
-    rotController.setSetpoint(ROT_SETPOINT_REEF_ALIGNMENT);
+    rotController.setSetpoint(isLeft ? ROT_LEFT_SETPOINT_REEF_ALIGNMENT : ROT_RIGHT_SETPOINT_REEF_ALIGNMENT);
     rotController.setTolerance(ROT_TOLERANCE_REEF_ALIGNMENT);
 
     xController.setSetpoint(X_SETPOINT_REEF_ALIGNMENT);
     xController.setTolerance(X_TOLERANCE_REEF_ALIGNMENT);
 
-    yController.setSetpoint(isLeft ? -Y_SETPOINT_REEF_ALIGNMENT : Y_SETPOINT_REEF_ALIGNMENT);
+    yController.setSetpoint(isLeft ? ROT_LEFT_SETPOINT_REEF_ALIGNMENT : Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
     yController.setTolerance(Y_TOLERANCE_REEF_ALIGNMENT);
 
     tagID = LimelightHelpers.getFiducialID(limelightUsed);
