@@ -9,6 +9,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
@@ -31,9 +32,9 @@ public class AlignToReefTagRelative extends Command {
   private String limelightUsed;
 
   public AlignToReefTagRelative(boolean isLeft, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
-    xController = new PIDController(0, 0.0, 0);  // Vertical movement
-    yController = new PIDController(0, 0.0, 0);  // Horitontal movement
-    rotController = new PIDController(0, 0, 0);  // Rotation
+    xController =new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
+    yController = new PIDController(DriveConstants.kYP,DriveConstants.kYI, DriveConstants.kYD);
+    rotController = new PIDController(DriveConstants.kRP,DriveConstants.kRI, DriveConstants.kRD);
     this.isLeft = isLeft;
     this.m_driveSubsystem = m_driveSubsystem;
     this.m_limeLightSubsystem = m_limeLightSubsystem;
