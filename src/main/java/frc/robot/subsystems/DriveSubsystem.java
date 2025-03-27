@@ -199,7 +199,7 @@ public class DriveSubsystem extends SubsystemBase {
                 Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        swerveModuleStates, AutoConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
@@ -466,10 +466,22 @@ public class DriveSubsystem extends SubsystemBase {
     PIDController rotController = new PIDController(DriveConstants.kRP,DriveConstants.kRI, DriveConstants.kRD);
 
     rotController.enableContinuousInput(-180, 180);
+
+    // xController.setSetpoint(goalPose.getX());
+    // yController.setSetpoint(goalPose.getY());
+    // rotController.setSetpoint(goalPose.getRotation().getDegrees());
+
+
+    xController.setTolerance(0.01);
+    yController.setTolerance(0.01);
+    rotController.setTolerance(10);
     
-    drive(xController.calculate(getPose().getX(),goalPose.getX()),  
-          yController.calculate(getPose().getY(),goalPose.getY()), 
-          rotController.calculate(getPose().getRotation().getDegrees(),goalPose.getRotation().getDegrees()), false);
+    drive(xController.calculate(getPose().getX(), goalPose.getX()),  
+          yController.calculate(getPose().getY(), goalPose.getY()), 
+          rotController.calculate(getPose().getRotation().getDegrees(), goalPose.getRotation().getDegrees()), false);
+
+    // autoDrive(0,0, 
+    //       rotController.calculate(getPose().getRotation().getDegrees(),goalPose.getRotation().getDegrees()), false);
 
   }
 

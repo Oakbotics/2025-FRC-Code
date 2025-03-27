@@ -198,17 +198,17 @@ public final class Constants {
     public static final double kA = 0.02;
 
     //PID Controllers PID values
-    public static final double kXP = 9.0;
+    public static final double kXP = 0.75;
     public static final double kXI = 0.0;
-    public static final double kXD = 0.1;
+    public static final double kXD = 0.05;
 
-    public static final double kYP = 9.0;
+    public static final double kYP = 0.75;//60.75;
     public static final double kYI = 0.0;
-    public static final double kYD = 0.1;
+    public static final double kYD = 0.05;
 
-    public static final double kRP = 8.0;
+    public static final double kRP = 0.007;
     public static final double kRI = 0.0;
-    public static final double kRD = 0.0;
+    public static final double kRD = 0.0001;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
@@ -251,7 +251,7 @@ public final class Constants {
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = 0.06550;
+    public static final double kWheelDiameterMeters = 0.0620;
 
     // public static final double kWheelDiameterMeters = 0.07441;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
@@ -269,7 +269,7 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = 1;
     public static final double kMaxAccelerationMetersPerSecondSquared = 2;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;

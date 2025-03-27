@@ -4,8 +4,11 @@
 
 package frc.robot.commands;
 
+import org.opencv.features2d.FlannBasedMatcher;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.function.FloatSupplier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,18 +24,15 @@ public class AlignToReefTagRelative extends Command {
   private DriveSubsystem m_driveSubsystem;
   private LimeLightSubsystem m_limeLightSubsystem;
   private double tagID = -1;
-  private double X_SETPOINT_REEF_ALIGNMENT = Units.inchesToMeters(6.5); // to be found
-  private double Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.44; // to be found
-  private double Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 0.44; // to be found
-  private double ROT_LEFT_SETPOINT_REEF_ALIGNMENT;
-  private double ROT_RIGHT_SETPOINT_REEF_ALIGNMENT;
+  private double X_SETPOINT_REEF_ALIGNMENT; // to be found
+  private double Y_LEFT_SETPOINT_REEF_ALIGNMENT; // to be found
+  private double Y_RIGHT_SETPOINT_REEF_ALIGNMENT; // to be found
+  private double ROT_SETPOINT_REEF_ALIGNMENT;
 
-  private double X_TOLERANCE_REEF_ALIGNMENT;
-  private double Y_TOLERANCE_REEF_ALIGNMENT;
-
-  private double ROT_TOLERANCE_REEF_ALIGNMENT;
-
-
+  private double X_TOLERANCE_REEF_ALIGNMENT = 0.01;
+  private double Y_TOLERANCE_REEF_ALIGNMENT = 0.01;
+  private double ROT_TOLERANCE_REEF_ALIGNMENT = 3.5;
+  private boolean isRotated = false;
 
   private String limelightUsed;
 
@@ -43,36 +43,26 @@ public class AlignToReefTagRelative extends Command {
     this.isLeft = isLeft;
     this.m_driveSubsystem = m_driveSubsystem;
     this.m_limeLightSubsystem = m_limeLightSubsystem;
-    addRequirements(m_driveSubsystem);
+    addRequirements(m_driveSubsystem, m_limeLightSubsystem);
   }
 
   @Override
   public void initialize() {
-    if(m_limeLightSubsystem.getLeftID() != 1){
+    if(m_limeLightSubsystem.getLeftID() != -1 && isLeft == false){
       limelightUsed = "limelight-left";
 
-      X_SETPOINT_REEF_ALIGNMENT = 999999999;
-      if(isLeft){
-        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
-        ROT_LEFT_SETPOINT_REEF_ALIGNMENT = 99999999;
-      }
-      else{
-        ROT_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
-        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
-      }
+      X_SETPOINT_REEF_ALIGNMENT = -0.4;
+      Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.50;
+      ROT_SETPOINT_REEF_ALIGNMENT = -2.67;
+
     }
-    else if(m_limeLightSubsystem.getRightID() != 1){
+    else if(m_limeLightSubsystem.getRightID() != -1 && isLeft == true){
       limelightUsed = "limelight-right";
 
-      X_SETPOINT_REEF_ALIGNMENT = 999999999;
-      if(isLeft){
-        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
-        ROT_LEFT_SETPOINT_REEF_ALIGNMENT = 99999999;
-      }
-      else{
-        ROT_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
-        Y_RIGHT_SETPOINT_REEF_ALIGNMENT = 99999999;
-      }
+      X_SETPOINT_REEF_ALIGNMENT =  -0.4;
+      Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.50;
+      ROT_SETPOINT_REEF_ALIGNMENT = -0.88;
+
     }
 
     this.stopTimer = new Timer();
@@ -80,13 +70,13 @@ public class AlignToReefTagRelative extends Command {
     this.dontSeeTagTimer = new Timer();
     this.dontSeeTagTimer.start();
 
-    rotController.setSetpoint(isLeft ? ROT_LEFT_SETPOINT_REEF_ALIGNMENT : ROT_RIGHT_SETPOINT_REEF_ALIGNMENT);
+    // rotController.setSetpoint(ROT_SETPOINT_REEF_ALIGNMENT);
     rotController.setTolerance(ROT_TOLERANCE_REEF_ALIGNMENT);
 
-    xController.setSetpoint(X_SETPOINT_REEF_ALIGNMENT);
+    // xController.setSetpoint(X_SETPOINT_REEF_ALIGNMENT);
     xController.setTolerance(X_TOLERANCE_REEF_ALIGNMENT);
 
-    yController.setSetpoint(isLeft ? ROT_LEFT_SETPOINT_REEF_ALIGNMENT : Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
+    // yController.setSetpoint(isLeft ? Y_LEFT_SETPOINT_REEF_ALIGNMENT : Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
     yController.setTolerance(Y_TOLERANCE_REEF_ALIGNMENT);
 
     tagID = LimelightHelpers.getFiducialID(limelightUsed);
@@ -100,20 +90,32 @@ public class AlignToReefTagRelative extends Command {
       double[] postions = LimelightHelpers.getBotPose_TargetSpace(limelightUsed);
       SmartDashboard.putNumber("x", postions[2]);
 
-      double xSpeed = xController.calculate(postions[2]);
-      SmartDashboard.putNumber("xspeed", xSpeed);
-      double ySpeed = -yController.calculate(postions[0]);
-      double rotValue = -rotController.calculate(postions[4]);
+      // postions[2] = 1;
+      // postions[0] = 1;
+      // postions[4] = 180;
 
-      m_driveSubsystem.drive(xSpeed, ySpeed, rotValue, false);
+      double xSpeed = xController.calculate(postions[2], X_SETPOINT_REEF_ALIGNMENT);
+      SmartDashboard.putNumber("xspeed", xSpeed);
+      double ySpeed = -yController.calculate(postions[0], isLeft ? Y_LEFT_SETPOINT_REEF_ALIGNMENT : Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
+      double rotValue = -rotController.calculate(postions[4], ROT_SETPOINT_REEF_ALIGNMENT);
+      SmartDashboard.putNumber("Rotation", rotValue);
+
+      if (!isRotated)
+        m_driveSubsystem.autoDrive(0, 0, rotValue, false);
+
+      if (rotController.atSetpoint()){
+        isRotated = true;
+        m_driveSubsystem.autoDrive(xSpeed, ySpeed, 0, isLeft);
+      }
 
       if (!rotController.atSetpoint() ||
           !yController.atSetpoint() ||
-          !xController.atSetpoint()) {
+          !xController.atSetpoint()
+          ) {
         stopTimer.reset();
       }
     } else {
-      m_driveSubsystem.drive(0,0, 0, false);
+      m_driveSubsystem.autoDrive(0,0, 0, false);
     }
 
     SmartDashboard.putNumber("poseValidTimer", stopTimer.get());
@@ -121,14 +123,14 @@ public class AlignToReefTagRelative extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    m_driveSubsystem.drive(0,0, 0, false);
+    m_driveSubsystem.autoDrive(0,0, 0, false);
   }
 
   @Override
   public boolean isFinished() {
     // Requires the robot to stay in the correct position for 0.3 seconds, as long as it gets a tag in the camera
     return this.dontSeeTagTimer.hasElapsed(0.3) ||
-        stopTimer.hasElapsed(0.3);
+        stopTimer.hasElapsed(0.5);
     // return false;
   }
 }

@@ -5,12 +5,15 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
+import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.FunnelResetCommand;
@@ -134,13 +137,18 @@ public class RobotContainer {
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.gyroLimelightReset()));
-    m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
-    m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetPoseLL()));
+    // m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
+    // m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetPoseLL()));
+    m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(0)))));
+    m_driverController.povLeft().onTrue(new RunCommand(() -> m_driveSubsystem.goToPosePidloop(new Pose2d(-0.46,0.16,Rotation2d.fromDegrees(0))), m_driveSubsystem).withTimeout(5));
 
     
     // m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false));
-    m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
-    m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(true)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
+    // m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
+    // m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(true)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
+
+    m_driverController.rightBumper().onTrue(new AlignToReefTagRelative(false, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
+    m_driverController.leftBumper().onTrue(new AlignToReefTagRelative(true, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
 
     m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
 
