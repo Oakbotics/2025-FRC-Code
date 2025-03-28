@@ -36,13 +36,13 @@ public class AlignToReefTagRelative extends Command {
 
   private String limelightUsed;
 
-  public AlignToReefTagRelative(boolean isLeft, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
+  public AlignToReefTagRelative(boolean isRight, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
     xController = new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
     yController = new PIDController(DriveConstants.kYP,DriveConstants.kYI, DriveConstants.kYD);
     rotController = new PIDController(DriveConstants.kRP,DriveConstants.kRI, DriveConstants.kRD);
 
     rotController.enableContinuousInput(-180, 180);
-    this.isLeft = isLeft;
+    this.isLeft = isRight;
     this.m_driveSubsystem = m_driveSubsystem;
     this.m_limeLightSubsystem = m_limeLightSubsystem;
     addRequirements(m_driveSubsystem, m_limeLightSubsystem);
@@ -87,7 +87,7 @@ public class AlignToReefTagRelative extends Command {
       double[] postions = LimelightHelpers.getBotPose_TargetSpace(limelightUsed);
 
       double xSpeed = xController.calculate(postions[2], X_SETPOINT_REEF_ALIGNMENT);
-      SmartDashboard.putNumber("xspeed", xSpeed);
+      // SmartDashboard.putNumber("xspeed", xSpeed);
       double ySpeed = 0;
       if(isLeft){
         ySpeed = -yController.calculate(postions[0],Y_LEFT_SETPOINT_REEF_ALIGNMENT);
@@ -118,7 +118,7 @@ public class AlignToReefTagRelative extends Command {
       m_driveSubsystem.autoDrive(0,0, 0, false);
     }
 
-    SmartDashboard.putNumber("poseValidTimer", stopTimer.get());
+    // SmartDashboard.putNumber("poseValidTimer", stopTimer.get());
   }
 
   @Override

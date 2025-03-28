@@ -72,7 +72,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Climb Position", getEncoderValue());
+    // SmartDashboard.putNumber("Climb Position", getEncoderValue());
     // This method will be called once per scheduler run
   }
 

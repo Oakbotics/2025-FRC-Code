@@ -63,8 +63,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void printMotorPosition(){
     double relativeEncoderMetersLeft = (m_elevatorEncoderLeft.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
     double relativeEncoderMetersRight = (m_elevatorEncoderRight.getPosition() * (ElevatorConstants.discGearRatio / ElevatorConstants.discCircumferenceMeter)) * 180;
-    SmartDashboard.putNumber("Left Motor", (relativeEncoderMetersLeft ));
-    SmartDashboard.putNumber("Right Motor", (relativeEncoderMetersRight));
+    // SmartDashboard.putNumber("Left Motor", (relativeEncoderMetersLeft ));
+    // SmartDashboard.putNumber("Right Motor", (relativeEncoderMetersRight));
   }
 
   public void setElevatorSpeed(double speed){
@@ -75,7 +75,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elevator Height", getElevatorHeight());
+    // SmartDashboard.putNumber("Elevator Height", getElevatorHeight());
     // SmartDashboard.putNumber("Elevator Encoder", m_elevatorEncoderLeft.getPosition());
     // SmartDashboard.putNumber("Elevator Output", elevatorMotorRight.getAppliedOutput());
   }

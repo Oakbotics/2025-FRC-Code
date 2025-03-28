@@ -148,9 +148,7 @@ public class DriveSubsystem extends SubsystemBase {
         && getChassisSpeeds().omegaRadiansPerSecond < 0.01)
         limeLightPoseUpdate();
     
-    SmartDashboard.putNumber("velocity x", getChassisSpeeds().vxMetersPerSecond);
-    SmartDashboard.putNumber("velocity y", getChassisSpeeds().vyMetersPerSecond);
-    SmartDashboard.putNumber("velocity rotation", getChassisSpeeds().omegaRadiansPerSecond);
+    
 
     SmartDashboard.putNumber("Odometry X", m_odometry.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", m_odometry.getEstimatedPosition().getY());
@@ -426,9 +424,7 @@ public class DriveSubsystem extends SubsystemBase {
         }
       }
     }
-    SmartDashboard.putNumber("Goal pose X", nearestPolePose.getX());
-    SmartDashboard.putNumber("Goal pose Y", nearestPolePose.getY());
-    SmartDashboard.putNumber("Goal pose rotation", nearestPolePose.getRotation().getDegrees());
+
     
     return nearestPolePose;
   }

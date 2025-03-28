@@ -112,6 +112,13 @@ public final class Constants {
       l2.put("wrist", 185.0);
     }
 
+    //THE L1 BRANCH
+    public static final HashMap<String, Double> l1 = new HashMap();
+    static{
+      l1.put("elevator", 0.07);
+      l1.put("wrist", 150.0);
+    }
+
     public static final HashMap<String, Double> intake = new HashMap();
     static{
       intake.put("elevator", 0.16);
