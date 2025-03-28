@@ -137,10 +137,10 @@ public class RobotContainer {
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.gyroLimelightReset()));
-    // m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
-    // m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetPoseLL()));
-    m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(0)))));
-    m_driverController.povLeft().onTrue(new RunCommand(() -> m_driveSubsystem.goToPosePidloop(new Pose2d(-0.46,0.16,Rotation2d.fromDegrees(0))), m_driveSubsystem).withTimeout(5));
+    m_driverController.povRight().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
+    m_driverController.povLeft().whileTrue(new InstantCommand(() -> m_driveSubsystem.resetPoseLL()));
+    // m_driverController.povRight().onTrue(new InstantCommand(() -> m_driveSubsystem.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(0)))));
+    // m_driverController.povLeft().onTrue(new RunCommand(() -> m_driveSubsystem.goToPosePidloop(new Pose2d(1,1,Rotation2d.fromDegrees(180))), m_driveSubsystem).withTimeout(5));
 
     
     // m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false));

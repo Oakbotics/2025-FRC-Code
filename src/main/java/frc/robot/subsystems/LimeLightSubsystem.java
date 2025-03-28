@@ -47,6 +47,8 @@ public class LimeLightSubsystem extends SubsystemBase {
       else botPose = new Pose2d(botPoseArray[0] + 8.7736, botPoseArray[1] + 4.0257, Rotation2d.fromDegrees(botRotArray[5]));
       SmartDashboard.putNumber("LimelightX", botPose.getX());
       SmartDashboard.putNumber("LimelightY", botPose.getY());
+      SmartDashboard.putNumber("LimelightRot", Rotation2d.fromDegrees(botRotArray[5]).getDegrees());
+
       // m_field.setRobotPose(botPose);  
       return botPose;
 

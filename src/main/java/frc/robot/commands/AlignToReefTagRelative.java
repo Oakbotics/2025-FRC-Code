@@ -50,20 +50,14 @@ public class AlignToReefTagRelative extends Command {
   public void initialize() {
     if(m_limeLightSubsystem.getLeftID() != -1 && isLeft == false){
       limelightUsed = "limelight-left";
-
-      X_SETPOINT_REEF_ALIGNMENT = -0.4;
-      Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.50;
-      ROT_SETPOINT_REEF_ALIGNMENT = -2.67;
-
     }
     else if(m_limeLightSubsystem.getRightID() != -1 && isLeft == true){
       limelightUsed = "limelight-right";
-
-      X_SETPOINT_REEF_ALIGNMENT =  -0.4;
-      Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.50;
-      ROT_SETPOINT_REEF_ALIGNMENT = -0.88;
-
     }
+      X_SETPOINT_REEF_ALIGNMENT = -0.43;
+      Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.19; //0.50;
+      Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.18; //-0.50;
+      ROT_SETPOINT_REEF_ALIGNMENT = 0.0; //-2.67;
 
     this.stopTimer = new Timer();
     this.stopTimer.start();
@@ -88,17 +82,27 @@ public class AlignToReefTagRelative extends Command {
       this.dontSeeTagTimer.reset();
 
       double[] postions = LimelightHelpers.getBotPose_TargetSpace(limelightUsed);
-      SmartDashboard.putNumber("x", postions[2]);
-
-      // postions[2] = 1;
-      // postions[0] = 1;
-      // postions[4] = 180;
 
       double xSpeed = xController.calculate(postions[2], X_SETPOINT_REEF_ALIGNMENT);
       SmartDashboard.putNumber("xspeed", xSpeed);
-      double ySpeed = -yController.calculate(postions[0], isLeft ? Y_LEFT_SETPOINT_REEF_ALIGNMENT : Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
+      double ySpeed = 0;
+      if(isLeft){
+        ySpeed = -yController.calculate(postions[0],Y_LEFT_SETPOINT_REEF_ALIGNMENT);
+        SmartDashboard.putNumber("Goal AutoAlign Y", Y_LEFT_SETPOINT_REEF_ALIGNMENT);
+      }
+      else{
+        ySpeed = -yController.calculate(postions[0],Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
+        SmartDashboard.putNumber("Goal AutoAlign Y", Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
+      }
       double rotValue = -rotController.calculate(postions[4], ROT_SETPOINT_REEF_ALIGNMENT);
-      SmartDashboard.putNumber("Rotation", rotValue);
+
+      SmartDashboard.putNumber("Goal AutoAlign X", X_SETPOINT_REEF_ALIGNMENT);
+      SmartDashboard.putNumber("Goal AutoAlign Rotation", ROT_SETPOINT_REEF_ALIGNMENT);
+
+      SmartDashboard.putNumber("Current AutoAlign X", postions[2]);
+      SmartDashboard.putNumber("Current AutoAlign Y", postions[0]);
+      SmartDashboard.putNumber("Current AutoAlign Rotation", postions[4]);
+
 
       if (!isRotated)
         m_driveSubsystem.autoDrive(0, 0, rotValue, false);
