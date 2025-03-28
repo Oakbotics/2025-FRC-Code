@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.ClimbConfigs;
 import frc.robot.Constants.ClimbConstants;
@@ -65,8 +66,13 @@ public class ClimbSubsystem extends SubsystemBase {
     climbMotorServoBottom.set(position);
   }
 
+  public double getEncoderValue() {
+    return climbMotorTop.getAbsoluteEncoder().getPosition();
+  }
+
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Climb Position", getEncoderValue());
     // This method will be called once per scheduler run
   }
 

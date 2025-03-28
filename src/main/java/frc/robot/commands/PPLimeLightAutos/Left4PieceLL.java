@@ -1,4 +1,5 @@
-package frc.robot.commands.LimeLightAutos;
+package frc.robot.commands.PPLimeLightAutos;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -15,51 +16,72 @@ import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.IntakeCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 
-public class Right3PieceLL extends SequentialCommandGroup {
-    public Right3PieceLL(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem){
+public class Left4PieceLL extends SequentialCommandGroup {
+    public Left4PieceLL(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem){
         if(DriverStation.getAlliance().get() == Alliance.Blue)
             addCommands(
                 new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.01),
                 // Commands.waitSeconds(0.01),
                 new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.01),
                 new ParallelCommandGroup(
-                     Commands.waitSeconds(0.5),
-                    new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(22)[1])
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.5),
+                        new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1])
                 ),
-                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
-                new ParallelCommandGroup(
-                    new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(12)[0])
-                ),
-                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.2),
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.1),
                 new ParallelCommandGroup(
                     new SequentialCommandGroup(
                         Commands.waitSeconds(0.5),
                         new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                         ),
-                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(17)[0])
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1])
                 ),
-                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
-                new ParallelCommandGroup(
-                    new SequentialCommandGroup(
-                        Commands.waitSeconds(0.5),
-                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
-                        ),
-                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(12)[0])
-                ),
-                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.2),
+                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.3),
                 new ParallelCommandGroup(
                     new SequentialCommandGroup(
                         Commands.waitSeconds(0.5),
                         new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                     ),
                     new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.8),
-                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(17)[1])
+                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(19)[0])
                 ),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01)
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.1),
+                new ParallelCommandGroup(
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.5),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                        ),
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1])
+                ),
+                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.3),
+                new ParallelCommandGroup(
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.5),
+                        new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.8),
+                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(19)[1])
+                ),
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.1),
+                new ParallelCommandGroup(
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.5),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                        ),
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1])
+                ),
+                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.3),
+                new ParallelCommandGroup(
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.5),
+                        new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.8),
+                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(18)[0])
+                ),
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2)
             );
         else
             addCommands(
@@ -67,29 +89,29 @@ public class Right3PieceLL extends SequentialCommandGroup {
                 new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
                 new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(9)[1])
+                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(11)[1])
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
                 new ParallelCommandGroup(
                     new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(2)[0])
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
                 ),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(8)[0])
+                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(6)[1])
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01),
                 new ParallelCommandGroup(
                     new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(2)[0])
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
                 ),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(8)[1])
+                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(6)[0])
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.01)

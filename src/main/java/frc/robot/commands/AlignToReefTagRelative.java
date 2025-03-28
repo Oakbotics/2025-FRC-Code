@@ -37,9 +37,11 @@ public class AlignToReefTagRelative extends Command {
   private String limelightUsed;
 
   public AlignToReefTagRelative(boolean isLeft, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
-    xController =new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
+    xController = new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
     yController = new PIDController(DriveConstants.kYP,DriveConstants.kYI, DriveConstants.kYD);
     rotController = new PIDController(DriveConstants.kRP,DriveConstants.kRI, DriveConstants.kRD);
+
+    rotController.enableContinuousInput(-180, 180);
     this.isLeft = isLeft;
     this.m_driveSubsystem = m_driveSubsystem;
     this.m_limeLightSubsystem = m_limeLightSubsystem;
@@ -49,14 +51,15 @@ public class AlignToReefTagRelative extends Command {
   @Override
   public void initialize() {
     if(m_limeLightSubsystem.getLeftID() != -1 && isLeft == false){
-      limelightUsed = "limelight-left";
-    }
-    else if(m_limeLightSubsystem.getRightID() != -1 && isLeft == true){
       limelightUsed = "limelight-right";
     }
+    else if(m_limeLightSubsystem.getRightID() != -1 && isLeft == true){
+      limelightUsed = "limelight-left";
+
+    }
       X_SETPOINT_REEF_ALIGNMENT = -0.43;
-      Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.19; //0.50;
-      Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.18; //-0.50;
+      Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.19; 
+      Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.18; 
       ROT_SETPOINT_REEF_ALIGNMENT = 0.0; //-2.67;
 
     this.stopTimer = new Timer();
@@ -103,14 +106,7 @@ public class AlignToReefTagRelative extends Command {
       SmartDashboard.putNumber("Current AutoAlign Y", postions[0]);
       SmartDashboard.putNumber("Current AutoAlign Rotation", postions[4]);
 
-
-      if (!isRotated)
-        m_driveSubsystem.autoDrive(0, 0, rotValue, false);
-
-      if (rotController.atSetpoint()){
-        isRotated = true;
-        m_driveSubsystem.autoDrive(xSpeed, ySpeed, 0, isLeft);
-      }
+      m_driveSubsystem.autoDrive(xSpeed, ySpeed, rotValue, false);
 
       if (!rotController.atSetpoint() ||
           !yController.atSetpoint() ||

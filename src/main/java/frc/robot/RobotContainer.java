@@ -16,7 +16,8 @@ import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
-import frc.robot.commands.FunnelResetCommand;
+import frc.robot.commands.FunnelClosedCommand;
+import frc.robot.commands.FunnelOpenCommand;
 import frc.robot.commands.IntakeCommandGroup;
 import frc.robot.commands.L2AlgaeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
@@ -24,17 +25,11 @@ import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.Autos.Middle1Piece;
+import frc.robot.commands.PPLimeLightAutos.Left3PieceLL;
+import frc.robot.commands.PPLimeLightAutos.Middle1PieceLL;
 import frc.robot.commands.ClimberPositionCommand;
 import frc.robot.commands.ClimberOutCommand;
 import frc.robot.commands.ClimberInCommand;
-import frc.robot.commands.LimeLightAutos.Left1PieceLL;
-import frc.robot.commands.LimeLightAutos.Left2PieceLL;
-import frc.robot.commands.LimeLightAutos.Left3PieceLL;
-import frc.robot.commands.LimeLightAutos.Left4PieceLL;
-import frc.robot.commands.LimeLightAutos.Middle1PieceLL;
-import frc.robot.commands.LimeLightAutos.Right1PieceLL;
-import frc.robot.commands.LimeLightAutos.Right2PieceLL;
-import frc.robot.commands.LimeLightAutos.Right3PieceLL;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FunnelSubsystem;
@@ -147,8 +142,8 @@ public class RobotContainer {
     // m_driverController.rightBumper().onTrue(m_driveSubsystem.findPathToPole(false)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
     // m_driverController.leftBumper().onTrue(m_driveSubsystem.findPathToPole(true)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
 
-    m_driverController.rightBumper().onTrue(new AlignToReefTagRelative(false, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
-    m_driverController.leftBumper().onTrue(new AlignToReefTagRelative(true, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
+    m_driverController.rightBumper().onTrue(new AlignToReefTagRelative(true, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
+    m_driverController.leftBumper().onTrue(new AlignToReefTagRelative(false, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem).withTimeout(0.01));
 
     m_driverController.rightTrigger().whileTrue(new CoralOuttakeCommand(m_intakeSubsytem));
 
@@ -162,15 +157,15 @@ public class RobotContainer {
     m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
     m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
 
-    m_operatorController.povUp().onTrue(new ClimberPositionCommand(m_climbSubsystem, m_funnelSubsystem));
-    m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
-    m_operatorController.povLeft().whileTrue(new ClimberOutCommand(m_climbSubsystem));
-    m_operatorController.povRight().whileTrue(new FunnelResetCommand(m_climbSubsystem, m_funnelSubsystem));
+    m_operatorController.povUp().whileTrue(new ClimberInCommand(m_climbSubsystem));
+    m_operatorController.povDown().whileTrue(new ClimberOutCommand(m_climbSubsystem));
+    m_operatorController.povLeft().whileTrue(new FunnelOpenCommand(m_climbSubsystem, m_funnelSubsystem));
+    m_operatorController.povRight().whileTrue(new FunnelClosedCommand(m_climbSubsystem, m_funnelSubsystem));
   }
 
   public Command getAutonomousCommand() {
     // return m_autoChooser.getSelected();
-    return new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-    // return new Middle1Piece(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+    // return new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
+    return new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
   }
 }

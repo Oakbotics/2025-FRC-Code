@@ -58,11 +58,11 @@ public class FunnelSubsystem extends SubsystemBase {
     * Opens the funnel to climb
     *
     */
-  public void openFunnel(){
+  public void closeFunnel(){
     funnelServo.set(0.8);
   }
 
-  public void closeFunnel(){
+  public void openFunnel(){
     funnelServo.set(0.2);
   }
 

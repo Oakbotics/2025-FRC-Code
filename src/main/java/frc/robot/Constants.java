@@ -206,7 +206,7 @@ public final class Constants {
     public static final double kYI = 0.0;
     public static final double kYD = 0.05;
 
-    public static final double kRP = 0.007;
+    public static final double kRP = 0.015;
     public static final double kRI = 0.0;
     public static final double kRD = 0.0001;
 
@@ -270,7 +270,7 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 1;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -292,8 +292,8 @@ public final class Constants {
     public static final int climbMotorTopID = 16;
     public static final int climbMotorBottomID = 15;
     
-    public static final double minPosition = 0;
-    public static final double maxPosition = 270;
+    public static final double minPosition = 5;
+    public static final double maxPosition = 200;
  }
 
  public static final class FunnelConstants {

@@ -157,9 +157,11 @@ public final class Configs {
                     // longer route.
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, climbEncoderFactor);
-                // climbConfig.softLimit
-                //     .forwardSoftLimit(Units.degreesToRadians(ClimbConstants.maxPosition))
-                //     .reverseSoftLimit(Units.degreesToRadians(ClimbConstants.minPosition));
+                climbConfig.softLimit
+                    .forwardSoftLimit((ClimbConstants.maxPosition))
+                    .reverseSoftLimit((ClimbConstants.minPosition));
+                    // .forwardSoftLimitEnabled(true)
+                    // .reverseSoftLimitEnabled(true);
                 climbFollowerConfig
                     .apply(climbConfig)
                     .follow(ClimbConstants.climbMotorBottomID, false);

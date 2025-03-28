@@ -10,7 +10,7 @@ import frc.robot.subsystems.FunnelSubsystem;
 
 
 /** An example command that uses an example subsystem. */
-public class FunnelResetCommand extends Command {
+public class FunnelClosedCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimbSubsystem m_climbSubsystem;
   private final FunnelSubsystem m_funnelSubsystem;
@@ -20,7 +20,7 @@ public class FunnelResetCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public FunnelResetCommand(ClimbSubsystem climbSubsystem, FunnelSubsystem funnelSubsystem) {
+  public FunnelClosedCommand(ClimbSubsystem climbSubsystem, FunnelSubsystem funnelSubsystem) {
     m_climbSubsystem = climbSubsystem;
     m_funnelSubsystem = funnelSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.

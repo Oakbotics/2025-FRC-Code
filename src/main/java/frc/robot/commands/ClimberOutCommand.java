@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.ClimbSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -27,7 +28,6 @@ public class ClimberOutCommand extends Command {
   @Override
   public void initialize() {
     m_climbSubsystem.setSpeed(1);
-    m_climbSubsystem.setServo(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,6 +43,6 @@ public class ClimberOutCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_climbSubsystem.getEncoderValue() < 10; //ClimbConstants.minPosition;
   }
 }
