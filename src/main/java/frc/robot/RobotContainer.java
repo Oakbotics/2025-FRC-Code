@@ -27,6 +27,7 @@ import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.Autos.Middle1Piece;
 import frc.robot.commands.PPLimeLightAutos.PieceATR;
+import frc.robot.commands.PPLimeLightAutos.PractiseField;
 import frc.robot.commands.PPLimeLightAutos.Left3PieceLL;
 import frc.robot.commands.PPLimeLightAutos.Middle1PieceLL;
 import frc.robot.commands.PPLimeLightAutos.PieceATR;
@@ -164,14 +165,13 @@ public class RobotContainer {
 
     m_operatorController.povUp().whileTrue(new ClimberInCommand(m_climbSubsystem));
     m_operatorController.povDown().whileTrue(new ClimberOutCommand(m_climbSubsystem));
-    m_operatorController.povLeft().onTrue(new RunCommand(() -> m_funnelSubsystem.openFunnel(), m_funnelSubsystem).withTimeout(2));
-    m_operatorController.povRight().onTrue(new RunCommand(() -> m_funnelSubsystem.closeFunnel(), m_funnelSubsystem).withTimeout(2));
+    m_operatorController.povLeft().onTrue(new RunCommand(() -> m_funnelSubsystem.openFunnel(), m_funnelSubsystem).withTimeout(2).andThen(new RunCommand(() -> m_funnelSubsystem.closeFunnel(), m_funnelSubsystem).withTimeout(2)));
   }
 
   public Command getAutonomousCommand() {
     // return m_autoChooser.getSelected();
     // return new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-    return new PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
+    return new PractiseField(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
     
   }
 }
