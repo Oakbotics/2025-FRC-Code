@@ -3,7 +3,6 @@ package frc.robot.commands.PPLimeLightAutos;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -19,8 +18,8 @@ import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.IntakeCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 
-public class PractiseField extends SequentialCommandGroup {
-    public PractiseField(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem, LimeLightSubsystem m_limelightSubsystem){
+public class ElimsLeft extends SequentialCommandGroup {
+    public ElimsLeft(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem, LimeLightSubsystem m_limelightSubsystem){
         if(DriverStation.getAlliance().get() == Alliance.Blue)
             addCommands(
                 new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.05),
@@ -30,7 +29,7 @@ public class PractiseField extends SequentialCommandGroup {
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1]), 
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(5),
+                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1),
                 new ParallelCommandGroup(
                     new SequentialCommandGroup(
@@ -42,10 +41,9 @@ public class PractiseField extends SequentialCommandGroup {
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(1),
                 new ParallelCommandGroup(
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1]), 
-                    new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    // new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                // new InstantCommand(() -> scheduler.set()),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(5)
+                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4)
                 // new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1)
             );
         else
@@ -57,7 +55,7 @@ public class PractiseField extends SequentialCommandGroup {
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1]), 
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(5),
+                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1),
                 new ParallelCommandGroup(
                     new SequentialCommandGroup(
@@ -71,8 +69,7 @@ public class PractiseField extends SequentialCommandGroup {
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1]), 
                     // new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                // new InstantCommand(() -> scheduler.set()),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(5)
+                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4)
                 // new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1)
             );
     }

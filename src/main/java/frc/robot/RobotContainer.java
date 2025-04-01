@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -64,6 +66,15 @@ public class RobotContainer {
   // SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
+
+
+
+
+    NamedCommands.registerCommand("AutoAlignLATR", new AlignToReefTagRelative(false, m_driveSubsystem, m_limeLightSubsystem));
+    NamedCommands.registerCommand("AutoAlignRATR", new AlignToReefTagRelative(true, m_driveSubsystem, m_limeLightSubsystem));
+    NamedCommands.registerCommand("AutoAlignLATR", new AlignToReefTagRelative(false, m_driveSubsystem, m_limeLightSubsystem));
+
+
     // AutoChooser Choices
     // m_autoChooser.setDefaultOption("Middle 1 Piece", new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
     // m_autoChooser.addOption("Left 1 Piece", new Left1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
