@@ -72,8 +72,20 @@ public final class Constants {
       public static final HashMap<Integer, Pose2d> aprilTagPosition = new HashMap();
 
       static{ //Value are left to right
-        aprilTagPosition.put(6, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE:
-        aprilTagPosition.put(11, new Pose2d(12.44, 2.65,Rotation2d.fromDegrees(60))); // RED SIDE:
+        aprilTagPosition.put(6, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
+        aprilTagPosition.put(7, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
+        aprilTagPosition.put(8, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
+        aprilTagPosition.put(9, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
+        aprilTagPosition.put(10, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE:
+        aprilTagPosition.put(11, new Pose2d(12.44, 2.65,Rotation2d.fromDegrees(60))); // RED SIDE
+
+        aprilTagPosition.put(17, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
+        aprilTagPosition.put(18, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
+        aprilTagPosition.put(19, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
+        aprilTagPosition.put(20, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
+        aprilTagPosition.put(21, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
+        aprilTagPosition.put(22, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
+
 
       }
       
