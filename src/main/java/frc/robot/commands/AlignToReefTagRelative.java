@@ -4,11 +4,7 @@
 
 package frc.robot.commands;
 
-import org.opencv.features2d.FlannBasedMatcher;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.function.FloatSupplier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,7 +28,6 @@ public class AlignToReefTagRelative extends Command {
   private double X_TOLERANCE_REEF_ALIGNMENT = 0.01;
   private double Y_TOLERANCE_REEF_ALIGNMENT = 0.01;
   private double ROT_TOLERANCE_REEF_ALIGNMENT = 3.5;
-  private boolean isRotated = false;
 
   private String limelightUsed;
   double[] positions;

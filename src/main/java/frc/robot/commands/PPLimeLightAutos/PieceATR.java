@@ -10,7 +10,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.L4ScoreCommandGroup;

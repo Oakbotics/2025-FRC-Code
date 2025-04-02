@@ -7,34 +7,20 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
-import frc.robot.commands.FunnelClosedCommand;
-import frc.robot.commands.FunnelOpenCommand;
 import frc.robot.commands.IntakeCommandGroup;
-import frc.robot.commands.L1ScoreCommandGroup;
 import frc.robot.commands.L2AlgaeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
-import frc.robot.commands.Autos.Middle1Piece;
-import frc.robot.commands.PPLimeLightAutos.PieceATR;
-import frc.robot.commands.PPLimeLightAutos.PractiseField;
-import frc.robot.commands.PPLimeLightAutos.Left2PieceATR;
-import frc.robot.commands.PPLimeLightAutos.Left3PieceLL;
-import frc.robot.commands.PPLimeLightAutos.Middle1PieceLL;
-import frc.robot.commands.PPLimeLightAutos.PieceATR;
-import frc.robot.commands.ClimberPositionCommand;
 import frc.robot.commands.ClimberOutCommand;
 import frc.robot.commands.ClimberInCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -45,6 +31,7 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -173,7 +160,7 @@ public class RobotContainer {
     m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
     m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
     
-    m_operatorController.b().onTrue(new L1ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Coral L1 Score
+    // m_operatorController.b().onTrue(new L1ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Coral L1 Score
 
     m_operatorController.povUp().whileTrue(new ClimberInCommand(m_climbSubsystem));
     m_operatorController.povDown().whileTrue(new ClimberOutCommand(m_climbSubsystem));
@@ -183,7 +170,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return m_autoChooser.getSelected();
     // return new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-    return new Left2PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
-    
+    // return new Left2PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
+    return Commands.none();
   }
 }

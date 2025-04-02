@@ -26,20 +26,6 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class ConveyorConstants {
-    // public static final int kTopConveyorMotorCANID = 14;
-    // public static final int kBottomConveyorMotorCANID = 15;
-
-    // public statics final int kRightShooterMotorCANID = 20;
-    // public static final int kLeftShooterMotorCANID = 21;
-
-    // public static final double revvedShooterRPM = 800;
-
-    // public static final int kTopIntakeSensorCANID = 5;
-    // public static final int kBottomIntakeSensorCANID = 25;
-  }
-
-
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static final class FieldConstants {
       public static final Pose2d reefBranchA = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(0));
@@ -284,8 +270,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3.5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
+    public static final double kMaxSpeedMetersPerSecond = 4.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3.5;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

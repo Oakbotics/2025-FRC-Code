@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotation;
-
-import java.time.LocalDate;
 import java.util.Set;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -29,7 +26,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -456,6 +452,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
     return nearestPolePoseDistance;
   }
+  @SuppressWarnings("resource")
   public void goToPosePidloop(Pose2d goalPose){
     PIDController xController =new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
     PIDController yController = new PIDController(DriveConstants.kYP,DriveConstants.kYI, DriveConstants.kYD);
