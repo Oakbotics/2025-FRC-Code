@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import org.opencv.features2d.FlannBasedMatcher;
 
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.function.FloatSupplier;
@@ -17,9 +19,9 @@ import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class AlignToReefTagRelative extends Command {
+public class OverrideAlignToReefTagRelative extends Command {
   private PIDController xController, yController, rotController;
-  private boolean isRight;
+  private boolean isLeft;
   private Timer dontSeeTagTimer, stopTimer;
   private DriveSubsystem m_driveSubsystem;
   private LimeLightSubsystem m_limeLightSubsystem;
@@ -35,15 +37,14 @@ public class AlignToReefTagRelative extends Command {
   private boolean isRotated = false;
 
   private String limelightUsed;
-  double[] positions;
 
-  public AlignToReefTagRelative(boolean isRight, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
+  public OverrideAlignToReefTagRelative(boolean isRight, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
     xController = new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
     yController = new PIDController(DriveConstants.kYP,DriveConstants.kYI, DriveConstants.kYD);
     rotController = new PIDController(DriveConstants.kRP,DriveConstants.kRI, DriveConstants.kRD);
 
     rotController.enableContinuousInput(-180, 180);
-    this.isRight = isRight;
+    this.isLeft = isRight;
     this.m_driveSubsystem = m_driveSubsystem;
     this.m_limeLightSubsystem = m_limeLightSubsystem;
     addRequirements(m_driveSubsystem, m_limeLightSubsystem);
@@ -51,10 +52,10 @@ public class AlignToReefTagRelative extends Command {
 
   @Override
   public void initialize() {
-    if(m_limeLightSubsystem.getRightID() != -1 && isRight == false){
+    if(m_limeLightSubsystem.getLeftID() != -1 && isLeft == false){
       limelightUsed = "limelight-right";
     }
-    else if(m_limeLightSubsystem.getLeftID() != -1 && isRight == true){
+    else if(m_limeLightSubsystem.getRightID() != -1 && isLeft == true){
       limelightUsed = "limelight-left";
 
     }
@@ -78,40 +79,39 @@ public class AlignToReefTagRelative extends Command {
     yController.setTolerance(Y_TOLERANCE_REEF_ALIGNMENT);
 
     tagID = LimelightHelpers.getFiducialID(limelightUsed);
-    // SmartDashboard.putString("limelightUsed", limelightUsed);
-    // SmartDashboard.putNumber("tagID", tagID);
   }
 
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("runATR", LimelightHelpers.getTV(limelightUsed) && LimelightHelpers.getFiducialID(limelightUsed) == tagID);
     if (LimelightHelpers.getTV(limelightUsed) && LimelightHelpers.getFiducialID(limelightUsed) == tagID) {
       this.dontSeeTagTimer.reset();
 
-      positions = LimelightHelpers.getBotPose_TargetSpace(limelightUsed);
+      double[] postions = LimelightHelpers.getBotPose_TargetSpace(limelightUsed);
 
-      double xSpeed = xController.calculate(positions[2], X_SETPOINT_REEF_ALIGNMENT);
+      double xSpeed = xController.calculate(postions[2], X_SETPOINT_REEF_ALIGNMENT);
       // SmartDashboard.putNumber("xspeed", xSpeed);
-      double ySpeed = 0;
-      if(isRight){
-        ySpeed = -yController.calculate(positions[0],Y_LEFT_SETPOINT_REEF_ALIGNMENT);
+      double ySpeed;
+      if(isLeft){
+        ySpeed = -yController.calculate(postions[0],Y_LEFT_SETPOINT_REEF_ALIGNMENT);
         SmartDashboard.putNumber("Goal AutoAlign Y", Y_LEFT_SETPOINT_REEF_ALIGNMENT);
       }
       else{
-        ySpeed = -yController.calculate(positions[0],Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
+        ySpeed = -yController.calculate(postions[0],Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
         SmartDashboard.putNumber("Goal AutoAlign Y", Y_RIGHT_SETPOINT_REEF_ALIGNMENT);
       }
-      double rotValue = -rotController.calculate(positions[4], ROT_SETPOINT_REEF_ALIGNMENT);
+      double rotValue = -rotController.calculate(postions[4], ROT_SETPOINT_REEF_ALIGNMENT);
 
       SmartDashboard.putNumber("Goal AutoAlign X", X_SETPOINT_REEF_ALIGNMENT);
       SmartDashboard.putNumber("Goal AutoAlign Rotation", ROT_SETPOINT_REEF_ALIGNMENT);
 
-      SmartDashboard.putNumber("Current AutoAlign X", positions[2]);
-      SmartDashboard.putNumber("Current AutoAlign Y", positions[0]);
-      SmartDashboard.putNumber("Current AutoAlign Rotation", positions[4]);
+      SmartDashboard.putNumber("Current AutoAlign X", postions[2]);
+      SmartDashboard.putNumber("Current AutoAlign Y", postions[0]);
+      SmartDashboard.putNumber("Current AutoAlign Rotation", postions[4]);
 
-      m_driveSubsystem.autoDrive(xSpeed, ySpeed, rotValue, false);
-
+      // m_driveSubsystem.autoDrive(xSpeed, ySpeed, rotValue, false);
+      PPHolonomicDriveController.overrideXFeedback(() -> {return xSpeed;});
+      PPHolonomicDriveController.overrideYFeedback(() -> {return ySpeed;});
+      PPHolonomicDriveController.overrideRotationFeedback(() -> {return rotValue;});
       if (!rotController.atSetpoint() ||
           !yController.atSetpoint() ||
           !xController.atSetpoint()
@@ -133,15 +133,8 @@ public class AlignToReefTagRelative extends Command {
   @Override
   public boolean isFinished() {
     // Requires the robot to stay in the correct position for 0.3 seconds, as long as it gets a tag in the camera
-    if(positions != null)
-      return Math.abs(positions[2] - X_SETPOINT_REEF_ALIGNMENT) < X_TOLERANCE_REEF_ALIGNMENT
-      && (
-          Math.abs(positions[0] - Y_LEFT_SETPOINT_REEF_ALIGNMENT) < Y_TOLERANCE_REEF_ALIGNMENT
-          || Math.abs(positions[0] - Y_RIGHT_SETPOINT_REEF_ALIGNMENT) < Y_TOLERANCE_REEF_ALIGNMENT
-        )
-        && Math.abs(positions[4] - ROT_SETPOINT_REEF_ALIGNMENT) < ROT_TOLERANCE_REEF_ALIGNMENT;
-    else{
-      return false;
-    }
+    return this.dontSeeTagTimer.hasElapsed(0.3) ||
+        stopTimer.hasElapsed(0.5);
+    // return false;
   }
 }

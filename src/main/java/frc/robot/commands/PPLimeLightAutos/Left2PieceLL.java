@@ -1,5 +1,7 @@
 package frc.robot.commands.PPLimeLightAutos;
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -67,7 +69,7 @@ public class Left2PieceLL extends SequentialCommandGroup {
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(6)[1])
+                    m_driveSubsystem.findPathToPose(new Pose2d(13.80, 2.44, Rotation2d.fromDegrees(120)))
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2)
             );

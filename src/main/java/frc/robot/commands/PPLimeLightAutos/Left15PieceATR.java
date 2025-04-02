@@ -26,7 +26,7 @@ public class Left15PieceATR extends SequentialCommandGroup {
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1]), 
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
+                new AlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1),
                 new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
                 m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1]) 
@@ -39,7 +39,7 @@ public class Left15PieceATR extends SequentialCommandGroup {
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(6)[1]), 
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
+                new AlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1),
                 new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
                 m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1] ) 

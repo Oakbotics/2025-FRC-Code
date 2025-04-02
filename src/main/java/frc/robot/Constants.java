@@ -83,6 +83,14 @@ public final class Constants {
         coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.554, 6.635,Rotation2d.fromDegrees(-55)), new Pose2d(1.52,7.23,Rotation2d.fromDegrees(-55))});
       }
       
+      public static final HashMap<Integer, Pose2d> aprilTagPosition = new HashMap();
+
+      static{ //Value are left to right
+        aprilTagPosition.put(6, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE:
+        aprilTagPosition.put(11, new Pose2d(12.44, 2.65,Rotation2d.fromDegrees(60))); // RED SIDE:
+
+      }
+      
       //Starting Position Constants:
       public static final Pose2d topStartingPose = new Pose2d(7.105, 6.171, Rotation2d.fromDegrees(180));
       public static final Pose2d middleStartingPose = new Pose2d(7.181 + 0.10, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
@@ -197,19 +205,19 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAngularSpeed =  Math.PI; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 4;
+    public static final double kMaxAngularSpeed =  Math.PI / 2; // radians per second
     
     public static final double kV = 2.76;
     public static final double kS = 0.024;
     public static final double kA = 0.02;
 
     //PID Controllers PID values
-    public static final double kXP = 0.75;
+    public static final double kXP = 1.50;
     public static final double kXI = 0.0;
     public static final double kXD = 0.05;
 
-    public static final double kYP = 0.75;//60.75;
+    public static final double kYP = 1.50;//60.75;
     public static final double kYI = 0.0;
     public static final double kYD = 0.05;
 
@@ -276,10 +284,11 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 1;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+    public static final double kMaxSpeedMetersPerSecond = 3.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
