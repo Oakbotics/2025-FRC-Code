@@ -16,12 +16,15 @@ import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.IntakeCommandGroup;
+import frc.robot.commands.L1ScoreCommandGroup;
 import frc.robot.commands.L2AlgaeCommandGroup;
 import frc.robot.commands.L2ScoreCommandGroup;
 import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
+import frc.robot.commands.PPLimeLightAutos.Left25PieceATR;
 import frc.robot.commands.ClimberOutCommand;
+import frc.robot.commands.ClimberOutCommandGroup;
 import frc.robot.commands.ClimberInCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -160,17 +163,17 @@ public class RobotContainer {
     m_operatorController.a().onTrue(new L2AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L2
     m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
     
-    // m_operatorController.b().onTrue(new L1ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Coral L1 Score
+    m_operatorController.b().onTrue(new L1ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Coral L1 Score
 
-    m_operatorController.povUp().whileTrue(new ClimberInCommand(m_climbSubsystem));
-    m_operatorController.povDown().whileTrue(new ClimberOutCommand(m_climbSubsystem));
+    m_operatorController.povUp().whileTrue(new ClimberOutCommandGroup(m_climbSubsystem));
+    m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
     m_operatorController.povLeft().onTrue(new RunCommand(() -> m_funnelSubsystem.openFunnel(), m_funnelSubsystem).withTimeout(2).andThen(new RunCommand(() -> m_funnelSubsystem.closeFunnel(), m_funnelSubsystem).withTimeout(2)));
   }
 
   public Command getAutonomousCommand() {
     // return m_autoChooser.getSelected();
     // return new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem);
-    // return new Left2PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
-    return Commands.none();
+    return new Left25PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
+    // return Commands.none();
   }
 }

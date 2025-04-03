@@ -34,7 +34,6 @@ public class ClimberPositionCommand extends Command {
   public void initialize() {
     // m_climbSubsystem.rotateToPosition(90); //TEMPORARY
     m_climbSubsystem.setServo(1);
-    // m_funnelSubsystem.openFunnel();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

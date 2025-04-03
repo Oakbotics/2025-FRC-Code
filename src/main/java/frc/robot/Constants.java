@@ -63,28 +63,28 @@ public final class Constants {
       public static final HashMap<Integer, Pose2d[]> coralStationPosition = new HashMap();
 
       static{ //Value are left to right
-        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.50, 0.83,Rotation2d.fromDegrees(120)), new Pose2d(16.50, 0.83,Rotation2d.fromDegrees(120))}); // RED SIDE:
-        coralStationPosition.put(2, new Pose2d[]{new Pose2d(15.776, 7.477,Rotation2d.fromDegrees(50.0)), new Pose2d(17.020, 6.623,Rotation2d.fromDegrees(55))});
-        coralStationPosition.put(12, new Pose2d[]{new Pose2d(1.703, 0.565,Rotation2d.fromDegrees(-130)), new Pose2d(0.578, 1.407,Rotation2d.fromDegrees(-125))}); // BLUE SIDE:
-        coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.554, 6.635,Rotation2d.fromDegrees(-55)), new Pose2d(1.52,7.23,Rotation2d.fromDegrees(-55))});
+        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.80,Rotation2d.fromDegrees(120)), new Pose2d(16.32, 0.80,Rotation2d.fromDegrees(120))}); // RED SIDE:
+        coralStationPosition.put(2, new Pose2d[]{new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(50.0)), new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(55))});
+        coralStationPosition.put(12, new Pose2d[]{new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(-130)), new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(-125))}); // BLUE SIDE:
+        coralStationPosition.put(13, new Pose2d[]{new Pose2d(1.08, 7.19,Rotation2d.fromDegrees(-55)), new Pose2d(1.08,7.19,Rotation2d.fromDegrees(-55))});
       }
       
       public static final HashMap<Integer, Pose2d> aprilTagPosition = new HashMap();
 
       static{ //Value are left to right
-        aprilTagPosition.put(6, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
-        aprilTagPosition.put(7, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
-        aprilTagPosition.put(8, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
-        aprilTagPosition.put(9, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE
-        aprilTagPosition.put(10, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // RED SIDE:
-        aprilTagPosition.put(11, new Pose2d(12.44, 2.65,Rotation2d.fromDegrees(60))); // RED SIDE
+        aprilTagPosition.put(6, new Pose2d(13.84, 2.61,Rotation2d.fromDegrees(125))); // RED SIDE
+        aprilTagPosition.put(7, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(180))); // RED SIDE
+        aprilTagPosition.put(8, new Pose2d(13.89, 5.41,Rotation2d.fromDegrees(-115))); // RED SIDE
+        aprilTagPosition.put(9, new Pose2d(12.32, 5.44,Rotation2d.fromDegrees(-50))); // RED SIDE
+        aprilTagPosition.put(10, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(0))); // RED SIDE:
+        aprilTagPosition.put(11, new Pose2d(12.19, 2.65,Rotation2d.fromDegrees(60))); // RED SIDE
 
-        aprilTagPosition.put(17, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
-        aprilTagPosition.put(18, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
-        aprilTagPosition.put(19, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
-        aprilTagPosition.put(20, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
-        aprilTagPosition.put(21, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
-        aprilTagPosition.put(22, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(125))); // BLUE SIDE
+        aprilTagPosition.put(17, new Pose2d(3.66, 2.66,Rotation2d.fromDegrees(60))); // BLUE SIDE
+        aprilTagPosition.put(18, new Pose2d(2.87, 4.04,Rotation2d.fromDegrees(0))); // BLUE SIDE
+        aprilTagPosition.put(19, new Pose2d(3.70, 5.44,Rotation2d.fromDegrees(-60))); // BLUE SIDE
+        aprilTagPosition.put(20, new Pose2d(5.29, 5.37,Rotation2d.fromDegrees(-120))); // BLUE SIDE
+        aprilTagPosition.put(21, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(180))); // BLUE SIDE
+        aprilTagPosition.put(22, new Pose2d(5.29, 2.62,Rotation2d.fromDegrees(120))); // BLUE SIDE
 
 
       }
@@ -204,7 +204,7 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4;
-    public static final double kMaxAngularSpeed =  Math.PI / 2; // radians per second
+    public static final double kMaxAngularSpeed =  Math.PI * 0.7; // radians per second
     
     public static final double kV = 2.76;
     public static final double kS = 0.024;

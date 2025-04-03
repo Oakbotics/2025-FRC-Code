@@ -23,8 +23,8 @@ public class Left25PieceATR extends SequentialCommandGroup {
     public Left25PieceATR(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem, LimeLightSubsystem m_limelightSubsystem){
         if(DriverStation.getAlliance().get() == Alliance.Blue)
             addCommands(
-                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.05),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.05),
+                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.1),
+                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.1),
                 new ParallelCommandGroup(
                     m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(20)),
                     new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
@@ -59,8 +59,8 @@ public class Left25PieceATR extends SequentialCommandGroup {
             );
         else
         addCommands(
-                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.05),
-                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.05),
+                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.1),
+                new RunCommand(() -> m_driveSubsystem.limeLightPoseUpdate()).withTimeout(0.1),
                 new ParallelCommandGroup(
                     m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(11)),
                     new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
