@@ -10,7 +10,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
-import frc.robot.commands.AlignToReefTagRelative;
+import frc.robot.commands.AutoAlignToReefTagRelative;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.L4ScoreCommandGroup;
 
@@ -24,7 +24,7 @@ public class PieceATR extends SequentialCommandGroup {
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(20)[1]), 
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
+                new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1)
             );
         else
@@ -35,7 +35,7 @@ public class PieceATR extends SequentialCommandGroup {
                     // m_driveSubsystem.findPathToPose(FieldConstants.reefPolePositions.get(6)[1]), 
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 ),
-                new AlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
+                new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1)
             );
     }

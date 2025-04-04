@@ -72,18 +72,18 @@ public final class Constants {
       public static final HashMap<Integer, Pose2d> aprilTagPosition = new HashMap();
 
       static{ //Value are left to right
-        aprilTagPosition.put(6, new Pose2d(13.84, 2.61,Rotation2d.fromDegrees(125))); // RED SIDE
-        aprilTagPosition.put(7, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(180))); // RED SIDE
-        aprilTagPosition.put(8, new Pose2d(13.89, 5.41,Rotation2d.fromDegrees(-115))); // RED SIDE
-        aprilTagPosition.put(9, new Pose2d(12.32, 5.44,Rotation2d.fromDegrees(-50))); // RED SIDE
-        aprilTagPosition.put(10, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(0))); // RED SIDE:
+        aprilTagPosition.put(6, new Pose2d(13.84, 2.61,Rotation2d.fromDegrees(120))); // RED SIDE
+        aprilTagPosition.put(7, new Pose2d(14.73, 3.98,Rotation2d.fromDegrees(180))); // RED SIDE
+        aprilTagPosition.put(8, new Pose2d(13.89, 5.41,Rotation2d.fromDegrees(-120))); // RED SIDE
+        aprilTagPosition.put(9, new Pose2d(12.32, 5.44,Rotation2d.fromDegrees(-60))); // RED SIDE
+        aprilTagPosition.put(10, new Pose2d(11.42, 4.02,Rotation2d.fromDegrees(0))); // RED SIDE:
         aprilTagPosition.put(11, new Pose2d(12.19, 2.65,Rotation2d.fromDegrees(60))); // RED SIDE
 
         aprilTagPosition.put(17, new Pose2d(3.66, 2.66,Rotation2d.fromDegrees(60))); // BLUE SIDE
         aprilTagPosition.put(18, new Pose2d(2.87, 4.04,Rotation2d.fromDegrees(0))); // BLUE SIDE
         aprilTagPosition.put(19, new Pose2d(3.70, 5.44,Rotation2d.fromDegrees(-60))); // BLUE SIDE
         aprilTagPosition.put(20, new Pose2d(5.29, 5.37,Rotation2d.fromDegrees(-120))); // BLUE SIDE
-        aprilTagPosition.put(21, new Pose2d(13.90, 2.63,Rotation2d.fromDegrees(180))); // BLUE SIDE
+        aprilTagPosition.put(21, new Pose2d(6.15, 4.03,Rotation2d.fromDegrees(180))); // BLUE SIDE
         aprilTagPosition.put(22, new Pose2d(5.29, 2.62,Rotation2d.fromDegrees(120))); // BLUE SIDE
 
 
@@ -99,7 +99,7 @@ public final class Constants {
     //THE L4 BRANCH
     public static final HashMap<String, Double> l4 = new HashMap();
     static{
-      l4.put("elevator", 1.28);
+      l4.put("elevator", 1.29);
       l4.put("wrist", 180.0);
     }
 
@@ -204,18 +204,18 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4;
-    public static final double kMaxAngularSpeed =  Math.PI * 0.7; // radians per second
+    public static final double kMaxAngularSpeed =  Math.PI; // radians per second
     
     public static final double kV = 2.76;
     public static final double kS = 0.024;
     public static final double kA = 0.02;
 
     //PID Controllers PID values
-    public static final double kXP = 1.50;
+    public static final double kXP = 0.75;
     public static final double kXI = 0.0;
     public static final double kXD = 0.05;
 
-    public static final double kYP = 1.50;//60.75;
+    public static final double kYP = 0.75;//60.75;
     public static final double kYI = 0.0;
     public static final double kYD = 0.05;
 
@@ -282,8 +282,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 4.5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3.5;
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -307,7 +307,7 @@ public final class Constants {
     public static final int climbMotorBottomID = 15;
     
     public static final double minPosition = 5;
-    public static final double maxPosition = 200;
+    public static final double maxPosition = 230;
  }
 
  public static final class FunnelConstants {

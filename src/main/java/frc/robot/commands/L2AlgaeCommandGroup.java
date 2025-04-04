@@ -8,7 +8,7 @@ public class L2AlgaeCommandGroup extends SequentialCommandGroup {
     public L2AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
         addCommands(
             new WristPositionCommand(m_wristSubsystem, 80),
-            new ElevatorPositionCommand(m_elevatorSubsystem, 0.12)
+            new ElevatorPositionCommand(m_elevatorSubsystem, 0.16)
         );
     }
 }

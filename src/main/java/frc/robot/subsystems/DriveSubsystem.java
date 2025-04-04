@@ -313,43 +313,40 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetPoseLL() {
 
-
-    if(m_limeLightSubsystem.getRightID() != -1 && m_limeLightSubsystem.getRightIDCount() > 1)
-      resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
-    else if(m_limeLightSubsystem.getLeftID() != -1 && m_limeLightSubsystem.getLeftIDCount() > 1)
+    if(m_limeLightSubsystem.getLeftID() != -1 && m_limeLightSubsystem.getLeftIDCount() > 1)
       resetOdometry(m_limeLightSubsystem.getBotPoseLeftLL());
+    else if(m_limeLightSubsystem.getRightID() != -1 && m_limeLightSubsystem.getRightIDCount() > 1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
     else if(m_limeLightSubsystem.getTopID() != -1 && m_limeLightSubsystem.getTopIDCount() > 1)
       resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
-  
-    else if(m_limeLightSubsystem.getRightID() != -1)
-      resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
     else if(m_limeLightSubsystem.getLeftID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseLeftLL());
+    else if(m_limeLightSubsystem.getRightID() != -1)
+      resetOdometry(m_limeLightSubsystem.getBotPoseRightLL());
     else if(m_limeLightSubsystem.getTopID() != -1)
       resetOdometry(m_limeLightSubsystem.getBotPoseTopLL());
     }
 
   public void limeLightPoseUpdate() {
-    
-      if(m_limeLightSubsystem.getRightID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
-        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getRightLimelightTime());
-      }
-      else if(m_limeLightSubsystem.getLeftID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
-        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()),  m_limeLightSubsystem.getLeftLimelightTime());
-      }
-      else if(m_limeLightSubsystem.getTopID() != -1){
-        m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
-        m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getTopLimelightTime());
-      }
+    if(m_limeLightSubsystem.getLeftID() != -1){
+      m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+      m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()),  m_limeLightSubsystem.getLeftLimelightTime());
+    }
+    else if(m_limeLightSubsystem.getRightID() != -1){
+      m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+      m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getRightLimelightTime());
+    }
+    else if(m_limeLightSubsystem.getTopID() != -1){
+      m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+      m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getTopLimelightTime());
+    }
   }
 
   public Pose2d getLimeLightPose() {
     if(m_limeLightSubsystem.getTopID() != -1)
       return m_limeLightSubsystem.getBotPoseTopLL();
-    else if(m_limeLightSubsystem.getRightID() != -1)
-      return m_limeLightSubsystem.getBotPoseRightLL();
+    else if(m_limeLightSubsystem.getLeftID() != -1)
+      return m_limeLightSubsystem.getBotPoseLeftLL();
     else if(m_limeLightSubsystem.getRightID() != -1)
       return m_limeLightSubsystem.getBotPoseRightLL();
     return new Pose2d();
@@ -358,18 +355,19 @@ public class DriveSubsystem extends SubsystemBase {
   public void gyroLimelightReset(){
     if(DriverStation.getAlliance().get() == Alliance.Red){
       if(m_limeLightSubsystem.getTopID() != -1)
-        setGyro(m_limeLightSubsystem.getBotPoseTopLL().getRotation().getDegrees() + 180); 
-      else if(m_limeLightSubsystem.getRightID() != -1)
-        setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees() + 180); 
+        setGyro(m_limeLightSubsystem.getBotPoseTopLL().getRotation().getDegrees() + 180);
       else if(m_limeLightSubsystem.getLeftID() != -1)
         setGyro(m_limeLightSubsystem.getBotPoseLeftLL().getRotation().getDegrees() + 180);
+      else if(m_limeLightSubsystem.getRightID() != -1)
+        setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees() + 180); 
+
     }
     else if(m_limeLightSubsystem.getTopID() != -1)
       setGyro(m_limeLightSubsystem.getBotPoseTopLL().getRotation().getDegrees()); 
-    else if(m_limeLightSubsystem.getRightID() != -1)
-      setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees()); 
     else if(m_limeLightSubsystem.getLeftID() != -1)
       setGyro(m_limeLightSubsystem.getBotPoseLeftLL().getRotation().getDegrees());
+    else if(m_limeLightSubsystem.getRightID() != -1)
+      setGyro(m_limeLightSubsystem.getBotPoseRightLL().getRotation().getDegrees()); 
   }
   /**
    *  creates defered command from auto build to pose
@@ -386,6 +384,14 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Command findPathToPole(boolean isLeft) {
     return Commands.defer(() -> AutoBuilder.pathfindToPose(getPolePose(isLeft), pathConstraints), Set.of(this));
+  }
+
+   /**
+   * Creates a defered command from auto builder to drive to nearest face of the reef
+   * @return drive command
+   */
+  public Command findPathToFace() {
+    return Commands.defer(() -> AutoBuilder.pathfindToPose(getReefFacePose(), pathConstraints), Set.of(this));
   }
 
   /**
@@ -478,4 +484,33 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
+  public Pose2d getReefFacePose(){
+    Pose2d nearestPolePose = new Pose2d();
+    double nearestPolePoseDistance = Double.MAX_VALUE;
+    Pose2d botpose = getPose();
+    double[] distances = new double[24];
+    if(DriverStation.getAlliance().get() == Alliance.Red){
+      for(int i = 6; i < 12; i++){
+        Pose2d polePose = FieldConstants.aprilTagPosition.get(i);
+        double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
+        distances[i] = distance;
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+          nearestPolePose = polePose;
+        }
+      }
+    }
+    else if(DriverStation.getAlliance().get() == Alliance.Blue){
+      for(int i = 17; i < 23; i++){
+        Pose2d polePose = FieldConstants.aprilTagPosition.get(i);
+        double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
+        distances[i] = distance;
+        if(distance < nearestPolePoseDistance){
+          nearestPolePoseDistance = distance;
+          nearestPolePose = polePose;
+        }
+      }
+    }
+    return nearestPolePose;
+  }
 }

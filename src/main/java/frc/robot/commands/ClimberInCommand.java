@@ -27,7 +27,7 @@ public class ClimberInCommand extends Command {
   @Override
   public void initialize() {
     m_climbSubsystem.setSpeed(1);
-    m_climbSubsystem.setServo(0);
+    m_climbSubsystem.setServo(0.7);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

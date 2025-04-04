@@ -13,7 +13,7 @@ import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class AlignToReefTagRelative extends Command {
+public class AutoAlignToReefTagRelative extends Command {
   private PIDController xController, yController, rotController;
   private boolean isRight;
   private Timer dontSeeTagTimer, stopTimer;
@@ -32,9 +32,9 @@ public class AlignToReefTagRelative extends Command {
   private String limelightUsed;
   double[] positions;
 
-  public AlignToReefTagRelative(boolean isRight, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
-    xController = new PIDController(1.5,DriveConstants.kXI, DriveConstants.kXD);
-    yController = new PIDController(1.5,DriveConstants.kYI, DriveConstants.kYD);
+  public AutoAlignToReefTagRelative(boolean isRight, DriveSubsystem m_driveSubsystem, LimeLightSubsystem m_limeLightSubsystem) {
+    xController = new PIDController(DriveConstants.kXP,DriveConstants.kXI, DriveConstants.kXD);
+    yController = new PIDController(DriveConstants.kYP,DriveConstants.kYI, DriveConstants.kYD);
     rotController = new PIDController(DriveConstants.kRP,DriveConstants.kRI, DriveConstants.kRD);
 
     rotController.enableContinuousInput(-180, 180);

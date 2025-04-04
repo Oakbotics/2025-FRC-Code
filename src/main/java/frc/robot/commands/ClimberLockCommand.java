@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimbSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ClimberUnlockCommand extends Command {
+public class ClimberLockCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimbSubsystem m_climbSubsystem;
 
@@ -17,7 +17,7 @@ public class ClimberUnlockCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ClimberUnlockCommand(ClimbSubsystem subsystem) {
+  public ClimberLockCommand(ClimbSubsystem subsystem) {
     m_climbSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -26,7 +26,7 @@ public class ClimberUnlockCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climbSubsystem.setServo(0.7);
+    m_climbSubsystem.setServo(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -64,7 +64,7 @@ public final class Configs {
                 elevatorConfig
                     .closedLoopRampRate(0.1)
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(30);
+                    .smartCurrentLimit(40);
                 elevatorConfig.encoder
                     .positionConversionFactor(360)
                     .velocityConversionFactor(1);
