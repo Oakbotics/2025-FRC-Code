@@ -24,8 +24,8 @@ import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.PathToFaceAutoAlignCommandGroup;
-import frc.robot.commands.PPLimeLightAutos.Left25PieceATR;
-import frc.robot.commands.ClimberOutCommand;
+import frc.robot.commands.PPLimeLightAutos.PieceATR;
+import frc.robot.commands.ClimberOutCommandGroup;
 import frc.robot.commands.ClimberLockCommand;
 import frc.robot.commands.ClimberInCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -36,7 +36,6 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -103,10 +102,10 @@ public class RobotContainer {
         new RunCommand(
             () -> m_driveSubsystem.drive(
                 -MathUtil.applyDeadband(
-                    m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                    m_driverController.getLeftY() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.15 : 1),
                     OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(
-                    m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
+                    m_driverController.getLeftX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.15 : 1),
                     OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(
                     m_driverController.getRightX() * (m_driverController.getLeftTriggerAxis() == 1 ? 0.25 : 1),
@@ -161,14 +160,13 @@ public class RobotContainer {
     
     m_operatorController.b().onTrue(new L1ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Coral L1 Score
     
-    m_operatorController.povUp().whileTrue(new ClimberOutCommand(m_climbSubsystem));
+    m_operatorController.povUp().whileTrue(new ClimberOutCommandGroup(m_climbSubsystem));
     m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
     m_operatorController.povLeft().onTrue(new RunCommand(() -> m_funnelSubsystem.openFunnel(), m_funnelSubsystem).alongWith(new RunCommand(() -> m_climbSubsystem.setServo(0.7), m_climbSubsystem)).withTimeout(2).andThen(new RunCommand(() -> m_funnelSubsystem.closeFunnel(), m_funnelSubsystem).withTimeout(2)));
     m_operatorController.povRight().onTrue(new ClimberLockCommand(m_climbSubsystem).withTimeout(2));
   }
 
   public Command getAutonomousCommand() {
-    // return m_autoChooser.getSelected();
-    return new Left25PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
+    return new PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
   }
 }

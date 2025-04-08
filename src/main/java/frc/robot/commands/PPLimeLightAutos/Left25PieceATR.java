@@ -23,11 +23,15 @@ public class Left25PieceATR extends SequentialCommandGroup {
     public Left25PieceATR(DriveSubsystem m_driveSubsystem, ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem, IntakeSubsystem m_intakeSubsystem, LimeLightSubsystem m_limelightSubsystem){
         if(DriverStation.getAlliance().get() == Alliance.Blue)
             addCommands(
-                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.2),
-                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.2),
+                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.1),
+                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.1),
+                new ParallelCommandGroup(
+                    new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(20))
+                ),
                 new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(3)
+                    new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5)
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup( 
@@ -47,7 +51,7 @@ public class Left25PieceATR extends SequentialCommandGroup {
                     )                
                 ),
                 new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+                new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup( 
                     new SequentialCommandGroup(
@@ -55,15 +59,21 @@ public class Left25PieceATR extends SequentialCommandGroup {
                         new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                     ),
                     m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1])
-                )
+                ),
+                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.5),
+                m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(19))
             );
         else
         addCommands(
-                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.2),
-                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.2),
+                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.1),
+                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.1),
+                new ParallelCommandGroup(
+                    new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(11))
+                ),
                 new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(3)
+                    new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5)
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup( 
@@ -83,7 +93,7 @@ public class Left25PieceATR extends SequentialCommandGroup {
                     )    
                 ),
                 new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+                new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup( 
                     new SequentialCommandGroup(
@@ -91,7 +101,9 @@ public class Left25PieceATR extends SequentialCommandGroup {
                         new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                     ),
                     m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
-                )
+                ),
+                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.5),
+                m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(6))
             );
     }
 }

@@ -5,7 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
@@ -79,8 +81,15 @@ public class AutoAlignToReefTagRelative extends Command {
 
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("runATR", LimelightHelpers.getTV(limelightUsed) && LimelightHelpers.getFiducialID(limelightUsed) == tagID);
     if (LimelightHelpers.getTV(limelightUsed) && LimelightHelpers.getFiducialID(limelightUsed) == tagID) {
+
+      if(DriverStation.getAlliance().get() == Alliance.Red)
+        LimelightHelpers.setPipelineIndex(limelightUsed, 0);
+      else
+        LimelightHelpers.setPipelineIndex(limelightUsed, 1);
+
+      SmartDashboard.putNumber("pipeline index", LimelightHelpers.getCurrentPipelineIndex(limelightUsed));
+        
       this.dontSeeTagTimer.reset();
 
       positions = LimelightHelpers.getBotPose_TargetSpace(limelightUsed);
