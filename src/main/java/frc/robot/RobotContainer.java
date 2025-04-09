@@ -4,16 +4,14 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeKickCommand;
 import frc.robot.commands.AlignToReefTagRelative;
-import frc.robot.commands.AutoAlignToReefTagRelative;
 import frc.robot.commands.CoralIntakeCommand;
 import frc.robot.commands.CoralOuttakeCommand;
 import frc.robot.commands.IntakeCommandGroup;
@@ -24,7 +22,9 @@ import frc.robot.commands.L3AlgaeCommandGroup;
 import frc.robot.commands.L3ScoreCommandGroup;
 import frc.robot.commands.L4ScoreCommandGroup;
 import frc.robot.commands.PathToFaceAutoAlignCommandGroup;
+import frc.robot.commands.PPLimeLightAutos.Left3PieceATR;
 import frc.robot.commands.PPLimeLightAutos.PieceATR;
+import frc.robot.commands.PPLimeLightAutos.Right3PieceATR;
 import frc.robot.commands.ClimberOutCommandGroup;
 import frc.robot.commands.ClimberLockCommand;
 import frc.robot.commands.ClimberInCommand;
@@ -55,26 +55,14 @@ public class RobotContainer {
   CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
   
   //Auto Chooser
-  // SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+  SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
 
-
-
-
-    NamedCommands.registerCommand("AutoAlignLATR", new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limeLightSubsystem));
-    NamedCommands.registerCommand("AutoAlignRATR", new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limeLightSubsystem));
-    NamedCommands.registerCommand("AutoAlignLATR", new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limeLightSubsystem));
-
-
     // AutoChooser Choices
-    // m_autoChooser.setDefaultOption("Middle 1 Piece", new Middle1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
-    // m_autoChooser.addOption("Left 1 Piece", new Left1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
-    // m_autoChooser.addOption("Right 1 Piece", new Right1PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
-    // m_autoChooser.addOption("Left 2 Piece", new Left2PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
-    // m_autoChooser.addOption("Right 2 Piece", new Right2PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
-    // m_autoChooser.addOption("Left 3 Piece", new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
-    // m_autoChooser.addOption("Right 3 Piece", new Left3PieceLL(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem));
+    m_autoChooser.setDefaultOption("1 Piece", new PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
+    m_autoChooser.addOption("Left 3 Piece", new Left3PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
+    m_autoChooser.addOption("Right 3 Piece", new Right3PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
     if(DriverStation.getAlliance().get() == Alliance.Red)
     m_driveSubsystem.setDefaultCommand(
       // The left stick controls translation of the robot.
@@ -167,6 +155,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
+    return m_autoChooser.getSelected();
   }
 }

@@ -20,7 +20,7 @@ import com.revrobotics.RelativeEncoder;;
 public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax elevatorMotorLeft;
   private final SparkMax elevatorMotorRight;
-  private final RelativeEncoder m_elevatorEncoderLeft;
+  // private final RelativeEncoder m_elevatorEncoderLeft;
   private final RelativeEncoder m_elevatorEncoderRight;
   // Creates a PIDController with gains kP, kI, and kD
   // private SparkClosedLoopController m_elevatorControllerLeft;
@@ -35,7 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotorLeft.configure(Configs.ElevatorConfigs.elevatorFollowerConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
     elevatorMotorRight.configure(Configs.ElevatorConfigs.elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
     
-    m_elevatorEncoderLeft = elevatorMotorLeft.getEncoder();
+    // m_elevatorEncoderLeft = elevatorMotorLeft.getEncoder();
     m_elevatorEncoderRight = elevatorMotorRight.getEncoder();
 
     // m_elevatorControllerLeft = elevatorMotorLeft.getClosedLoopController();

@@ -26,8 +26,12 @@ public class Left3PieceATR extends SequentialCommandGroup {
                 new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.1),
                 new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.1),
                 new ParallelCommandGroup(
+                    new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(20))
+                ),
+                new ParallelCommandGroup(
                     new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                    new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(3)
+                    new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5)
                 ),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
                 new ParallelCommandGroup( 
@@ -67,56 +71,73 @@ public class Left3PieceATR extends SequentialCommandGroup {
                 ),
                 new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
                 new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
-                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2)
-
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
+                new ParallelCommandGroup( 
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.3),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(13)[1])
+                )
             );
         else
-        addCommands(
-            new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.1),
-            new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.1),
-            new ParallelCommandGroup(
+            addCommands(
+                new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.1),
+                new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.1),
+                new ParallelCommandGroup(
+                        new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                        m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(11))
+                ),
+                new ParallelCommandGroup(
+                    new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                    new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(3)
+                ),
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
+                new ParallelCommandGroup( 
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.3),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
+                ),
+                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.3),
+                new ParallelCommandGroup(
+                    m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(6)),
+                    new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.3),
+                        new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    )    
+                ),
                 new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(3)
-            ),
-            new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
-            new ParallelCommandGroup( 
-                new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
-                    new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
+                new ParallelCommandGroup( 
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.3),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
                 ),
-                m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
-            ),
-            new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.3),
-            new ParallelCommandGroup(
-                m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(6)),
-                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
-                new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
-                    new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
-                )    
-            ),
-            new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-            new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
-            new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
-            new ParallelCommandGroup( 
-                new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
-                    new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.3),
+                new ParallelCommandGroup(
+                    m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(6)),
+                    new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.3),
+                        new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    )    
                 ),
-                m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
-            ),
-            new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.3),
-            new ParallelCommandGroup(
-                m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(6)),
-                new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
-                new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
-                    new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
-                )    
-            ),
-            new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-            new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
-            new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2)
-        );
+                new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
+                new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+                new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
+                new ParallelCommandGroup( 
+                    new SequentialCommandGroup(
+                        Commands.waitSeconds(0.3),
+                        new IntakeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
+                    ),
+                    m_driveSubsystem.findPathToPose(FieldConstants.coralStationPosition.get(1)[1])
+                )            
+            );
     }
 }
