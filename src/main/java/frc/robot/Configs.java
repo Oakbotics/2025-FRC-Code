@@ -57,6 +57,7 @@ public final class Configs {
                     .positionWrappingInputRange(0, turningFactor);
         }
     }
+    
     public static final class ElevatorConfigs{
         public static final SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig();
         public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
@@ -76,15 +77,16 @@ public final class Configs {
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // Set PID values for position control. We don't need to pass a closed loop
                     // slot, as it will default to slot 0.
-                    .p(0.001)
-                    .i(0)
-                    .d(0)
-                    .outputRange(-0.6, 0.8);
+                    .p(ElevatorConstants.kP)
+                    .i(ElevatorConstants.kI)
+                    .d(ElevatorConstants.kD)
+                    .outputRange(ElevatorConstants.minOutput, ElevatorConstants.maxOutput);
                 elevatorFollowerConfig
                     .apply(elevatorConfig)
                     .follow(ElevatorConstants.elevatorMotorRightCanId, true);
                 }               
     }
+
     public static final class WristConfigs {
         public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
         static {
@@ -115,6 +117,7 @@ public final class Configs {
                 wristConfig.inverted(true);
         }
     }
+
     public static final class CoralConfigs {
         public static final SparkMaxConfig coralConfig = new SparkMaxConfig();
         static {
@@ -123,6 +126,7 @@ public final class Configs {
                         .smartCurrentLimit(40);
         }
     }
+
     public static final class AlgaeConfigs {
         public static final SparkMaxConfig algaeConfig = new SparkMaxConfig();
         static {
@@ -131,6 +135,7 @@ public final class Configs {
                         .smartCurrentLimit(40);
         }
     }
+
     public static final class ClimbConfigs {
         public static final SparkMaxConfig climbConfig = new SparkMaxConfig();
         public static final SparkMaxConfig climbFollowerConfig = new SparkMaxConfig();

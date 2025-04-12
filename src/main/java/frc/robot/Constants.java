@@ -169,15 +169,12 @@ public final class Constants {
     public static final int elevatorMotorLeftCanId = 10;
     public static final int elevatorMotorRightCanId = 11;
     
-    public static final double elevatorKp = 0.01;
-    public static final double elevatorKi = 0;
-    public static final double elevatorKd = 0;
-    public static final double elevatorKMinOutput = -1.0;
-    public static final double elevatorKMaxOutput = 1.0;
-    public static final double elevatorKf = 0.5;
-    public static final double maxVel = 0;
-    public static final double maxAccel = 0;
-    public static final double allowedErr = 1;
+    public static final double kP = 0.001;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+    public static final double minOutput = -0.6;
+    public static final double maxOutput = 0.8;
   }
   public static final class WristConstants{
     public static final int wristMotorCANId = 12;//Temp
