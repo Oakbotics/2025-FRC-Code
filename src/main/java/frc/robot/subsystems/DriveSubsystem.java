@@ -485,32 +485,32 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Pose2d getReefFacePose(){
-    Pose2d nearestPolePose = new Pose2d();
-    double nearestPolePoseDistance = Double.MAX_VALUE;
+    Pose2d nearestFacePose = new Pose2d();
+    double nearestFacePoseDistance = Double.MAX_VALUE;
     Pose2d botpose = getPose();
     double[] distances = new double[24];
     if(DriverStation.getAlliance().get() == Alliance.Red){
       for(int i = 6; i < 12; i++){
-        Pose2d polePose = FieldConstants.aprilTagPosition.get(i);
-        double distance = Math.sqrt(Math.pow(botpose.getX() - polePose.getX(), 2) + Math.pow(botpose.getY() - polePose.getY(), 2));
+        Pose2d facePose = FieldConstants.aprilTagPosition.get(i);
+        double distance = Math.sqrt(Math.pow(botpose.getX() - facePose.getX(), 2) + Math.pow(botpose.getY() - facePose.getY(), 2));
         distances[i] = distance;
-        if(distance < nearestPolePoseDistance){
-          nearestPolePoseDistance = distance;
-          nearestPolePose = polePose;
+        if(distance < nearestFacePoseDistance){
+          nearestFacePoseDistance = distance;
+          nearestFacePose = facePose;
         }
       }
     }
     else if(DriverStation.getAlliance().get() == Alliance.Blue){
       for(int i = 17; i < 23; i++){
-        Pose2d polePose = FieldConstants.aprilTagPosition.get(i);
-        double distance = Math.sqrt((botpose.getX() - polePose.getX()) * (botpose.getX() - polePose.getX()) + (botpose.getY() - polePose.getY())*(botpose.getY() - polePose.getY()));
+        Pose2d facePose = FieldConstants.aprilTagPosition.get(i);
+        double distance = Math.sqrt((botpose.getX() - facePose.getX()) * (botpose.getX() - facePose.getX()) + (botpose.getY() - facePose.getY())*(botpose.getY() - facePose.getY()));
         distances[i] = distance;
-        if(distance < nearestPolePoseDistance){
-          nearestPolePoseDistance = distance;
-          nearestPolePose = polePose;
+        if(distance < nearestFacePoseDistance){
+          nearestFacePoseDistance = distance;
+          nearestFacePose = facePose;
         }
       }
     }
-    return nearestPolePose;
+    return nearestFacePose;
   }
 }
