@@ -51,7 +51,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 )                
             ),
             new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-            new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+            new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5),
             new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
             new ParallelCommandGroup( 
                 new SequentialCommandGroup(
@@ -70,7 +70,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 )                
             ),
             new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-            new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+            new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5),
             new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
             new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
             new ParallelCommandGroup( 
@@ -91,7 +91,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
             ),
             new ParallelCommandGroup(
                 new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(3)
+                new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5)
             ),
             new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
             new ParallelCommandGroup( 
@@ -111,7 +111,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 )    
             ),
             new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-            new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+            new AutoAlignToReefTagRelative(true, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5),
             new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
             new ParallelCommandGroup( 
                 new SequentialCommandGroup(
@@ -130,7 +130,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 )    
             ),
             new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-            new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(2),
+            new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(1.5),
             new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(0.2),
             new ParallelCommandGroup( 
                 new SequentialCommandGroup(
