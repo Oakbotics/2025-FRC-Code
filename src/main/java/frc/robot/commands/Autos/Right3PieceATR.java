@@ -46,7 +46,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(17)),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
                 new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
+                    Commands.waitSeconds(0.6),
                     new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 )                
             ),
@@ -65,7 +65,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(17)),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
                 new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
+                    Commands.waitSeconds(0.6),
                     new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 )                
             ),
@@ -106,7 +106,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(8)),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
                 new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
+                    Commands.waitSeconds(0.6),
                     new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 )    
             ),
@@ -125,7 +125,7 @@ public class Right3PieceATR extends SequentialCommandGroup {
                 m_driveSubsystem.findPathToPose(FieldConstants.aprilTagPosition.get(8)),
                 new CoralIntakeCommand(m_intakeSubsystem).withTimeout(0.6),
                 new SequentialCommandGroup(
-                    Commands.waitSeconds(0.3),
+                    Commands.waitSeconds(0.6),
                     new L3ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)
                 )    
             ),

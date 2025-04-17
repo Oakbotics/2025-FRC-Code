@@ -53,9 +53,9 @@ public class AlignToReefTagRelative extends Command {
       limelightUsed = "limelight-left";
 
     }
-      X_SETPOINT_REEF_ALIGNMENT = -0.43;
-      Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.19; 
-      Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.18; 
+      X_SETPOINT_REEF_ALIGNMENT = -0.44;
+      Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.21; 
+      Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.17; 
       ROT_SETPOINT_REEF_ALIGNMENT = 0.0; //-2.67;
 
     this.stopTimer = new Timer();

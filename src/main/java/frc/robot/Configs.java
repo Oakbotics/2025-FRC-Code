@@ -132,7 +132,7 @@ public final class Configs {
         static {
                 algaeConfig
                         .idleMode(IdleMode.kBrake)
-                        .smartCurrentLimit(40);
+                        .smartCurrentLimit(30);
         }
     }
 
