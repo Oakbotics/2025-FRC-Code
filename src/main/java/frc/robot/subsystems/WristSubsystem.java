@@ -50,7 +50,7 @@ public class WristSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    printWristPosition();
+    // printWristPosition();
   }
 
   @Override

@@ -332,14 +332,14 @@ public class DriveSubsystem extends SubsystemBase {
       m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
       m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseLeftLL().getX(), m_limeLightSubsystem.getBotPoseLeftLL().getY(), m_gyro.getRotation2d()),  m_limeLightSubsystem.getLeftLimelightTime());
     }
-    else if(m_limeLightSubsystem.getRightID() != -1){
-      m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
-      m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getRightLimelightTime());
-    }
-    else if(m_limeLightSubsystem.getTopID() != -1){
-      m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
-      m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getTopLimelightTime());
-    }
+    // else if(m_limeLightSubsystem.getRightID() != -1){
+    //   m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+    //   m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseRightLL().getX(), m_limeLightSubsystem.getBotPoseRightLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getRightLimelightTime());
+    // }
+    // else if(m_limeLightSubsystem.getTopID() != -1){
+    //   m_odometry.setVisionMeasurementStdDevs(VecBuilder.fill(getPoleDistance(), getPoleDistance() * 1.5, 9999999));
+    //   m_odometry.addVisionMeasurement(new Pose2d(m_limeLightSubsystem.getBotPoseTopLL().getX(), m_limeLightSubsystem.getBotPoseTopLL().getY(), m_gyro.getRotation2d()), m_limeLightSubsystem.getTopLimelightTime());
+    // }
   }
 
   public Pose2d getLimeLightPose() {
@@ -376,6 +376,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Command findPathToPose(Pose2d pose) {
     return Commands.defer(() -> AutoBuilder.pathfindToPose(pose, pathConstraints), Set.of(this));
+  }
+
+  public Command findPathToPose(Pose2d pose, double goalEndVelocity) {
+    return Commands.defer(() -> AutoBuilder.pathfindToPose(pose, pathConstraints, goalEndVelocity), Set.of(this));
   }
   /**
    * Creates a defered command from auto builder to drive to nearest pole

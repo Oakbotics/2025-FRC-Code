@@ -64,10 +64,14 @@ public final class Constants {
 
       static{ //Value are left to right
         //DCMP VALUES 
-        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125)), new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125))}); // RED SIDE:
-        coralStationPosition.put(2, new Pose2d[]{new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(-125)), new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(-125))});
-        coralStationPosition.put(12, new Pose2d[]{new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(55)), new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(55))}); // BLUE SIDE:
-        coralStationPosition.put(13, new Pose2d[]{new Pose2d(1.21, 7.17,Rotation2d.fromDegrees(-55)), new Pose2d(1.21,7.17,Rotation2d.fromDegrees(-55))});
+        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.681,Rotation2d.fromDegrees(125)), new Pose2d(16.32, 0.681,Rotation2d.fromDegrees(125))}); // RED SIDE:
+        // coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125)), new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125))}); // RED SIDE:
+        coralStationPosition.put(2, new Pose2d[]{new Pose2d(16.946, 7.17,Rotation2d.fromDegrees(-125)), new Pose2d(16.946, 7.17,Rotation2d.fromDegrees(-125))});
+        //old values are 16.74x, 6.77y
+        coralStationPosition.put(12, new Pose2d[]{new Pose2d(0.731, 0.778,Rotation2d.fromDegrees(55)), new Pose2d(0.731, 0.778,Rotation2d.fromDegrees(55))}); // BLUE SIDE:
+        //ols values are 0.97x, 1.12y
+        coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.975, 7.525,Rotation2d.fromDegrees(-55)), new Pose2d(0.975, 7.525,Rotation2d.fromDegrees(-55))});
+        // coralStationPosition.put(13, new Pose2d[]{new Pose2d(1.21, 7.17,Rotation2d.fromDegrees(-55)), new Pose2d(1.21,7.17,Rotation2d.fromDegrees(-55))});
       }
       
       public static final HashMap<Integer, Pose2d> aprilTagPosition = new HashMap();
@@ -87,9 +91,14 @@ public final class Constants {
         aprilTagPosition.put(21, new Pose2d(6.15, 4.03,Rotation2d.fromDegrees(180))); // BLUE SIDE
         aprilTagPosition.put(22, new Pose2d(5.29, 2.62,Rotation2d.fromDegrees(120))); // BLUE SIDE
 
+        aprilTagPosition.put(14, new Pose2d(7.22, 6.00,Rotation2d.fromDegrees(0))); // BLUE SIDE
+        // aprilTagPosition.put(4, new Pose2d(5.29, 2.62,Rotation2d.fromDegrees(120))); // RED SIDE
+        // aprilTagPosition.put(15, new Pose2d(7.517, 1.900,Rotation2d.fromDegrees(120))); // BLUE SIDE
+        aprilTagPosition.put(5, new Pose2d(10.3, 1.900,Rotation2d.fromDegrees(180))); // RED SIDE
+
+
 
       }
-      
       //Starting Position Constants:
       public static final Pose2d topStartingPose = new Pose2d(7.105, 6.171, Rotation2d.fromDegrees(180));
       public static final Pose2d middleStartingPose = new Pose2d(7.181 + 0.10, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
@@ -286,7 +295,7 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 4.5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

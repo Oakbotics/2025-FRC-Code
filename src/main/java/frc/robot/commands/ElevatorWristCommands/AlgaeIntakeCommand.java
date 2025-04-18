@@ -9,7 +9,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class AlgaeKickCommand extends Command {
+public class AlgaeIntakeCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
    private final IntakeSubsystem m_intakeSubsystem;
 
@@ -18,7 +18,7 @@ public class AlgaeKickCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlgaeKickCommand(IntakeSubsystem intakeSubsystem) {
+  public AlgaeIntakeCommand(IntakeSubsystem intakeSubsystem) {
      m_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_intakeSubsystem);
