@@ -64,15 +64,10 @@ public final class Constants {
 
       static{ //Value are left to right
         //DCMP VALUES 
-        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.80,Rotation2d.fromDegrees(120)), new Pose2d(16.32, 0.80,Rotation2d.fromDegrees(120))}); // RED SIDE:
-        coralStationPosition.put(2, new Pose2d[]{new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(50.0)), new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(55))});
-        coralStationPosition.put(12, new Pose2d[]{new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(-130)), new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(-125))}); // BLUE SIDE:
-        coralStationPosition.put(13, new Pose2d[]{new Pose2d(1.08, 7.19,Rotation2d.fromDegrees(-55)), new Pose2d(1.08,7.19,Rotation2d.fromDegrees(-55))});
-
-        // coralStationPosition.put(1, new Pose2d[]{new Pose2d(14.67, 7.39,Rotation2d.fromDegrees(120)), new Pose2d(14.67, 7.39,Rotation2d.fromDegrees(120))}); // RED SIDE: WRONG VALUE
-        // coralStationPosition.put(2, new Pose2d[]{new Pose2d(10.03, 5.44,Rotation2d.fromDegrees(50.0)), new Pose2d(10.03, 5.44,Rotation2d.fromDegrees(55))}); //WRONG VALUE
-        // coralStationPosition.put(12, new Pose2d[]{new Pose2d(7.57, 2.93,Rotation2d.fromDegrees(-130)), new Pose2d(7.57, 2.93,Rotation2d.fromDegrees(-125))}); // BLUE SIDE: WRONG VALUE
-        // coralStationPosition.put(13, new Pose2d[]{new Pose2d(2.59, 0.22,Rotation2d.fromDegrees(-55)), new Pose2d(2.59,0.22,Rotation2d.fromDegrees(-55))}); //WRONG VALUE
+        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125)), new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125))}); // RED SIDE:
+        coralStationPosition.put(2, new Pose2d[]{new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(-125)), new Pose2d(16.74, 6.77,Rotation2d.fromDegrees(-125))});
+        coralStationPosition.put(12, new Pose2d[]{new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(55)), new Pose2d(0.97, 1.12,Rotation2d.fromDegrees(55))}); // BLUE SIDE:
+        coralStationPosition.put(13, new Pose2d[]{new Pose2d(1.21, 7.17,Rotation2d.fromDegrees(-55)), new Pose2d(1.21,7.17,Rotation2d.fromDegrees(-55))});
       }
       
       public static final HashMap<Integer, Pose2d> aprilTagPosition = new HashMap();
@@ -158,7 +153,7 @@ public final class Constants {
     public static final HashMap<String, Double> algaeL2 = new HashMap();
     static{
       stowed.put("elevator", 0.08);
-      stowed.put("wrist", 80.0);
+      stowed.put("wrist", 100.0);
     }
 
     public static final HashMap<String, Double> algaeL3 = new HashMap();
@@ -169,7 +164,7 @@ public final class Constants {
     public static final HashMap<String, Double> algaeBarge = new HashMap();
     static{
       stowed.put("elevator", 1.30);
-      stowed.put("wrist", 180.0);
+      stowed.put("wrist", 100.0);
     }
   }
 
@@ -180,12 +175,12 @@ public final class Constants {
     public static final int elevatorMotorLeftCanId = 10;
     public static final int elevatorMotorRightCanId = 11;
     
-    public static final double kP = 0.001;
+    public static final double kP = 0.0004;
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final double minOutput = -0.6;
-    public static final double maxOutput = 0.8;
+    public static final double minOutput = -1;
+    public static final double maxOutput = 1;
   }
   public static final class WristConstants{
     public static final int wristMotorCANId = 12;//Temp
@@ -211,7 +206,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 5;
+    public static final double kMaxSpeedMetersPerSecond = 5.5;
     public static final double kMaxAngularSpeed =  Math.PI * 2; // radians per second
     
     public static final double kV = 2.76;
@@ -317,9 +312,7 @@ public final class Constants {
     public static final double minPosition = 5;
     public static final double maxPosition = 230;
  }
-
  public static final class FunnelConstants {
     public static final int funnelServo = 0;
  }
-
 }

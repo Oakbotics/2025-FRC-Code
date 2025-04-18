@@ -57,7 +57,7 @@ public class AutoAlignToReefTagRelative extends Command {
     }
     X_SETPOINT_REEF_ALIGNMENT = -0.44;
     Y_LEFT_SETPOINT_REEF_ALIGNMENT = 0.21; 
-    Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.17; 
+    Y_RIGHT_SETPOINT_REEF_ALIGNMENT = -0.19; 
     ROT_SETPOINT_REEF_ALIGNMENT = 0.0; 
 
     this.stopTimer = new Timer();

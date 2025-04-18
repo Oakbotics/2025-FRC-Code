@@ -18,8 +18,9 @@ import frc.robot.commands.Autos.Right3PieceATR;
 import frc.robot.commands.ClimberFunnelCommands.ClimberInCommand;
 import frc.robot.commands.ClimberFunnelCommands.ClimberLockCommand;
 import frc.robot.commands.ClimberFunnelCommands.ClimberOutCommandGroup;
-import frc.robot.commands.ElevatorWristCommands.AlgaeOuttakeCommand;
+import frc.robot.commands.ElevatorWristCommands.AlgaeBargeCommandGroup;
 import frc.robot.commands.ElevatorWristCommands.AlgaeKickCommand;
+import frc.robot.commands.ElevatorWristCommands.AlgaeOuttakeCommand;
 import frc.robot.commands.ElevatorWristCommands.CoralIntakeCommand;
 import frc.robot.commands.ElevatorWristCommands.CoralOuttakeCommand;
 import frc.robot.commands.ElevatorWristCommands.IntakeCommandGroup;
@@ -140,6 +141,7 @@ public class RobotContainer {
     // Operator Controller
     m_operatorController.rightTrigger().whileTrue(new AlgaeKickCommand(m_intakeSubsytem));
     m_operatorController.leftTrigger().whileTrue(new CoralIntakeCommand(m_intakeSubsytem));
+    m_operatorController.rightBumper().whileTrue(new AlgaeOuttakeCommand(m_intakeSubsytem));
 
     // m_operatorController.rightBumper().onTrue(new PathToFaceAutoAlignCommandGroup(true, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem));
     // m_operatorController.leftBumper().onTrue(new PathToFaceAutoAlignCommandGroup(false, m_driveSubsystem, m_limeLightSubsystem)).onFalse(new RunCommand(() -> m_driveSubsystem.drive(0, 0, 0, false), m_driveSubsystem));
@@ -149,7 +151,7 @@ public class RobotContainer {
     m_operatorController.x().onTrue(new L3AlgaeCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Algae Kick Out Postion L3
     
     m_operatorController.b().onTrue(new L1ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem)); // Coral L1 Score
-    m_operatorController.y().onTrue(new AlgaeOuttakeCommand(m_intakeSubsytem));
+    m_operatorController.y().onTrue(new AlgaeBargeCommandGroup(m_elevatorSubsystem, m_wristSubsystem));
     
     m_operatorController.povUp().whileTrue(new ClimberOutCommandGroup(m_climbSubsystem));
     m_operatorController.povDown().whileTrue(new ClimberInCommand(m_climbSubsystem));
@@ -159,6 +161,6 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return m_autoChooser.getSelected();
-    return new Right3PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
+    return new Left3PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
   }
 }

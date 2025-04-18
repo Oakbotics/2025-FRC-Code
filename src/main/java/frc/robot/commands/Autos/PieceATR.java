@@ -17,9 +17,9 @@ public class PieceATR extends SequentialCommandGroup {
             addCommands(
                 new RunCommand(() -> m_driveSubsystem.gyroLimelightReset()).withTimeout(0.2),
                 new RunCommand(() -> m_driveSubsystem.resetPoseLL()).withTimeout(0.2),
-                Commands.waitSeconds(5),
+                Commands.waitSeconds(2),
                 new L4ScoreCommandGroup(m_elevatorSubsystem, m_wristSubsystem),
-                new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(4),
+                new AutoAlignToReefTagRelative(false, m_driveSubsystem, m_limelightSubsystem).withTimeout(7),
                 new CoralOuttakeCommand(m_intakeSubsystem).withTimeout(1)
             );
     }

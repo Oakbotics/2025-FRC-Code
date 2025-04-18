@@ -7,7 +7,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 public class L3AlgaeCommandGroup extends SequentialCommandGroup {
     public L3AlgaeCommandGroup(ElevatorSubsystem m_elevatorSubsystem, WristSubsystem m_wristSubsystem){
         addCommands(
-            new WristPositionCommand(m_wristSubsystem, 80),
+            new WristPositionCommand(m_wristSubsystem, 100).onlyIf(() -> (m_wristSubsystem.getWristAngle() < 95 || m_wristSubsystem.getWristAngle() > 105)),
             new ElevatorPositionCommand(m_elevatorSubsystem, 0.66)
         );
     }
