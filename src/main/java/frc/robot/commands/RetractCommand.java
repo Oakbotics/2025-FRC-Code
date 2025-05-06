@@ -4,47 +4,43 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class ElevatorUpCommand extends Command {
+public class RetractCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   // private final ExampleSubsystem m_subsystem;
-
-  private final ElevatorSubsystem m_ElevatorSubsystem;
+  private final ConveyorSubsystem m_ConveyorSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ElevatorUpCommand(ElevatorSubsystem ElevatorSubsystem) {
+  public RetractCommand(ConveyorSubsystem ConveyorSubsystem) {
+    m_ConveyorSubsystem = ConveyorSubsystem;
     // m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(ElevatorSubsystem);
-    m_ElevatorSubsystem = ElevatorSubsystem;
-
+    addRequirements(ConveyorSubsystem);
   }
 
   
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_ElevatorSubsystem.SetElevatorSpeed(0.5);
+    m_ConveyorSubsystem.setSpeed(-0.7);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_ElevatorSubsystem.SetElevatorSpeed(0);
+    m_ConveyorSubsystem.setSpeed(0);
   }
 
   // Returns true when the command should end.

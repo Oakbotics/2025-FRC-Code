@@ -22,8 +22,8 @@ public class ShooterSubsystem extends SubsystemBase {
   SparkMax rightMotor;
   SparkMax leftMotor;
   public ShooterSubsystem() {
-    // rightMotor = new SparkMax(ConveyorConstants.kRightShooterMotorCANID, MotorType.kBrushless);
-    // leftMotor = new SparkMax(ConveyorConstants.kLeftShooterMotorCANID, MotorType.kBrushless);
+    rightMotor = new SparkMax(ConveyorConstants.kRightShooterMotorCANID, MotorType.kBrushless);
+    leftMotor = new SparkMax(ConveyorConstants.kLeftShooterMotorCANID, MotorType.kBrushless);
   }
 
   public void setVoltage(double voltage){

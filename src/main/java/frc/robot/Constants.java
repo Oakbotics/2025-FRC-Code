@@ -25,13 +25,13 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class ConveyorConstants {
-    // public static final int kTopConveyorMotorCANID = 14;
-    // public static final int kBottomConveyorMotorCANID = 15;
+    public static final int kTopConveyorMotorCANID = 14;
+    public static final int kBottomConveyorMotorCANID = 15;
 
-    // public statics final int kRightShooterMotorCANID = 20;
-    // public static final int kLeftShooterMotorCANID = 21;
+    public static final int kRightShooterMotorCANID = 20;
+    public static final int kLeftShooterMotorCANID = 21;
 
-    // public static final double revvedShooterRPM = 800;
+    public static final double revvedShooterRPM = 800;
 
     // public static final int kTopIntakeSensorCANID = 5;
     // public static final int kBottomIntakeSensorCANID = 25;
@@ -52,17 +52,17 @@ public final class Constants {
       public static final Pose2d reefBranchL = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
   }
 
-  public static final class ElevatorConstants {
-    public static final int elevatorMotor1CanId = 25;
-    public static final int elevatorMotor2CanId = 10;
+  // public static final class ElevatorConstants {
+  //   public static final int elevatorMotor1CanId = 25;
+  //   public static final int elevatorMotor2CanId = 10;
     
-    public static final double elevatorKp = 1.0;
-    public static final double elevatorKi = 0;
-    public static final double elevatorKd = 0;
-    public static final double elevatorKMinOutput = -1;
-    public static final double elevatorKMaxOutput = 1;
-    public static final double elevatorKf = 0.5;
-  }
+  //   public static final double elevatorKp = 1.0;
+  //   public static final double elevatorKi = 0;
+  //   public static final double elevatorKd = 0;
+  //   public static final double elevatorKMinOutput = -1;
+  //   public static final double elevatorKMaxOutput = 1;
+  //   public static final double elevatorKf = 0.5;
+  // }
 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -90,15 +90,15 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    //public static final int kFrontLeftDrivingCanId = 12;
-    //public static final int kRearLeftDrivingCanId = 13;
-    // public static final int kFrontRightDrivingCanId = 3;
-    // public static final int kRearRightDrivingCanId = 2;
+    public static final int kFrontLeftDrivingCanId = 12;
+    public static final int kRearLeftDrivingCanId = 13;
+    public static final int kFrontRightDrivingCanId = 3;
+    public static final int kRearRightDrivingCanId = 2;
     
-    // public static final int kFrontLeftTurningCanId = 8;
-    // public static final int kRearLeftTurningCanId = 9;
-    // public static final int kFrontRightTurningCanId = 7;
-    // public static final int kRearRightTurningCanId = 6;
+    public static final int kFrontLeftTurningCanId = 8;
+    public static final int kRearLeftTurningCanId = 9;
+    public static final int kFrontRightTurningCanId = 7;
+    public static final int kRearRightTurningCanId = 6;
 
 
     public static final boolean kGyroReversed = false;

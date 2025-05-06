@@ -26,6 +26,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   }
   public Pose2d getBotPose(){
     double[] botPoseArray = m_limeLightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]);
+    return new Pose2d();
   }
   
   public Command exampleMethodCommand() {

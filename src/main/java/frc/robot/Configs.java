@@ -4,7 +4,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 
 public final class Configs {
@@ -55,15 +54,5 @@ public final class Configs {
         }
     }
 
-    public static final class ElevatorConfigs{
-        public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-        static{
-                elevatorConfig.closedLoop
-                        .p(ElevatorConstants.elevatorKp)
-                        .i(ElevatorConstants.elevatorKi)
-                        .d(ElevatorConstants.elevatorKd)
-                        .outputRange(ElevatorConstants.elevatorKMinOutput, ElevatorConstants.elevatorKMaxOutput)
-                        .velocityFF(1/ElevatorConstants.elevatorKf);
-        }               
-    }
+
 }

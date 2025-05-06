@@ -23,8 +23,8 @@ public class ConveyorSubsystem extends SubsystemBase {
   SparkMax bottomConveyorMotor;
 
   public ConveyorSubsystem() {
-    // topConveyorMotor = new SparkMax(ConveyorConstants.kTopConveyorMotorCANID, MotorType.kBrushless);
-    // bottomConveyorMotor = new SparkMax(ConveyorConstants.kBottomConveyorMotorCANID, MotorType.kBrushless);
+    topConveyorMotor = new SparkMax(ConveyorConstants.kTopConveyorMotorCANID, MotorType.kBrushless);
+    bottomConveyorMotor = new SparkMax(ConveyorConstants.kBottomConveyorMotorCANID, MotorType.kBrushless);
   }
 
   public void setSpeed(double speed){
