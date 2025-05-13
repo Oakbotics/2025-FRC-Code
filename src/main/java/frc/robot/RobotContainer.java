@@ -10,7 +10,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RetractCommand;
 import frc.robot.commands.ShootCommand;
-
+import frc.robot.commands.ShootNoteCommandGroup;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -43,16 +43,16 @@ public class RobotContainer {
     configureButtonBindings();
     
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
+    // m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true),
-            m_robotDrive));
+  //       new RunCommand(
+  //           () -> m_robotDrive.drive(
+  //               -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+  //               -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+  //               -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+  //               true),
+  //           m_robotDrive));
   }
 
   /**
@@ -73,7 +73,7 @@ public class RobotContainer {
     m_driverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
     m_driverController.x().whileTrue(new IntakeCommand(m_ConveyorSubsystem));
     m_driverController.y().whileTrue(new RetractCommand(m_ConveyorSubsystem));
-    // m_driverController.b().whileTrue(new ElevatorDownCommand(m_ElevatorSubsystem));
+    m_driverController.b().whileTrue(new ShootNoteCommandGroup(m_ShooterSubsystem, m_ConveyorSubsystem));
 
 }
 

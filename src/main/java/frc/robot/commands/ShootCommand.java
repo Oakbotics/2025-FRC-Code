@@ -26,7 +26,7 @@ public class ShootCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_ShooterSubsystem.setVoltage(7);
+    m_ShooterSubsystem.setVoltage(8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
