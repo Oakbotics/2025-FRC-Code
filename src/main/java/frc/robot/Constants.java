@@ -308,6 +308,8 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  
  
  public static final class ClimbConstants {
     public static final int climbMotorServoTopChannel = 1;
@@ -324,4 +326,19 @@ public final class Constants {
  public static final class FunnelConstants {
     public static final int funnelServo = 0;
  }
+
+ public final class AdvantageScopeConstants{
+  public static final Mode currentMode = Mode.SIM;
+
+  public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+
+    /** Running a physics simulator. */
+    SIM,
+
+    /** Replaying from a log file. */
+    REPLAY
+    }
+  }
 }
