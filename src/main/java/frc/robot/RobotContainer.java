@@ -46,21 +46,36 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems
   private final LimeLightSubsystem m_limeLightSubsystem = new LimeLightSubsystem();
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_limeLightSubsystem);
-  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
-  private final WristSubsystem m_wristSubsystem = new WristSubsystem();
-  private final IntakeSubsystem m_intakeSubsytem = new IntakeSubsystem();
-  private final FunnelSubsystem m_funnelSubsystem = new FunnelSubsystem();
-  private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
-  // The drivers controller
-  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  private DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_limeLightSubsystem);
+    private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+    private final WristSubsystem m_wristSubsystem = new WristSubsystem();
+    private final IntakeSubsystem m_intakeSubsytem = new IntakeSubsystem();
+    private final FunnelSubsystem m_funnelSubsystem = new FunnelSubsystem();
+    private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+    // The drivers controller
+    CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+    CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+    
+    //Auto Chooser
+    SendableChooser<Command> m_autoChooser = new SendableChooser<>();
   
-  //Auto Chooser
-  SendableChooser<Command> m_autoChooser = new SendableChooser<>();
-
-  public RobotContainer() {
-
+    public RobotContainer() {
+      switch (Constants.AdvantageScopeConstants.currentMode) {
+        case REAL:
+          // Real robot, instantiate hardware IO implementations
+          m_driveSubsystem  = new DriveSubsystem(new LimeLightSubsystem());
+          break;
+  
+        case SIM:
+          // Sim robot, instantiate physics sim IO implementations
+          m_driveSubsystem = new DriveSubsystem(new LimeLightSubsystem());
+          break;
+  
+        default:
+          // Replayed robot, disable IO implementations
+          m_driveSubsystem  = new DriveSubsystem(new LimeLightSubsystem());
+        break;
+    }
     // AutoChooser Choices
     m_autoChooser.setDefaultOption("1 Piece", new PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
     m_autoChooser.addOption("Left 3 Piece", new Left3PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem));
@@ -163,4 +178,8 @@ public class RobotContainer {
     // return m_autoChooser.getSelected();
     return new Left3PieceATR(m_driveSubsystem, m_elevatorSubsystem, m_wristSubsystem, m_intakeSubsytem, m_limeLightSubsystem);
   }
+
+  
 }
+
+  
