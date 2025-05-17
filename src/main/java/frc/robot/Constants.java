@@ -227,6 +227,10 @@ public final class Constants {
     public static final double kXI = 0.0;
     public static final double kXD = 0.05;
 
+    public static final double simKXP = 0.75;
+    public static final double simKXI = 0.0;
+    public static final double simKXD = 0.05;
+
     public static final double kYP = 0.75;//60.75;
     public static final double kYI = 0.0;
     public static final double kYD = 0.05;
