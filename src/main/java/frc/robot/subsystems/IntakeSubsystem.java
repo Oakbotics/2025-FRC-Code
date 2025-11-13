@@ -22,56 +22,12 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   SparkMax coralMotor;
-  SparkMax algaeMotor;
-
-  LaserCan wristIntakeSensor;
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
     coralMotor = new SparkMax(IntakeConstants.coralMotorCANID, MotorType.kBrushless);
-    algaeMotor = new SparkMax(IntakeConstants.algaeMotorCANID, MotorType.kBrushless);
-
-    wristIntakeSensor = new LaserCan(IntakeConstants.wristIntakeSensor);
-
-    coralMotor.configure(CoralConfigs.coralConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    algaeMotor.configure(AlgaeConfigs.algaeConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    try {
-      wristIntakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
-      wristIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,4,4 ));
-      wristIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-    } catch (ConfigurationFailedException e) {
-      e.printStackTrace();
-    }
-  }
-  /**
-   * gets the sensor mesurments
-   *
-   * @return mesurements in millimeters
-   */
-  public double getSensorValue(){
-    Measurement measurment = wristIntakeSensor.getMeasurement();
-    if(measurment != null){
-      return measurment.distance_mm;
-    }
-    return -1;
-  }
-  /**
-   * Uses sensor to tell if there is a coral on the wrist of the robot
-   * 
-   * @return if there is a coral on the wrist
-   */
-  public boolean isCoralOnWrist(){
-    return (getSensorValue() < 5);
+    
   }
 
-  /**
-   * Sets the speed of the algae motor to remove algae off the reef
-   * 
-   * @param speed
-   */
-  public void setAlgaeMotorSpeed(double speed){
-    algaeMotor.set(speed);
-  }
 
   /**
    * Sets speed of coral intake
@@ -84,8 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Algea Kicker", algaeMotor.get());
+
   }
 
   @Override
