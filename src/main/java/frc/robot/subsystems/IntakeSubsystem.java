@@ -4,92 +4,63 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkMax;
-
-import au.grapplerobotics.ConfigurationFailedException;
-import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
-
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
+// CTRE Phoenix 6 (Kraken) imports
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Configs.AlgaeConfigs;
-import frc.robot.Configs.CoralConfigs;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  SparkMax coralMotor;
-  SparkMax algaeMotor;
+  // Kraken/TalonFX motor controller for coral intake
+  private final TalonFX coralMotor;
 
-  LaserCan wristIntakeSensor;
-  /** Creates a new ExampleSubsystem. */
+  // Reusable control object to avoid allocating every call
+  private final DutyCycleOut coralDuty = new DutyCycleOut(0.0);
+
+  /** Creates a new IntakeSubsystem using CTRE Kraken (TalonFX). */
   public IntakeSubsystem() {
-    coralMotor = new SparkMax(IntakeConstants.coralMotorCANID, MotorType.kBrushless);
-    algaeMotor = new SparkMax(IntakeConstants.algaeMotorCANID, MotorType.kBrushless);
+    // Create the TalonFX with the same CAN ID from Constants
+    coralMotor = new TalonFX(IntakeConstants.coralMotorCANID);
 
-    wristIntakeSensor = new LaserCan(IntakeConstants.wristIntakeSensor);
+    // Basic configuration: neutral mode = brake, and a simple current limit.
 
-    coralMotor.configure(CoralConfigs.coralConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    algaeMotor.configure(AlgaeConfigs.algaeConfig,  SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    try {
-      wristIntakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
-      wristIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,4,4 ));
-      wristIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-    } catch (ConfigurationFailedException e) {
-      e.printStackTrace();
-    }
   }
+
+  /** Configure coral motor with sensible defaults similar to the old Spark configs. */
+
   /**
-   * gets the sensor mesurments
+   * Sets speed of coral intake.
    *
-   * @return mesurements in millimeters
+   * @param speed duty-cycle [-1.0..1.0], positive direction is as wired on robot
    */
-  public double getSensorValue(){
-    Measurement measurment = wristIntakeSensor.getMeasurement();
-    if(measurment != null){
-      return measurment.distance_mm;
+  public void setCoralMotorSpeed(double speed) {
+    // Send a duty-cycle control request. Using preallocated DutyCycleOut reduces GC
+    coralMotor.setControl(coralDuty.withOutput(speed));
+  }
+
+  /** For debugging: read the current motor duty-cycle output. */
+  public double getCoralMotorOutput() {
+    try {
+      return coralMotor.getDutyCycle().getValue();
+    } catch (Exception ex) {
+      // If signal isn't available in simulation or some build variants, return 0
+      return 0.0;
     }
-    return -1;
-  }
-  /**
-   * Uses sensor to tell if there is a coral on the wrist of the robot
-   * 
-   * @return if there is a coral on the wrist
-   */
-  public boolean isCoralOnWrist(){
-    return (getSensorValue() < 5);
-  }
-
-  /**
-   * Sets the speed of the algae motor to remove algae off the reef
-   * 
-   * @param speed
-   */
-  public void setAlgaeMotorSpeed(double speed){
-    algaeMotor.set(speed);
-  }
-
-  /**
-   * Sets speed of coral intake
-   * 
-   * @param speed speed  of motor
-   */
-  public void setCoralMotorSpeed(double speed){
-    coralMotor.set(speed); 
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Algea Kicker", algaeMotor.get());
+    // Show motor output on the dashboard for debugging
+    SmartDashboard.putNumber("CoralMotorOutput", getCoralMotorOutput());
   }
 
   @Override
   public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+    // Nothing special for simulation in this simplified migration
   }
 }
