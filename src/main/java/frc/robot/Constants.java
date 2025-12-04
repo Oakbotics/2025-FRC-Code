@@ -191,18 +191,36 @@ public final class Constants {
     public static final double minOutput = -1;
     public static final double maxOutput = 1;
   }
-  public static final class WristConstants{
-    public static final int wristMotorCANId = 12;//Temp
+  public static final class WristConstants {
+    public static final int wristMotorCANId = 12;
     
-    public static final double kP = 0.1;
+    // PID gains for CTRE Phoenix 6 position control
+    // NOTE: These values may need tuning as Phoenix 6 control loops differ from REV
+    // Original REV config used P=1 in Configs.java, but Constants had P=0.1
+    // Using the Constants values as the source of truth
+    public static final double kP = 12.0;  // TODO: Tune - Phoenix 6 typically needs higher P gains
     public static final double kI = 0;
-    public static final double kD = 0;
+    public static final double kD = 0.1;   // TODO: Tune - small D gain for damping
+    public static final double kV = 0;     // Velocity feedforward
+    public static final double kS = 0;     // Static friction feedforward (gravity compensation)
+
     public static final double minOutput = -1;
     public static final double maxOutput = 1;
     public static final double velocityFF = 0.5;
 
+    // Position limits in degrees
     public static final double maxPosition = 225;
     public static final double minPositon = 5;
+
+    // Current limits for CTRE (in Amps)
+    public static final double supplyCurrentLimit = 20;
+    public static final double statorCurrentLimit = 40;
+
+    // TODO: Set actual gear ratio (motor rotations : mechanism rotations)
+    public static final double gearRatio = 1.0;
+
+    // Position tolerance for command completion (degrees)
+    public static final double positionToleranceDegrees = 2.0;
   }
 
   public static final class IntakeConstants {
