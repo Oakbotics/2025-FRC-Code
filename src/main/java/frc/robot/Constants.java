@@ -1,10 +1,7 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,25 +10,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
- * constants are needed, to reduce verbosity.
- */
 public final class Constants {
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static final class FieldConstants {
       public static final Pose2d reefBranchA = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(0));
       public static final Pose2d reefBranchB = new Pose2d(3.246, 3.875,Rotation2d.fromDegrees(0));
       public static final Pose2d reefBranchC = new Pose2d(3.834, 3.032,Rotation2d.fromDegrees(60));
-      public static final Pose2d reefBranchD = new Pose2d(3.246, 2.862,Rotation2d.fromDegrees(60));//stopped here
+      public static final Pose2d reefBranchD = new Pose2d(3.246, 2.862,Rotation2d.fromDegrees(60));
       public static final Pose2d reefBranchE = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
       public static final Pose2d reefBranchF = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
       public static final Pose2d reefBranchG = new Pose2d(3.246, 4.181,Rotation2d.fromDegrees(-77.935));
@@ -44,9 +28,9 @@ public final class Constants {
       public static final Pose2d[] reefBranches = { reefBranchA, reefBranchB, reefBranchC, reefBranchD, reefBranchE, reefBranchF, reefBranchG, reefBranchH, reefBranchI, reefBranchJ, reefBranchK, reefBranchL};
 
       public static final double poleToTag = (0.1651);
-      public static final HashMap<Integer, Pose2d[]> reefPolePositions = new HashMap();
 
-      static { //branches are ordered left to right
+      public static final Map<Integer, Pose2d[]> reefPolePositions = new HashMap<>();
+      static {
         reefPolePositions.put(6, new Pose2d[]{new Pose2d(13.5, 2.8,Rotation2d.fromDegrees(125)), new Pose2d(13.8, 2.9,Rotation2d.fromDegrees(128))});
         reefPolePositions.put(7, new Pose2d[]{new Pose2d(14.36, 3.86,Rotation2d.fromDegrees(180)), new Pose2d(14.3, 4.180,Rotation2d.fromDegrees(180))});
         reefPolePositions.put(8, new Pose2d[]{new Pose2d(13.8, 5.1,Rotation2d.fromDegrees(-115)), new Pose2d(13.6, 5.21,Rotation2d.fromDegrees(-115))});
@@ -60,120 +44,104 @@ public final class Constants {
         reefPolePositions.put(21, new Pose2d[]{new Pose2d(5.7, 3.8,Rotation2d.fromDegrees(180)), new Pose2d(5.7, 4.1,Rotation2d.fromDegrees(180))});
         reefPolePositions.put(22, new Pose2d[]{new Pose2d(4.964, 2.837,Rotation2d.fromDegrees(120)), new Pose2d(5.241, 2.984,Rotation2d.fromDegrees(120))});
       }
-      public static final HashMap<Integer, Pose2d[]> coralStationPosition = new HashMap();
 
-      static{ //Value are left to right
-        //DCMP VALUES 
-        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.681,Rotation2d.fromDegrees(125)), new Pose2d(16.32, 0.681,Rotation2d.fromDegrees(125))}); // RED SIDE:
-        // coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125)), new Pose2d(16.32, 0.98,Rotation2d.fromDegrees(125))}); // RED SIDE:
+      public static final Map<Integer, Pose2d[]> coralStationPosition = new HashMap<>();
+      static{
+        coralStationPosition.put(1, new Pose2d[]{new Pose2d(16.32, 0.681,Rotation2d.fromDegrees(125)), new Pose2d(16.32, 0.681,Rotation2d.fromDegrees(125))});
         coralStationPosition.put(2, new Pose2d[]{new Pose2d(16.946, 7.17,Rotation2d.fromDegrees(-125)), new Pose2d(16.946, 7.17,Rotation2d.fromDegrees(-125))});
-        //old values are 16.74x, 6.77y
-        coralStationPosition.put(12, new Pose2d[]{new Pose2d(0.731, 0.778,Rotation2d.fromDegrees(55)), new Pose2d(0.731, 0.778,Rotation2d.fromDegrees(55))}); // BLUE SIDE:
-        //ols values are 0.97x, 1.12y
+        coralStationPosition.put(12, new Pose2d[]{new Pose2d(0.731, 0.778,Rotation2d.fromDegrees(55)), new Pose2d(0.731, 0.778,Rotation2d.fromDegrees(55))});
         coralStationPosition.put(13, new Pose2d[]{new Pose2d(0.975, 7.525,Rotation2d.fromDegrees(-55)), new Pose2d(0.975, 7.525,Rotation2d.fromDegrees(-55))});
-        // coralStationPosition.put(13, new Pose2d[]{new Pose2d(1.21, 7.17,Rotation2d.fromDegrees(-55)), new Pose2d(1.21,7.17,Rotation2d.fromDegrees(-55))});
       }
       
-      public static final HashMap<Integer, Pose2d> aprilTagPosition = new HashMap();
+      public static final Map<Integer, Pose2d> aprilTagPosition = new HashMap<>();
+      static{
+        aprilTagPosition.put(6, new Pose2d(13.84, 2.61,Rotation2d.fromDegrees(120)));
+        aprilTagPosition.put(7, new Pose2d(14.73, 3.98,Rotation2d.fromDegrees(180)));
+        aprilTagPosition.put(8, new Pose2d(13.89, 5.41,Rotation2d.fromDegrees(-120)));
+        aprilTagPosition.put(9, new Pose2d(12.32, 5.44,Rotation2d.fromDegrees(-60)));
+        aprilTagPosition.put(10, new Pose2d(11.42, 4.02,Rotation2d.fromDegrees(0)));
+        aprilTagPosition.put(11, new Pose2d(12.19, 2.65,Rotation2d.fromDegrees(60)));
 
-      static{ //Value are left to right
-        aprilTagPosition.put(6, new Pose2d(13.84, 2.61,Rotation2d.fromDegrees(120))); // RED SIDE
-        aprilTagPosition.put(7, new Pose2d(14.73, 3.98,Rotation2d.fromDegrees(180))); // RED SIDE
-        aprilTagPosition.put(8, new Pose2d(13.89, 5.41,Rotation2d.fromDegrees(-120))); // RED SIDE
-        aprilTagPosition.put(9, new Pose2d(12.32, 5.44,Rotation2d.fromDegrees(-60))); // RED SIDE
-        aprilTagPosition.put(10, new Pose2d(11.42, 4.02,Rotation2d.fromDegrees(0))); // RED SIDE:
-        aprilTagPosition.put(11, new Pose2d(12.19, 2.65,Rotation2d.fromDegrees(60))); // RED SIDE
+        aprilTagPosition.put(17, new Pose2d(3.66, 2.66,Rotation2d.fromDegrees(60)));
+        aprilTagPosition.put(18, new Pose2d(2.87, 4.04,Rotation2d.fromDegrees(0)));
+        aprilTagPosition.put(19, new Pose2d(3.70, 5.44,Rotation2d.fromDegrees(-60)));
+        aprilTagPosition.put(20, new Pose2d(5.29, 5.37,Rotation2d.fromDegrees(-120)));
+        aprilTagPosition.put(21, new Pose2d(6.15, 4.03,Rotation2d.fromDegrees(180)));
+        aprilTagPosition.put(22, new Pose2d(5.29, 2.62,Rotation2d.fromDegrees(120)));
 
-        aprilTagPosition.put(17, new Pose2d(3.66, 2.66,Rotation2d.fromDegrees(60))); // BLUE SIDE
-        aprilTagPosition.put(18, new Pose2d(2.87, 4.04,Rotation2d.fromDegrees(0))); // BLUE SIDE
-        aprilTagPosition.put(19, new Pose2d(3.70, 5.44,Rotation2d.fromDegrees(-60))); // BLUE SIDE
-        aprilTagPosition.put(20, new Pose2d(5.29, 5.37,Rotation2d.fromDegrees(-120))); // BLUE SIDE
-        aprilTagPosition.put(21, new Pose2d(6.15, 4.03,Rotation2d.fromDegrees(180))); // BLUE SIDE
-        aprilTagPosition.put(22, new Pose2d(5.29, 2.62,Rotation2d.fromDegrees(120))); // BLUE SIDE
-
-        aprilTagPosition.put(14, new Pose2d(7.22, 6.00,Rotation2d.fromDegrees(0))); // BLUE SIDE
-        // aprilTagPosition.put(4, new Pose2d(5.29, 2.62,Rotation2d.fromDegrees(120))); // RED SIDE
-        // aprilTagPosition.put(15, new Pose2d(7.517, 1.900,Rotation2d.fromDegrees(120))); // BLUE SIDE
-        aprilTagPosition.put(5, new Pose2d(10.3, 1.900,Rotation2d.fromDegrees(180))); // RED SIDE
-
-
-
+        aprilTagPosition.put(14, new Pose2d(7.22, 6.00,Rotation2d.fromDegrees(0)));
+        aprilTagPosition.put(5, new Pose2d(10.3, 1.900,Rotation2d.fromDegrees(180)));
       }
-      //Starting Position Constants:
+
       public static final Pose2d topStartingPose = new Pose2d(7.105, 6.171, Rotation2d.fromDegrees(180));
-      public static final Pose2d middleStartingPose = new Pose2d(7.181 + 0.10, 4.037, Rotation2d.fromDegrees(180)); // TEMP 10 cm Add for Newmarket
+      public static final Pose2d middleStartingPose = new Pose2d(7.181 + 0.10, 4.037, Rotation2d.fromDegrees(180));
       public static final Pose2d bottomStartingPose = new Pose2d(7.085, 1.843, Rotation2d.fromDegrees(180));
   }
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+
   public static final class MotionConstants {
-    //THE L4 BRANCH
-    public static final HashMap<String, Double> l4 = new HashMap();
+    public static final Map<String, Double> l4 = new HashMap<>();
     static{
       l4.put("elevator", 1.29);
       l4.put("wrist", 180.0);
     }
 
-    //THE L3 BRANCH
-    public static final HashMap<String, Double> l3 = new HashMap();
+    public static final Map<String, Double> l3 = new HashMap<>();
     static{
       l3.put("elevator", 0.58);
-
       l3.put("wrist", 185.0);
     }
 
-    //THE L2 BRANCH
-    public static final HashMap<String, Double> l2 = new HashMap();
+    public static final Map<String, Double> l2 = new HashMap<>();
     static{
       l2.put("elevator", 0.14);
       l2.put("wrist", 185.0);
     }
 
-    //THE L1 BRANCH
-    public static final HashMap<String, Double> l1 = new HashMap();
+    public static final Map<String, Double> l1 = new HashMap<>();
     static{
       l1.put("elevator", 0.07);
       l1.put("wrist", 150.0);
     }
 
-    public static final HashMap<String, Double> intake = new HashMap();
+    public static final Map<String, Double> intake = new HashMap<>();
     static{
       intake.put("elevator", 0.16);
       intake.put("wrist", 22.0);
     }
 
-    public static final HashMap<String, Double> intakeClearanceOut = new HashMap();
+    public static final Map<String, Double> intakeClearanceOut = new HashMap<>();
     static{
       intakeClearanceOut.put("elevator", 0.31);
       intakeClearanceOut.put("wrist", 180.0);
     }
 
-    public static final HashMap<String, Double> intakeClearanceIn = new HashMap();
+    public static final Map<String, Double> intakeClearanceIn = new HashMap<>();
     static{
       intakeClearanceIn.put("elevator", 0.31);
       intakeClearanceIn.put("wrist", 10.0);
     }
 
-    public static final HashMap<String, Double> stowed = new HashMap();
+    public static final Map<String, Double> stowed = new HashMap<>();
     static{
       stowed.put("elevator", 0.0);
       stowed.put("wrist", 0.0);
     }
 
-    public static final HashMap<String, Double> algaeL2 = new HashMap();
+    public static final Map<String, Double> algaeL2 = new HashMap<>();
     static{
-      stowed.put("elevator", 0.08);
-      stowed.put("wrist", 100.0);
+      algaeL2.put("elevator", 0.08);
+      algaeL2.put("wrist", 100.0);
     }
 
-    public static final HashMap<String, Double> algaeL3 = new HashMap();
+    public static final Map<String, Double> algaeL3 = new HashMap<>();
     static{
-      stowed.put("elevator", 0.56);
-      stowed.put("wrist", 80.0);
+      algaeL3.put("elevator", 0.56);
+      algaeL3.put("wrist", 80.0);
     }
-    public static final HashMap<String, Double> algaeBarge = new HashMap();
+    public static final Map<String, Double> algaeBarge = new HashMap<>();
     static{
-      stowed.put("elevator", 1.30);
-      stowed.put("wrist", 100.0);
+      algaeBarge.put("elevator", 1.30);
+      algaeBarge.put("wrist", 100.0);
     }
   }
 
@@ -191,36 +159,25 @@ public final class Constants {
     public static final double minOutput = -1;
     public static final double maxOutput = 1;
   }
-  public static final class WristConstants {
-    public static final int wristMotorCANId = 12;
-    
-    // PID gains for CTRE Phoenix 6 position control
-    // NOTE: These values may need tuning as Phoenix 6 control loops differ from REV
-    // Original REV config used P=1 in Configs.java, but Constants had P=0.1
-    // Using the Constants values as the source of truth
-    public static final double kP = 12.0;  // TODO: Tune - Phoenix 6 typically needs higher P gains
-    public static final double kI = 0;
-    public static final double kD = 0.1;   // TODO: Tune - small D gain for damping
-    public static final double kV = 0;     // Velocity feedforward
-    public static final double kS = 0;     // Static friction feedforward (gravity compensation)
 
+  public static final class WristConstants{
+    public static final int wristMotorCANId = 12;//Temp
+    
+    public static final double kP = 0.1;
+    public static final double kI = 0;
+    public static final double kD = 0;
     public static final double minOutput = -1;
     public static final double maxOutput = 1;
     public static final double velocityFF = 0.5;
 
-    // Position limits in degrees
     public static final double maxPosition = 225;
     public static final double minPositon = 5;
 
-    // Current limits for CTRE (in Amps)
-    public static final double supplyCurrentLimit = 20;
-    public static final double statorCurrentLimit = 40;
-
-    // TODO: Set actual gear ratio (motor rotations : mechanism rotations)
-    public static final double gearRatio = 1.0;
-
-    // Position tolerance for command completion (degrees)
-    public static final double positionToleranceDegrees = 2.0;
+    // Added feedforward and limits for configs
+    public static final double supplyCurrentLimit = 30.0; // TODO: set actual wrist current limit
+    public static final double statorCurrentLimit = 30.0; // TODO: set actual wrist stator limit
+    public static final double kV = 0.0; // TODO: tune feedforward V
+    public static final double kS = 0.0; // TODO: tune feedforward S
   }
 
   public static final class IntakeConstants {
@@ -231,8 +188,6 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
-    // Driving Parameters - Note that these are not the maximum capable speeds of
-    // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 5.5;
     public static final double kMaxAngularSpeed =  Math.PI * 2; // radians per second
     
@@ -240,12 +195,11 @@ public final class Constants {
     public static final double kS = 0.024;
     public static final double kA = 0.02;
 
-    //PID Controllers PID values
     public static final double kXP = 0.75;
     public static final double kXI = 0.0;
     public static final double kXD = 0.05;
 
-    public static final double kYP = 0.75;//60.75;
+    public static final double kYP = 0.75;
     public static final double kYI = 0.0;
     public static final double kYD = 0.05;
 
@@ -253,24 +207,19 @@ public final class Constants {
     public static final double kRI = 0.0;
     public static final double kRD = 0.0001;
 
-    // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
-    // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = Units.inchesToMeters(24.5);
-    // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-    // Angular offsets of the modules relative to the chassis in radians
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
-    // SPARK MAX CAN IDs
     public static final int kFrontLeftDrivingCanId = 7;
     public static final int kRearLeftDrivingCanId = 3;
     public static final int kFrontRightDrivingCanId = 5;
@@ -281,25 +230,15 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 6;
     public static final int kRearRightTurningCanId = 2;
 
-
     public static final boolean kGyroReversed = false;
     public static final int GyroCanId = 9;
   }
 
   public static final class ModuleConstants {
-    // The MAXSwerve module can be configured with one of three pinion gears: 12T,
-    // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
-    // more teeth will result in a robot that drives faster).
     public static final int kDrivingMotorPinionTeeth = 14;
-
-    // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kWheelDiameterMeters = 0.0620;
-
-    // public static final double kWheelDiameterMeters = 0.07441;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
-    // teeth on the bevel pinion
     public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
@@ -316,9 +255,6 @@ public final class Constants {
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond =  2 * Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-
-
-    // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
@@ -327,7 +263,7 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
  
- public static final class ClimbConstants {
+  public static final class ClimbConstants {
     public static final int climbMotorServoTopChannel = 1;
     public static final int climbMotorServoBottomChannel = 2;
 
@@ -338,8 +274,63 @@ public final class Constants {
     
     public static final double minPosition = 5;
     public static final double maxPosition = 230;
- }
- public static final class FunnelConstants {
+  }
+  public static final class FunnelConstants {
     public static final int funnelServo = 0;
- }
+  }
+
+  /**
+   * CTRE / Phoenix6 swerve constants for the Kraken + CANcoder modules.
+   * Populate the TODO fields with real hardware values.
+   */
+  public static final class CTRESwerveConstants {
+    public static final String kCANivoreName = "canivore"; // TODO: confirm CANivore name or change to match your bus
+
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(4.0); // TODO: set to your SDS wheel diameter
+    public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+
+    public static final double kDriveGearRatio = 6.75; // TODO: set to your module's drive gear ratio
+    public static final double kSteerGearRatio = 12.8; // TODO: set to your module's steer gear ratio
+
+    public static final double kDriveKS = DriveConstants.kS;
+    public static final double kDriveKV = DriveConstants.kV;
+    public static final double kDriveKA = DriveConstants.kA;
+
+    public static final double kDriveKP = 0.2; // TODO: tune drive velocity P
+    public static final double kDriveKI = 0.0; // TODO: tune if needed
+    public static final double kDriveKD = 0.0; // TODO: tune if needed
+
+    public static final double kSteerKP = 80.0; // TODO: tune steer position P
+    public static final double kSteerKI = 0.0;  // TODO: tune if needed
+    public static final double kSteerKD = 1.0;  // TODO: tune steer D
+
+    public static final boolean kDriveMotorInverted = false; // TODO: set per module if required
+    public static final boolean kSteerMotorInverted = true;  // TODO: confirm steering inversion
+    public static final boolean kSteerEncoderInverted = false; // TODO: confirm CANcoder inversion
+
+    public static final double kDriveSupplyCurrentLimit = 50.0; // TODO: confirm current limit
+    public static final double kSteerSupplyCurrentLimit = 30.0; // TODO: confirm current limit
+
+    public static final class ModuleConfig {
+      public final int driveMotorId;
+      public final int steerMotorId;
+      public final int cancoderId;
+      public final double absoluteEncoderOffsetRotations;
+      public final String canBus;
+
+      public ModuleConfig(int driveMotorId, int steerMotorId, int cancoderId, double absoluteEncoderOffsetRotations, String canBus) {
+        this.driveMotorId = driveMotorId;
+        this.steerMotorId = steerMotorId;
+        this.cancoderId = cancoderId;
+        this.absoluteEncoderOffsetRotations = absoluteEncoderOffsetRotations;
+        this.canBus = canBus;
+      }
+    }
+
+    // TODO: replace CAN IDs and absolute offsets with real values for each module
+    public static final ModuleConfig FRONT_LEFT  = new ModuleConfig(21, 22, 31, 0.0, kCANivoreName); // TODO: set IDs/offset
+    public static final ModuleConfig FRONT_RIGHT = new ModuleConfig(23, 24, 32, 0.0, kCANivoreName); // TODO: set IDs/offset
+    public static final ModuleConfig BACK_LEFT   = new ModuleConfig(25, 26, 33, 0.0, kCANivoreName); // TODO: set IDs/offset
+    public static final ModuleConfig BACK_RIGHT  = new ModuleConfig(27, 28, 34, 0.0, kCANivoreName); // TODO: set IDs/offset
+  }
 }
